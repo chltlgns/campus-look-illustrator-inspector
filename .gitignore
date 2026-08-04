@@ -1,0 +1,31 @@
+# Generated inspection data and private source material
+reports/
+downloads/
+samples/
+.cache/
+.memory-bank/
+NUL
+
+# Design and rendered artifacts must stay outside source control
+*.ai
+*.AI
+*.pdf
+*.PDF
+*.eps
+*.EPS
+*.jpg
+*.JPG
+*.jpeg
+*.JPEG
+*.png
+*.PNG
+
+# Local configuration and tooling residue
+.env
+.env.*
+node_modules/
+__pycache__/
+*.pyc
+*.log
+*.tmp
+.DS_Store

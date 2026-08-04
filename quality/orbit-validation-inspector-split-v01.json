@@ -1,0 +1,96 @@
+{
+  "schema_version": "orbit-validation-profile/v1",
+  "profile_id": "campuslook-illustrator-inspector-source-split-v01",
+  "locked_id_count": 8,
+  "locked_id_sha256": "b825cf20a79a47066b141aa99be78759e3c7092db73a91d2b267ff614adc6259",
+  "rows": [
+    {
+      "id": "CI-P01",
+      "selector": "tests.test_inspector_split_validation.InspectorSplitValidation.test_independent_repository_boundary",
+      "scenario": "Independent Git and ORBIT project boundary",
+      "expected_exit": "0",
+      "expected_code": "new repository root differs from parent and owns .git plus .orbit",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_inspector_split_validation.py::InspectorSplitValidation.test_independent_repository_boundary",
+      "requirement_ids": ["FR-001", "NFR-004"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "CI-P02",
+      "selector": "tests.test_inspector_split_validation.InspectorSplitValidation.test_source_only_manifest_and_hashes",
+      "scenario": "Source-only allowlist and source-target migration hashes",
+      "expected_exit": "0",
+      "expected_code": "12 source entries match and forbidden tracked artifacts are zero",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_inspector_split_validation.py::InspectorSplitValidation.test_source_only_manifest_and_hashes",
+      "requirement_ids": ["FR-002", "NFR-001"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "CI-P03",
+      "selector": "tests.test_inspector_split_validation.InspectorSplitValidation.test_environment_and_sidecar_root_resolution",
+      "scenario": "Environment override and installer sidecar root resolution",
+      "expected_exit": "0",
+      "expected_code": "both inputs select the same validated independent repository root",
+      "expected_writes": "temporary sidecar fixture only",
+      "evidence_locator": "tests/test_inspector_split_validation.py::InspectorSplitValidation.test_environment_and_sidecar_root_resolution",
+      "requirement_ids": ["FR-003", "NFR-003"],
+      "timeout_seconds": 90
+    },
+    {
+      "id": "CI-P04",
+      "selector": "tests.test_inspector_split_validation.InspectorSplitValidation.test_cli_schema_and_document_contract",
+      "scenario": "CLI syntax safe failure result schema and sanitized documentation",
+      "expected_exit": "0",
+      "expected_code": "syntax passes, help exits zero, missing input exits two, schema version is three",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_inspector_split_validation.py::InspectorSplitValidation.test_cli_schema_and_document_contract",
+      "requirement_ids": ["FR-004", "FR-005", "FR-006", "NFR-004", "NFR-006", "NFR-007"],
+      "timeout_seconds": 120
+    },
+    {
+      "id": "CI-N01",
+      "selector": "tests.test_inspector_split_validation.InspectorSplitValidation.test_forbidden_data_secret_and_external_boundaries",
+      "scenario": "Forbidden data secret-like fixture and external boundary rejection",
+      "expected_exit": "0",
+      "expected_code": "all injected forbidden cases reject and git remotes remain zero",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_inspector_split_validation.py::InspectorSplitValidation.test_forbidden_data_secret_and_external_boundaries",
+      "requirement_ids": ["FR-002", "NFR-001", "NFR-008"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "CI-N02",
+      "selector": "tests.test_inspector_split_validation.InspectorSplitValidation.test_root_failure_matrix_is_fail_closed",
+      "scenario": "Missing malformed incomplete and legacy-parent root inputs",
+      "expected_exit": "0",
+      "expected_code": "each fixture fails with inspector_root_invalid before analyzer launch",
+      "expected_writes": "temporary malformed sidecar fixture only",
+      "evidence_locator": "tests/test_inspector_split_validation.py::InspectorSplitValidation.test_root_failure_matrix_is_fail_closed",
+      "requirement_ids": ["FR-003", "NFR-005"],
+      "timeout_seconds": 120
+    },
+    {
+      "id": "CI-N03",
+      "selector": "tests.test_inspector_split_validation.InspectorSplitValidation.test_parent_and_legacy_source_prestate_unchanged",
+      "scenario": "Parent typed status and legacy source bytes remain unchanged",
+      "expected_exit": "0",
+      "expected_code": "parent commit status digest and 12 source hashes equal prestate evidence",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_inspector_split_validation.py::InspectorSplitValidation.test_parent_and_legacy_source_prestate_unchanged",
+      "requirement_ids": ["FR-007", "NFR-002"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "CI-R01",
+      "selector": "tests.test_inspector_split_validation.InspectorSplitValidation.test_clean_local_regression_contract",
+      "scenario": "Clean local source test migration and patch regression",
+      "expected_exit": "0",
+      "expected_code": "npm check, npm test, migration verifier and diff check all pass",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_inspector_split_validation.py::InspectorSplitValidation.test_clean_local_regression_contract",
+      "requirement_ids": ["FR-001", "FR-002", "FR-003", "FR-004", "FR-005", "FR-006", "FR-007", "NFR-001", "NFR-002", "NFR-003", "NFR-004", "NFR-005", "NFR-006", "NFR-007", "NFR-008"],
+      "timeout_seconds": 180
+    }
+  ]
+}

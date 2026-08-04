@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://campuslook.local/contracts/inspector-result.schema.json",
+  "title": "Campuslook Illustrator Inspector report",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "document",
+    "designCount",
+    "overallStatus",
+    "designs",
+    "performance",
+    "limitations"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 3 },
+    "document": { "type": "string", "minLength": 1 },
+    "designCount": { "type": "integer", "minimum": 1 },
+    "overallStatus": { "$ref": "#/$defs/status" },
+    "designs": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/design" }
+    },
+    "performance": { "type": ["object", "null"] },
+    "limitations": {
+      "type": "object",
+      "required": ["lining", "shapeChecks", "colorProfiles"],
+      "properties": {
+        "lining": { "type": "string" },
+        "shapeChecks": { "type": "string" },
+        "colorProfiles": { "type": "string" }
+      }
+    }
+  },
+  "$defs": {
+    "status": { "enum": ["PASS", "REVIEW", "FAIL"] },
+    "check": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": { "$ref": "#/$defs/status" },
+        "reason": { "type": "string" }
+      }
+    },
+    "design": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "proofArtboard",
+        "fields",
+        "visual",
+        "materialCheck",
+        "sleeveCheck",
+        "tableCheck",
+        "overallStatus"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "label": { "type": "string", "minLength": 1 },
+        "proofArtboard": {
+          "type": "object",
+          "required": ["index", "name", "render"],
+          "properties": {
+            "index": { "type": "integer", "minimum": 0 },
+            "name": { "type": "string" },
+            "render": { "type": "string", "minLength": 1 }
+          }
+        },
+        "fields": { "type": "object" },
+        "visual": { "type": "object" },
+        "materialCheck": { "$ref": "#/$defs/check" },
+        "sleeveCheck": { "$ref": "#/$defs/check" },
+        "tableCheck": { "$ref": "#/$defs/check" },
+        "overallStatus": { "$ref": "#/$defs/status" }
+      }
+    }
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "campuslook-source-migration/v1",
+  "createdAt": "2026-08-04T02:19:17Z",
+  "sourceLabel": "legacy-campus-look-ops-inspector",
+  "sourceParentObservedCommit": "094f192be8fb4289ee549ede92bff19ff715bc06",
+  "sourceInventorySha256": "aecd418ecff40e9dc387fffe20fce5299943a81ef5f55f4bf88717fbafa23d2b",
+  "entries": [
+    {
+      "path": "analyze-proof.mjs",
+      "sourceSha256": "e77df8e7213a6a255e51d50d071aab9a1b6429192fabebcf79445a49c902877d",
+      "targetSha256": "e77df8e7213a6a255e51d50d071aab9a1b6429192fabebcf79445a49c902877d",
+      "transformation": "byte-identical source copy"
+    },
+    {
+      "path": "build-live-test-html.mjs",
+      "sourceSha256": "3be404559e06df460c6832c03bd61131abca4b0e19ba035124badd074d580853",
+      "targetSha256": "bb82e468e7d77480e0f770648f3fe5fa00fd3d77a00cebb383d7d724462a6563",
+      "transformation": "removed machine-specific fixture default; explicit sanitized directory required"
+    },
+    {
+      "path": "build-live-test-report.mjs",
+      "sourceSha256": "ab008c115936fcbeac8bbfa0efafc3e0f8855e9ea131fd20b501ee8b6f19d46e",
+      "targetSha256": "232e721c13dc857a384d8a56be6bb3dde265a8c3f0165acc52aef03294ec060e",
+      "transformation": "removed machine-specific fixture default; explicit sanitized directory required"
+    },
+    {
+      "path": "check-illustrator.sh",
+      "sourceSha256": "f255446ff296a23ea8c9ed16b2bdc530d6fb6d58d38dade97d543ac57357454f",
+      "targetSha256": "f255446ff296a23ea8c9ed16b2bdc530d6fb6d58d38dade97d543ac57357454f",
+      "transformation": "byte-identical source copy"
+    },
+    {
+      "path": "check-proof.sh",
+      "sourceSha256": "bbac801d323bb9806fcda20ce549d35a9daeee92898f033910390baeab197692",
+      "targetSha256": "1487a997d728caf971ad8268a312a61cd5b71a37aa4d1f4b4676935624c39ddc",
+      "transformation": "replaced machine-specific palette default with explicit argument or environment"
+    },
+    {
+      "path": "inspect-illustrator.ps1",
+      "sourceSha256": "43d77c786164e60fbcc45737a3c2a151d3c3323f5a14ce356c3a5ccd2a3c5afe",
+      "targetSha256": "43d77c786164e60fbcc45737a3c2a151d3c3323f5a14ce356c3a5ccd2a3c5afe",
+      "transformation": "byte-identical source copy"
+    },
+    {
+      "path": "illustrator/CampuslookProofCheck.jsx",
+      "sourceSha256": "764da1f221e2cf0895a205577d65ad8280b82ea02df18c81f0b844864cc9a1f5",
+      "targetSha256": "764da1f221e2cf0895a205577d65ad8280b82ea02df18c81f0b844864cc9a1f5",
+      "transformation": "byte-identical source copy"
+    },
+    {
+      "path": "illustrator/FastProofInspector.jsx",
+      "sourceSha256": "1378a71c352812483d2a34c4eeca7d3d438f637115386f6f90ceec6f729b9231",
+      "targetSha256": "1378a71c352812483d2a34c4eeca7d3d438f637115386f6f90ceec6f729b9231",
+      "transformation": "byte-identical source copy"
+    },
+    {
+      "path": "illustrator/batch-check-ai.ps1",
+      "sourceSha256": "a4e53f3bf5dc44b6b0d0a90fec0ea055e201b63e6fad116a986b76d12a9b24b9",
+      "targetSha256": "a4e53f3bf5dc44b6b0d0a90fec0ea055e201b63e6fad116a986b76d12a9b24b9",
+      "transformation": "byte-identical source copy"
+    },
+    {
+      "path": "illustrator/check-active-illustrator.ps1",
+      "sourceSha256": "a65fe6d6a338528b5978099340118faf04e4799d19cea88c15585c90e04e671e",
+      "targetSha256": "a65fe6d6a338528b5978099340118faf04e4799d19cea88c15585c90e04e671e",
+      "transformation": "byte-identical source copy"
+    },
+    {
+      "path": "illustrator/install-illustrator-script.ps1",
+      "sourceSha256": "756381fbe7300bbaa90eee6d6dfe56e01fdf8e6cdc4d673ef5870d9d63ac36ab",
+      "targetSha256": "b92bdb0eb101271ab9f7eba66964912850426a2fe783758cdfb9e99c351132ca",
+      "transformation": "installer now writes validated repository-root sidecar"
+    },
+    {
+      "path": "illustrator/run-proof-check.ps1",
+      "sourceSha256": "20292592a33a2f26ae8ccde8cd4e04fb72b8fa4a5991f150eb176d4e930e1e53",
+      "targetSha256": "4bf52f2fb34f217964cba363724ed87449ac9684104b92c4c2f500b959112fa1",
+      "transformation": "legacy parent absolute root replaced by environment/sidecar fail-closed resolution"
+    }
+  ],
+  "excluded": [
+    "reports",
+    "downloads",
+    "samples",
+    ".cache",
+    ".memory-bank",
+    "NUL",
+    "AI/PDF/EPS/JPG/PNG artifacts",
+    "files larger than 1 MiB",
+    "mail download and credential-dependent code"
+  ]
+}
