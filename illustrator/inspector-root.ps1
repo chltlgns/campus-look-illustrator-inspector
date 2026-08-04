@@ -1,5 +1,48 @@
 Set-StrictMode -Version Latest
 
+function Convert-InspectorWindowsPathToWsl {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)][string]$WindowsPath,
+        [Parameter(Mandatory = $true)][string]$WslDistribution
+    )
+
+    $uncMatch = [regex]::Match(
+        $WindowsPath,
+        '^(?:\\\\wsl\.localhost|\\\\wsl\$)\\([^\\]+)\\(.+)$',
+        [Text.RegularExpressions.RegexOptions]::IgnoreCase
+    )
+    if ($uncMatch.Success) {
+        $uncDistribution = [string]$uncMatch.Groups[1].Value
+        if (-not $uncDistribution.Equals($WslDistribution, [StringComparison]::OrdinalIgnoreCase)) {
+            throw 'inspector_root_invalid: WSL UNC distribution이 configured distribution과 일치하지 않습니다.'
+        }
+        $relative = ([string]$uncMatch.Groups[2].Value) -replace '\\', '/'
+        $segments = @($relative.Split('/') | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+        if (
+            $segments.Count -lt 1 `
+            -or $segments.Count -ne $relative.Split('/').Count `
+            -or @($segments | Where-Object { $_ -eq '.' -or $_ -eq '..' }).Count -gt 0
+        ) {
+            throw 'inspector_root_invalid: WSL UNC path가 올바르지 않습니다.'
+        }
+        return "/$($segments -join '/')"
+    }
+
+    if (
+        $WindowsPath.StartsWith('\\wsl.localhost', [StringComparison]::OrdinalIgnoreCase) `
+        -or $WindowsPath.StartsWith('\\wsl$', [StringComparison]::OrdinalIgnoreCase)
+    ) {
+        throw 'inspector_root_invalid: WSL UNC root 형식이 올바르지 않습니다.'
+    }
+
+    $converted = & wsl.exe -d $WslDistribution -- wslpath -a -u $WindowsPath 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        throw "Windows 경로를 WSL 경로로 변환하지 못했습니다: $converted"
+    }
+    return (($converted | Out-String).Trim())
+}
+
 function Resolve-InspectorRoot {
     [CmdletBinding()]
     param(

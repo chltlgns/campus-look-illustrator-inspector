@@ -61,11 +61,9 @@ function Show-Dialog {
 function Convert-ToWslPath {
     param([Parameter(Mandatory = $true)][string]$WindowsPath)
 
-    $converted = & wsl.exe -d $distribution -- wslpath -a -u $WindowsPath 2>&1
-    if ($LASTEXITCODE -ne 0) {
-        throw "Windows 경로를 WSL 경로로 변환하지 못했습니다: $converted"
-    }
-    return (($converted | Out-String).Trim())
+    return Convert-InspectorWindowsPathToWsl `
+        -WindowsPath $WindowsPath `
+        -WslDistribution $distribution
 }
 
 function Convert-ToWindowsPath {

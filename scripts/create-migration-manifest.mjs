@@ -26,7 +26,7 @@ try {
     ['build-live-test-report.mjs', 'removed machine-specific fixture default; explicit sanitized directory required'],
     ['check-proof.sh', 'replaced machine-specific palette default with explicit argument or environment'],
     ['illustrator/install-illustrator-script.ps1', 'installer now writes validated repository-root sidecar'],
-    ['illustrator/run-proof-check.ps1', 'legacy parent absolute root replaced by environment/sidecar fail-closed resolution'],
+    ['illustrator/run-proof-check.ps1', 'legacy parent absolute root replaced by fail-closed source/runtime resolution, validated WSL UNC conversion, and Git-external outputs'],
   ]);
   const entries = SOURCE_INVENTORY.map(([relativePath, expectedSourceSha256]) => {
     const sourcePath = path.join(sourceRoot, relativePath);

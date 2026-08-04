@@ -74,8 +74,8 @@
     {
       "path": "illustrator/run-proof-check.ps1",
       "sourceSha256": "20292592a33a2f26ae8ccde8cd4e04fb72b8fa4a5991f150eb176d4e930e1e53",
-      "targetSha256": "aec3cb2b9fcc836b5fc0b19de0a2eaf63ad2d419194fc7771b608edd8c69c745",
-      "transformation": "legacy parent absolute root replaced by fail-closed source/runtime resolution and Git-external outputs"
+      "targetSha256": "1c3b4566404c0426eb2e9ceedcc9ed053eacea456220bcd91933890f57c30a5b",
+      "transformation": "legacy parent absolute root replaced by fail-closed source/runtime resolution, validated WSL UNC conversion, and Git-external outputs"
     }
   ],
   "excluded": [

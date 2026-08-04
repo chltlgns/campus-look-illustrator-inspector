@@ -44,6 +44,8 @@ Windows launcher의 `-Quiet` 성공 출력은 한 줄 JSON입니다.
 
 installed launcher는 source와 runtime을 분리합니다. source root는 `-InspectorRoot`, `CAMPUSLOOK_ILLUSTRATOR_INSPECTOR_ROOT`, schema 2 sidecar 순서로 선택합니다. runtime root는 `-RuntimeRoot`, `CAMPUSLOOK_ILLUSTRATOR_INSPECTOR_RUNTIME_ROOT`, sidecar 순서입니다.
 
+source root가 `\\wsl.localhost\<distribution>\...` 또는 `\\wsl$\<distribution>\...`이면 검증된 UNC share와 configured distribution이 정확히 일치할 때만 Linux `/<path>`로 직접 변환합니다. distribution mismatch, 비어 있거나 비정상인 UNC path는 외부 process 실행 전에 `inspector_root_invalid`로 거부합니다. drive-letter path는 `wslpath` fallback을 사용합니다.
+
 runtime root에는 palette cache와 `reports/illustrator`, proof PNG, report JSON/Markdown이 생성됩니다. source repository와 같거나 그 하위인 runtime은 외부 process 실행 전에 `inspector_root_invalid`로 거부합니다. 설치 기본값은 `%LOCALAPPDATA%\Campuslook\IllustratorProofCheck\runtime`이며 Git이 소유하지 않습니다.
 
 ## report.json

@@ -45,6 +45,8 @@ Node 패키지 의존성은 없습니다. 이 저장소의 검증에는 네트�
 
 선택한 root에서 `package.json` identity와 필수 실행 파일을 모두 확인하지 못하면 `inspector_root_invalid`로 외부 분석 실행 전에 중단합니다. WSL 배포판은 `-WslDistribution`, `CAMPUSLOOK_ILLUSTRATOR_INSPECTOR_WSL_DISTRIBUTION`, sidecar 순서로 받고 기본값은 `Ubuntu`입니다.
 
+검증된 source root가 `\\wsl.localhost\<distribution>\...` 또는 `\\wsl$\<distribution>\...` 형식이면 launcher는 UNC를 직접 Linux 절대경로로 변환합니다. UNC의 distribution이 선택된 WSL distribution과 다르거나 상대경로가 비정상이면 `wslpath`로 우회하지 않고 `inspector_root_invalid`로 중단합니다. 일반 Windows drive path는 기존 `wslpath` 변환을 사용합니다.
+
 cache와 보고서·PNG는 source repository에 쓰지 않습니다. runtime root는 다음 순서로 선택하며 source root와 같거나 그 하위이면 `inspector_root_invalid`로 거부합니다.
 
 1. `-RuntimeRoot` 매개변수
@@ -53,7 +55,7 @@ cache와 보고서·PNG는 source repository에 쓰지 않습니다. runtime roo
 
 기본 설치 runtime은 `%LOCALAPPDATA%\Campuslook\IllustratorProofCheck\runtime`입니다.
 
-설치기는 source tree의 `illustrator/install-illustrator-script.ps1`입니다. `illustrator/windows-cutover.ps1`은 기본 `Preflight` 모드에서 쓰기 없이 설치 대상을 조사하고, 명시적 `Backup`, `RecordPostState`, `Rollback` 모드에서 Git 밖 backup과 hash-guarded 복구를 수행합니다. Windows write 전에는 별도 ORBIT Gate와 byte backup이 필요합니다.
+설치기는 source tree의 `illustrator/install-illustrator-script.ps1`입니다. `illustrator/windows-cutover.ps1`은 기본 `Preflight` 모드에서 쓰기 없이 설치 대상을 조사하고, 명시적 `Backup`, `RecordPostState`, `Rollback` 모드에서 Git 밖 backup과 hash-guarded 복구를 수행합니다. rollback은 먼저 모든 current hash가 recorded post-state인지 확인하고, 이미 pre-state와 같은 보호 파일은 쓰지 않으며 나머지 실제 변경만 복원합니다. Windows write 전에는 별도 ORBIT Gate와 byte backup이 필요합니다.
 
 ## 로컬 검증
 

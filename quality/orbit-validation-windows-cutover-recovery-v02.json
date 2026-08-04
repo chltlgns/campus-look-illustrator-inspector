@@ -1,0 +1,74 @@
+{
+  "schema_version": "orbit-validation-profile/v1",
+  "profile_id": "campuslook-illustrator-inspector-windows-cutover-recovery-v02",
+  "locked_id_count": 6,
+  "locked_id_sha256": "5017ed37a2025327b6dd6e8b79c48a877591cc50149dd2c1a0d71bc7df638790",
+  "rows": [
+    {
+      "id": "RC-P01",
+      "selector": "tests.test_windows_cutover_recovery_validation.WindowsCutoverRecoveryValidation.test_wsl_localhost_unc_direct_conversion",
+      "scenario": "wsl.localhost UNC converts directly to the exact Linux source root",
+      "expected_exit": "0",
+      "expected_code": "validated Ubuntu UNC becomes the expected absolute Linux path",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_windows_cutover_recovery_validation.py::WindowsCutoverRecoveryValidation.test_wsl_localhost_unc_direct_conversion",
+      "requirement_ids": ["REQ-R2-001"],
+      "timeout_seconds": 90
+    },
+    {
+      "id": "RC-P02",
+      "selector": "tests.test_windows_cutover_recovery_validation.WindowsCutoverRecoveryValidation.test_wsl_dollar_unc_direct_conversion",
+      "scenario": "wsl dollar-share UNC converts directly to the exact Linux source root",
+      "expected_exit": "0",
+      "expected_code": "validated Ubuntu UNC becomes the expected absolute Linux path",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_windows_cutover_recovery_validation.py::WindowsCutoverRecoveryValidation.test_wsl_dollar_unc_direct_conversion",
+      "requirement_ids": ["REQ-R2-001"],
+      "timeout_seconds": 90
+    },
+    {
+      "id": "RC-N01",
+      "selector": "tests.test_windows_cutover_recovery_validation.WindowsCutoverRecoveryValidation.test_wsl_unc_distribution_mismatch_is_fail_closed",
+      "scenario": "UNC distribution mismatch fails closed",
+      "expected_exit": "0",
+      "expected_code": "inner conversion exits with the expected nonzero path and inspector_root_invalid",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_windows_cutover_recovery_validation.py::WindowsCutoverRecoveryValidation.test_wsl_unc_distribution_mismatch_is_fail_closed",
+      "requirement_ids": ["REQ-R2-002"],
+      "timeout_seconds": 90
+    },
+    {
+      "id": "RC-N02",
+      "selector": "tests.test_windows_cutover_recovery_validation.WindowsCutoverRecoveryValidation.test_wsl_unc_empty_path_is_fail_closed",
+      "scenario": "UNC with no Linux-relative path fails closed",
+      "expected_exit": "0",
+      "expected_code": "inner conversion exits with the expected nonzero path and inspector_root_invalid",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_windows_cutover_recovery_validation.py::WindowsCutoverRecoveryValidation.test_wsl_unc_empty_path_is_fail_closed",
+      "requirement_ids": ["REQ-R2-002"],
+      "timeout_seconds": 90
+    },
+    {
+      "id": "RC-P03",
+      "selector": "tests.test_windows_cutover_recovery_validation.WindowsCutoverRecoveryValidation.test_rollback_pre_equal_protected_file_is_noop",
+      "scenario": "Rollback skips every protected target already equal to pre-state",
+      "expected_exit": "0",
+      "expected_code": "rollback reports zero writes and three pre-equal skips",
+      "expected_writes": "temporary backup and read-only fixture only; rollback writes zero targets",
+      "evidence_locator": "tests/test_windows_cutover_recovery_validation.py::WindowsCutoverRecoveryValidation.test_rollback_pre_equal_protected_file_is_noop",
+      "requirement_ids": ["REQ-R2-003"],
+      "timeout_seconds": 120
+    },
+    {
+      "id": "RC-R01",
+      "selector": "tests.test_windows_cutover_recovery_validation.WindowsCutoverRecoveryValidation.test_rollback_changed_post_target_restores_prestate",
+      "scenario": "Rollback still restores changed post-state and recorded absence",
+      "expected_exit": "0",
+      "expected_code": "one changed file and one created file are restored while pre-equal files are skipped",
+      "expected_writes": "temporary install and backup fixture only",
+      "evidence_locator": "tests/test_windows_cutover_recovery_validation.py::WindowsCutoverRecoveryValidation.test_rollback_changed_post_target_restores_prestate",
+      "requirement_ids": ["REQ-R2-003"],
+      "timeout_seconds": 120
+    }
+  ]
+}

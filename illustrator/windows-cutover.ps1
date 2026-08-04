@@ -238,8 +238,17 @@ foreach ($entry in @($manifest.entries)) {
     }
 }
 
+$writesPerformed = 0
+$preEqualSkipped = 0
 foreach ($entry in @($manifest.entries)) {
     if ([bool]$entry.preExisted) {
+        if (
+            (Test-Path -LiteralPath $entry.path -PathType Leaf) `
+            -and (Get-FileSha256 -Path $entry.path) -eq [string]$entry.preSha256
+        ) {
+            $preEqualSkipped += 1
+            continue
+        }
         $backupPath = Join-Path $backupFullPath ([string]$entry.backupRelativePath -replace '/', [IO.Path]::DirectorySeparatorChar)
         if (-not (Test-Path -LiteralPath $backupPath -PathType Leaf)) {
             throw "cutover_rollback_blocked: backup file missing: $($entry.id)"
@@ -249,9 +258,11 @@ foreach ($entry in @($manifest.entries)) {
         }
         [IO.Directory]::CreateDirectory((Split-Path ([string]$entry.path) -Parent)) | Out-Null
         Copy-Item -LiteralPath $backupPath -Destination ([string]$entry.path) -Force -ErrorAction Stop
+        $writesPerformed += 1
     }
     elseif (Test-Path -LiteralPath $entry.path -PathType Leaf) {
         Remove-Item -LiteralPath $entry.path -Force -ErrorAction Stop
+        $writesPerformed += 1
     }
 }
 
@@ -265,5 +276,12 @@ foreach ($entry in @($manifest.entries)) {
     }
 }
 
-[ordered]@{ ok = $true; mode = $Mode; manifest = $manifestPath; entries = @($manifest.entries).Count } |
+[ordered]@{
+    ok = $true
+    mode = $Mode
+    manifest = $manifestPath
+    entries = @($manifest.entries).Count
+    writesPerformed = $writesPerformed
+    preEqualSkipped = $preEqualSkipped
+} |
     ConvertTo-Json -Compress
