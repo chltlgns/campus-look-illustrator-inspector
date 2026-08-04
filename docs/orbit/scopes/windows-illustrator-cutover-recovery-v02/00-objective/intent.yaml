@@ -1,0 +1,41 @@
+schema_version: orbit-intent/v1
+status: ready
+created_at: "2026-08-04"
+profile: "strict"
+project:
+  name: "Windows Illustrator UNC 및 rollback 복구 전환"
+  mission: "실제 활성화에서 드러난 WSL UNC 변환과 보호 파일 rollback 결함을 고쳐 새 저장소 기반 Windows Illustrator 검사를 안전하게 재전환한다."
+users:
+  - "Campuslook Illustrator 검사 운영자"
+scope:
+  in:
+    - "검증된 \\\\wsl.localhost 및 \\\\wsl$ source root를 선택된 distribution의 Linux 절대경로로 직접 변환하고 distribution 불일치를 fail-closed 처리"
+    - "rollback 시 current hash가 이미 pre-state와 같으면 보호 파일 쓰기를 생략"
+    - "회귀·실패 테스트, migration target hash, 문서, Quality/clean Trust/ff-only 통합/post-Quality"
+    - "새 timestamped Windows backup, 재설치, installed positive/negative 검증"
+    - "saved active readiness 확인 뒤 지정된 20개 AI 범위에서 Quiet cold/warm, 다중 시안, active document, Start Menu 및 실제 hotkey 회귀"
+  out:
+    - "analyzer 판정 규칙·report schema·PASS/REVIEW/FAIL 의미 변경"
+    - "legacy 검사기·campus-look-ops·기존 열린 Illustrator 문서 변경"
+    - "remote·push·PR·배포·network install·외부 API·유료 호출"
+    - "지정되지 않은 AI 탐색 또는 고객 산출물·backup의 Git 추가"
+hard_boundaries:
+  - "사용자 승인 없이 외부 시스템의 실데이터를 변경하지 않는다."
+  - "현재 대화의 구체적 승인 없이 과금 가능 API를 호출하지 않는다."
+  - "새 Gate 승인 전 source 구현·Windows 재설치를 하지 않는다."
+  - "saved active readiness가 false인 동안 실제 AI·shortcut·hotkey 실행을 하지 않는다."
+  - "legacy source, parent Git, 보존 worktree를 reset·clean·삭제·수정하지 않는다."
+success_criteria:
+  - id: SC-001
+    criterion: "두 WSL UNC 형식이 정확한 Linux root로 변환되고 distribution 불일치가 inspector_root_invalid로 차단된다."
+  - id: SC-002
+    criterion: "보호된 Program JSX가 이미 pre-state일 때 rollback이 쓰기 없이 exit 0으로 완료된다."
+  - id: SC-003
+    criterion: "candidate Quality, 다른 verifier clean Trust, ff-only 통합 및 post-Quality가 PASS한다."
+  - id: SC-004
+    criterion: "재설치된 sidecar·launcher·shortcut이 새 저장소를 사용하고 Program JSX·기존 문서가 불변이다."
+  - id: SC-005
+    criterion: "saved active readiness 뒤 실제 AI 계약·성능·다중 시안·active·shortcut·hotkey가 PASS하거나 정확한 BLOCKED 증거가 남는다."
+open_questions:
+  - "현재 미저장 active 문서를 사용자가 언제 안전한 saved test AI 상태로 준비할 수 있는가?"
+  - "지정 폴더 20개 중 analyzer가 실제 다중 시안으로 판정하는 파일이 있는가?"

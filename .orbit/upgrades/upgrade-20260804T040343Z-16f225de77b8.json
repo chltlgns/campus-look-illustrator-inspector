@@ -1,0 +1,15 @@
+{
+  "schema_version": "orbit-project-upgrade-receipt/v1",
+  "upgrade_id": "upgrade-20260804T040343Z-16f225de77b8",
+  "applied_at": "2026-08-04T04:03:43+00:00",
+  "plan_digest": "16f225de77b847674b5559f35381abada129b19747730a3c79eebb7ab94158fc",
+  "history_path": ".orbit/history/upgrade-20260804T040343Z-16f225de77b8",
+  "pre_state_sha256": "382b15409bdd58be32185c6ded440b5c53accb06eb220747fbaf875a6bda7867",
+  "post_state_sha256": "f40f5edcf729214c3cf7bd54e40d2736f5c21f4c9214fa626c490c0668d9a801",
+  "pre_lock_sha256": "6638db092eff8fb1549d1d84d3e22cdb0254bdc80c9479f5f81939cf738ac7a5",
+  "post_lock_sha256": "94e85694f72fa6621e0a67a55bd1208cd4ec38417c58c5bc12ee91adc5cacee3",
+  "pre_core_snapshot_sha256": "f752340c17fc252d8ff1671ad77d2c7868f0a8ea5c157d5ac6542263270b9cf6",
+  "post_core_snapshot_sha256": "e9dd4d015691313146fd77a0710aa4d765521d47f13d08aed89d892db297b6bb",
+  "legacy_evidence_manifest_sha256": "c996819b9d12b2022ce367c9ee90ecf8fd2e6b3db7ac07a349f73c66a66a3401",
+  "result": "PASS"
+}

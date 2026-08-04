@@ -1,0 +1,33 @@
+{
+  "schema_version": "orbit-gate-request/v2",
+  "request_id": "gate-20260804T041337Z-e1483663bd19",
+  "nonce": "e1483663bd196ba5957d70af134743b865fc1d90fb027343",
+  "created_at": "2026-08-04T04:13:37+00:00",
+  "expires_at": "2026-08-11T04:13:37+00:00",
+  "mode": "conversation-process",
+  "scope": "기준 커밋 d93a0157d8e7d757ed99f0cf7ba74a9af1c35300의 isolated candidate에서 Campuslook Illustrator 검사기의 external runtime root와 sidecar schema 2, fail-closed source/runtime resolver, Windows preflight·byte-backup·hash-guarded rollback 도구, 문서·migration target hash·12개 locked validation을 구현한다. candidate Quality와 다른 verifier의 clean Trust PASS 뒤 기존 ORBIT control-plane 변경과 보존 worktree를 reset·clean·삭제하지 않고 새 저장소 main에만 ff-only 통합/post-Quality한다. 그 뒤 설치 직전 기존 LocalAppData 설치 폴더, Start Menu shortcut, program JSX를 Git 밖 timestamped backup과 SHA-256 manifest로 보존하고, 통합된 새 installer로 LocalAppData launcher·checker·collector·resolver·schema-2 sidecar와 Ctrl+Shift+Q shortcut을 새 저장소 UNC root, Ubuntu, Git 밖 LocalAppData runtime root 기준으로 전환한다. program JSX가 install 시점에도 candidate와 hash-equal이면 쓰거나 Illustrator를 재시작하지 않고, drift면 BLOCKED한다. installed positive/negative root 검증 후 사용자가 지정한 비민감 test AI가 제공되고 saved active readiness가 확인된 경우에만 Git 밖 runtime에서 explicit Quiet, cold/warm 성능, active document, multi-design, Start Menu shortcut과 실제 Ctrl+Shift+Q 회귀를 수행한다. structural·contract·document-preservation 실패 시 current hash가 expected post-state와 일치할 때만 backup에서 실제 변경 대상을 rollback한다. campus-look-ops와 legacy 검사기 source, 기존 열린 Illustrator 문서, remote·push·PR·배포·network install·외부 API·유료 호출은 변경하지 않으며 고객 입력·원시 출력·backup을 Git에 추가하지 않는다.",
+  "scope_artifact": "docs/orbit/scopes/windows-illustrator-cutover-v01/04-gates/pre-implementation-gate.md",
+  "scope_digest": "833ac0e1a8a4fbc2080881b005cf48bc6415caba4c09df2beb95a0c1c06af23a",
+  "plan_digest": "269cc031c655f2e2ee11b9ae0aabdc796c7afd59afcddb7b32ca25a3f975b20a",
+  "planning_evidence": {
+    "docs/orbit/scopes/windows-illustrator-cutover-v01/03-planning/backlog.yaml": "9a165d73bf2f41d9dbf833b59900c189f061c1755ac414c0d81b0e58911bd4a4",
+    "docs/orbit/scopes/windows-illustrator-cutover-v01/03-planning/validation-plan.md": "4fed7afe78b605a76faed2f6f5ec6dbf54c07514d09912548642984e5de45360"
+  },
+  "bases": [
+    {
+      "repository_root": "/home/doggabiya/campus-look-illustrator-inspector",
+      "common_git_dir": "/home/doggabiya/campus-look-illustrator-inspector/.git",
+      "commit": "d93a0157d8e7d757ed99f0cf7ba74a9af1c35300"
+    }
+  ],
+  "external_actions": [
+    "승인 base의 isolated Git candidate에서 source/runtime/installer/backup/rollback/test 문서와 validation을 로컬 변경·커밋하고 Quality·clean Trust 뒤 main ff-only integrate/post-Quality",
+    "Git 밖 timestamped Windows backup 생성 후 C:/Users/GOLD/AppData/Local/Campuslook/IllustratorProofCheck의 installed 파일·schema-2 sidecar와 Start Menu Illustrator Proof Check.lnk를 새 repository/runtime root로 create/update",
+    "program JSX hash-equal이면 Windows program files와 Illustrator process write 0; drift면 중단. user-designated test AI와 active readiness가 있을 때만 Git 밖 output으로 actual Illustrator/shortcut/hotkey/performance 회귀",
+    "승인된 failure trigger에서 expected-post hash가 맞는 LocalAppData/shortcut/실제 변경 JSX만 backup bytes 또는 recorded absence로 rollback"
+  ],
+  "cryptographic_user_proof_available": false,
+  "warning": "conversation-process는 signed platform event가 없어 agent self-entry를 기술적으로 방지하지 못합니다.",
+  "lifecycle_scope_id": "windows-illustrator-cutover-v01",
+  "scope_manifest_sha256": "57601f2619e6fb6280f44563f106d3b9ab34cdd9ff09953b07cb932507954e8c"
+}

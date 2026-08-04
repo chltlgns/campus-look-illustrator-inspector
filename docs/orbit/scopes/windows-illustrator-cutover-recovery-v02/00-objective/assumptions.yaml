@@ -1,0 +1,33 @@
+schema_version: orbit-assumptions/v1
+status: ready
+assumptions:
+  - id: A-001
+    statement: "검증된 WSL UNC root는 PowerShell regex로 distribution과 상대경로를 손실 없이 분리할 수 있다."
+    risk: high
+    state: verified
+    owner: codex
+    verification: "두 UNC 형식의 read-only 재현에서 regex가 Ubuntu와 /home/... root를 정확히 반환했다."
+  - id: A-002
+    statement: "UNC distribution이 configured WslDistribution과 다르면 다른 배포판으로 실행하지 않고 fail-closed해야 한다."
+    risk: high
+    state: verified
+    owner: shared
+    verification: "설계·negative test에서 case-insensitive exact match를 요구하고 inspector_root_invalid를 검증한다."
+  - id: A-003
+    statement: "rollback 대상의 current hash가 pre-state hash와 같으면 복사를 생략해도 복구 계약을 충족한다."
+    risk: high
+    state: verified
+    owner: codex
+    verification: "첫 rollback 후 9개 대상 pre-state mismatch 0이었으나 동일 Program JSX 재복사만 Access denied였다."
+  - id: A-004
+    statement: "현재 active Illustrator 문서는 saved readiness를 충족한다."
+    risk: critical
+    state: contradicted
+    owner: user
+    verification: "마지막 read-only COM 관측은 process 1, documents 3, active Saved=false였다. 실제 AI 실행 전에 재확인한다."
+  - id: A-005
+    statement: "지정 폴더에는 테스트 가능한 AI 20개가 있으며 다중 시안 포함 여부는 미확정이다."
+    risk: medium
+    state: partially_verified
+    owner: shared
+    verification: "확장자·개수만 확인했다. saved readiness 뒤 report.designCount로 판정한다."

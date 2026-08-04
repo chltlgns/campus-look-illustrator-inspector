@@ -1,0 +1,57 @@
+schema_version: orbit-assumptions/v1
+status: active
+assumptions:
+  - id: A-001
+    statement: "현재 LocalAppData launcher는 새 portable launcher가 아니라 legacy parent 절대경로 버전이다."
+    risk: critical
+    state: verified
+    owner: codex
+    verification: "2026-08-04 read-only inspection: installed run-proof-check.ps1 text SHA-256 20292592...는 migration manifest의 legacy sourceSha256과 같고, 18~19행이 /home/doggabiya/campus-look-ops/일러스트 확인용 스크립트를 직접 가리킨다."
+  - id: A-002
+    statement: "현재 root resolver와 inspector-root.json sidecar는 설치돼 있지 않아 shortcut 실행은 legacy launcher 경로를 사용한다."
+    risk: high
+    state: verified
+    owner: codex
+    verification: "C:/Users/GOLD/AppData/Local/Campuslook/IllustratorProofCheck에서 두 파일 모두 부재하고 root 관련 process/user/machine 환경변수도 모두 null이었다."
+  - id: A-003
+    statement: "현재 Start Menu shortcut은 설치된 check-active-illustrator.ps1을 대상으로 하며 Ctrl+Shift+Q가 등록돼 있다."
+    risk: medium
+    state: verified
+    owner: codex
+    verification: "WScript.Shell read-only inspection에서 target powershell.exe, arguments의 installed active checker, WorkingDirectory LocalAppData, Hotkey Ctrl+Shift+Q를 확인했다."
+  - id: A-004
+    statement: "현재 Illustrator 2025 프로세스 한 개와 설치된 Campuslook Proof Check.jsx가 존재하며 JSX bytes는 새 소스와 같다."
+    risk: medium
+    state: verified
+    owner: codex
+    verification: "Get-Process read-only 결과 1개, Illustrator.exe 경로가 2025 설치이며 installed JSX normalized SHA-256 764da1f...가 새 소스와 같았다."
+  - id: A-005
+    statement: "현재 configured default 컬러판은 존재하지만 실제 회귀 AI는 아직 지정되지 않았다."
+    risk: high
+    state: partially_verified
+    owner: shared
+    verification: "C:/Users/GOLD/Desktop/컬러참고용 판때기.ai는 read-only Test-Path에서 존재하고 길이는 6,317,423 bytes였다. 테스트 AI는 사용자 제공 전까지 unknown이며 임의 탐색하지 않는다."
+  - id: A-006
+    statement: "현재 launcher로 active/shortcut 검사를 하면 report와 palette cache가 새 Git 저장소 내부의 ignored reports/.cache에 생성된다."
+    risk: high
+    state: verified
+    owner: codex
+    verification: "run-proof-check.ps1의 Get-PaletteCachePath와 active/non-active outputPath가 workspaceRoot/.cache 및 workspaceRoot/reports를 사용한다. 사용자 조건을 위해 외부 runtime root 지원이 필요하다."
+  - id: A-007
+    statement: "새 installer는 LocalAppData의 6개 소스 파일, sidecar, shortcut을 순차 덮어쓰며 중간 실패 시 부분 설치가 가능하다."
+    risk: high
+    state: verified
+    owner: codex
+    verification: "install-illustrator-script.ps1 source inspection에서 6회 Copy-WithUtf8Bom, sidecar WriteAllText, shortcut Save, 조건부 JSX Copy 순서를 확인했다. 설치 전 byte backup과 manifest가 필요하다."
+  - id: A-008
+    statement: "설치된 JSX가 새 소스와 같으므로 현재 상태에서는 Illustrator program directory의 JSX 쓰기와 재시작이 필요하지 않을 가능성이 높다."
+    risk: medium
+    state: accepted
+    owner: shared
+    verification: "현재 hashes는 같아 installer의 conditional Copy-Item 분기는 건너뛴다. 다만 설치 시점 drift가 있으면 중단하고 재계획한다."
+  - id: A-009
+    statement: "실제 검사 중 기존 열린 문서는 저장·종료하지 않고 테스트가 만든 캡처 외 문서 내용 변경도 없어야 한다."
+    risk: critical
+    state: accepted
+    owner: shared
+    verification: "테스트 전후 process count, 기존 document count/saved-state fingerprint를 비교하며 batch runner가 연 테스트 문서만 DoNotSaveChanges로 닫고 기존 active document를 복원하는지 확인한다. drift면 즉시 BLOCKED 및 rollback한다."

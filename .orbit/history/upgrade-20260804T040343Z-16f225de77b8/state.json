@@ -1,0 +1,114 @@
+{
+  "schema_version": "orbit-project-state/v1",
+  "project": {
+    "name": "Campuslook Illustrator Inspector"
+  },
+  "profile": "strict",
+  "core_version": "0.4.3",
+  "created_at": "2026-08-04T02:08:43+00:00",
+  "updated_at": "2026-08-04T03:02:37+00:00",
+  "stages": {
+    "objective": {
+      "status": "completed",
+      "started_at": "2026-08-04T02:08:54+00:00",
+      "completed_at": "2026-08-04T02:10:17+00:00",
+      "evidence": {
+        "docs/orbit/00-objective/intent.yaml": "bf222a890890def8c0d74322e2a53ff4e210890c7091494b46851258527c6277",
+        "docs/orbit/00-objective/assumptions.yaml": "08f7ff9b77f523614ef6d87017f414b034327c64aa7d7a9ee189cdc8db91c6ae"
+      }
+    },
+    "research": {
+      "status": "completed",
+      "started_at": "2026-08-04T02:10:24+00:00",
+      "completed_at": "2026-08-04T02:12:08+00:00",
+      "evidence": {
+        "docs/orbit/01-research/evidence-ledger.md": "7da1b6ea58e36ff423039a05079d07a2f9ddfa4c66dd9e772242cd6a7a04708d",
+        "docs/orbit/01-research/research-report.md": "9423ef362109fc0981ec1e5f30fc57ce5cd665184a9ab716c1578da48f265096"
+      }
+    },
+    "blueprint": {
+      "status": "completed",
+      "started_at": "2026-08-04T02:12:14+00:00",
+      "completed_at": "2026-08-04T02:14:48+00:00",
+      "evidence": {
+        "docs/orbit/02-blueprint/requirements.md": "a2c494c2e9fbfe9b12091644a8ec2508be0dfb00ab17f4c5e95a822ff4dd66ff",
+        "docs/orbit/02-blueprint/architecture.md": "b03bc4a3186752f00ca0081d93c5cc2ddb0572f5f8c729112953fb080ef18360",
+        "docs/orbit/02-blueprint/decisions.md": "7938ec459542a37963d51cfaa8e4a1b139608bd3ac1e57f141726b906c02af4a"
+      }
+    },
+    "planning": {
+      "status": "completed",
+      "started_at": "2026-08-04T02:14:54+00:00",
+      "completed_at": "2026-08-04T02:16:30+00:00",
+      "evidence": {
+        "docs/orbit/03-planning/backlog.yaml": "27412ed342b26e6b6d8366db91e4765459c260ccb431a0b91948db06cc21dd72",
+        "docs/orbit/03-planning/validation-plan.md": "71fe81c77a3e32892b5806878cbd5bcd7a3aa5e9382b7891428d0fee4c958ca8"
+      }
+    },
+    "gate": {
+      "status": "completed",
+      "started_at": "2026-08-04T02:17:42+00:00",
+      "completed_at": "2026-08-04T02:25:09+00:00",
+      "evidence": {
+        "docs/orbit/04-gates/pre-implementation-gate.md": "486e4332b05545f417b519c5b613d07a0caa28dc9331c80448ca1c5cafec074f",
+        ".orbit/gates/gate-20260804T021917Z-71d54ce764de.request.json": "a8a3437f3e4e1b3c98c479ff90f99d9e8ea3705aab0d46da14a6bdba6bb281a4",
+        ".orbit/gates/gate-20260804T021917Z-71d54ce764de.approval.json": "dab82e36daaef9dc8967546b5dd9abb2c910e64a816f5774a69ea1811c44dda7"
+      },
+      "active_request": {
+        "request_id": "gate-20260804T021917Z-71d54ce764de",
+        "path": ".orbit/gates/gate-20260804T021917Z-71d54ce764de.request.json",
+        "request_digest": "a8a3437f3e4e1b3c98c479ff90f99d9e8ea3705aab0d46da14a6bdba6bb281a4"
+      },
+      "approved_by": "user",
+      "approval_note": "요청 ID gate-20260804T021917Z-71d54ce764de, 요청 SHA-256 a8a3437f3e4e1b3c98c479ff90f99d9e8ea3705aab0d46da14a6bdba6bb281a4의 다음 전체 범위를 승인합니다: 기준 커밋 d68d1fc65606fe9ae62c3655ea643f90d8c3ee3a의 isolated candidate에서 Campuslook Illustrator 검사기를 독립 저장소로 source-only 분리한다: 기존 /home/doggabiya/campus-look-ops/일러스트 확인용 스크립트의 승인된 Node/Bash/PowerShell/JSX 소스만 복제하고 원본·대상 SHA-256 migration manifest를 남긴다. reports, downloads, samples, .cache, .memory-bank, NUL, AI/PDF/EPS/JPG/PNG, 1MB 초과 artifact, 메일 다운로드·자격증명 의존 코드는 포함하지 않는다. PowerShell launcher의 기존 parent 절대경로를 제거하고 explicit environment override 또는 installer-generated sidecar root를 필수 파일과 함께 fail-closed 검증한다. 기존 check-proof.sh 입력과 report.json/report.md/material reference 출력 및 PASS/REVIEW/FAIL 의미를 보존하고, CLI/JSON integration contract·정제 README·result schema·migration verifier·8개 locked local validation을 추가한다. 기존 campus-look-ops와 기존 검사기 폴더, 실행 중인 프로세스, Windows Illustrator 설치·단축키는 변경하지 않는다. candidate Quality와 clean independent Trust PASS 뒤 새 저장소 main에만 ff-only 통합하며 remote 생성, push, PR, 배포, network install, 외부 API와 유료 호출은 0건이다.",
+      "attestation": {
+        "schema_version": "orbit-gate-approval/v1",
+        "request_id": "gate-20260804T021917Z-71d54ce764de",
+        "request_digest": "a8a3437f3e4e1b3c98c479ff90f99d9e8ea3705aab0d46da14a6bdba6bb281a4",
+        "approved_at": "2026-08-04T02:25:09+00:00",
+        "approved_by": "user",
+        "approval_verbatim": "요청 ID gate-20260804T021917Z-71d54ce764de, 요청 SHA-256 a8a3437f3e4e1b3c98c479ff90f99d9e8ea3705aab0d46da14a6bdba6bb281a4의 다음 전체 범위를 승인합니다: 기준 커밋 d68d1fc65606fe9ae62c3655ea643f90d8c3ee3a의 isolated candidate에서 Campuslook Illustrator 검사기를 독립 저장소로 source-only 분리한다: 기존 /home/doggabiya/campus-look-ops/일러스트 확인용 스크립트의 승인된 Node/Bash/PowerShell/JSX 소스만 복제하고 원본·대상 SHA-256 migration manifest를 남긴다. reports, downloads, samples, .cache, .memory-bank, NUL, AI/PDF/EPS/JPG/PNG, 1MB 초과 artifact, 메일 다운로드·자격증명 의존 코드는 포함하지 않는다. PowerShell launcher의 기존 parent 절대경로를 제거하고 explicit environment override 또는 installer-generated sidecar root를 필수 파일과 함께 fail-closed 검증한다. 기존 check-proof.sh 입력과 report.json/report.md/material reference 출력 및 PASS/REVIEW/FAIL 의미를 보존하고, CLI/JSON integration contract·정제 README·result schema·migration verifier·8개 locked local validation을 추가한다. 기존 campus-look-ops와 기존 검사기 폴더, 실행 중인 프로세스, Windows Illustrator 설치·단축키는 변경하지 않는다. candidate Quality와 clean independent Trust PASS 뒤 새 저장소 main에만 ff-only 통합하며 remote 생성, push, PR, 배포, network install, 외부 API와 유료 호출은 0건이다.",
+        "mode": "conversation-process",
+        "cryptographic_user_proof": false,
+        "signed_platform_event": null,
+        "plan_digest": "9b693fc0b95a032f84b5f12fec608950564e211eb6edab9dc7737ea3137b91cd",
+        "scope_digest": "a03815f402f549bf604c6291ddcf27109344d63a98b11c0326a3a26dda4011ff",
+        "bases": [
+          {
+            "repository_root": "/home/doggabiya/campus-look-illustrator-inspector",
+            "common_git_dir": "/home/doggabiya/campus-look-illustrator-inspector/.git",
+            "commit": "d68d1fc65606fe9ae62c3655ea643f90d8c3ee3a"
+          }
+        ],
+        "external_actions": [
+          "승인 base에서 격리 Git worktree와 candidate branch 생성, 허용 source-only 파일의 로컬 복제·수정, 로컬 테스트·커밋, 독립 Trust PASS 뒤 새 저장소 main ff-only 통합",
+          "campus-look-ops와 기존 검사기 폴더·Windows 설치·실제 Illustrator·고객 데이터·원격 Git·외부 API·유료 호출 변경 0건"
+        ],
+        "warning": "conversation-process는 signed platform event가 없어 agent self-entry를 기술적으로 방지하지 못합니다.",
+        "approval_path": ".orbit/gates/gate-20260804T021917Z-71d54ce764de.approval.json",
+        "approval_digest": "dab82e36daaef9dc8967546b5dd9abb2c910e64a816f5774a69ea1811c44dda7"
+      }
+    },
+    "implementation": {
+      "status": "completed",
+      "started_at": "2026-08-04T02:25:31+00:00",
+      "completed_at": "2026-08-04T02:58:56+00:00",
+      "evidence": {
+        "docs/orbit/05-implementation/implementation-log.md": "0316af09428de34ad9361255f25954f04b80cc2a1a84eb73fc0a14b0123bf056",
+        ".orbit/trust/inspector-source-split-v01-d93a0157d8e7.json": "7eb43cfa4b6fcb2edf788eba4c299252c7c3b03d2cf9b0388d207dac2234dcc4",
+        ".orbit/quality/post-integration-recovery-inspector-source-split-v01-d93a0157d8e7.json": "35351c7ded7f48cde17fda05a443050667ea31c9ff6a374e1e9ddb200bcd6d86"
+      }
+    },
+    "trust": {
+      "status": "completed",
+      "started_at": "2026-08-04T02:58:56+00:00",
+      "completed_at": "2026-08-04T02:59:43+00:00",
+      "evidence": {
+        "docs/orbit/06-trust/verification-report.md": "d1662650920aa5959178e78ec2d0d60e70a4689eb3e29ec2ce40ee133c688418",
+        "docs/orbit/06-trust/release-gate.md": "47f6e76832507337ebecef44698982009b5aaaadb3c5ee8533367bbc153bea7a",
+        ".orbit/trust/inspector-source-split-v01-d93a0157d8e7.json": "7eb43cfa4b6fcb2edf788eba4c299252c7c3b03d2cf9b0388d207dac2234dcc4",
+        ".orbit/quality/post-integration-recovery-inspector-source-split-v01-d93a0157d8e7.json": "35351c7ded7f48cde17fda05a443050667ea31c9ff6a374e1e9ddb200bcd6d86"
+      }
+    }
+  }
+}

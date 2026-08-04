@@ -1,0 +1,14 @@
+{
+  "schema_version": "orbit-change-rebind-approval/v1",
+  "request_id": "rebind-20260804T063000Z-drive-path-v03",
+  "request_digest": "345a95c604d4e9a9f4b31d4922ac97566b2f0b37ccfa4ad3017b09981669b1e1",
+  "approved_at": "2026-08-04T06:30:20+00:00",
+  "approved_by": "user",
+  "approval_verbatim": "승인된 전체 rebind 범위입니다. candidate Quality와 다른 verifier clean Trust PASS 뒤 기존 ORBIT/user dirt와 보존 worktree를 reset·clean·삭제하지 않고 main에 ff-only 통합/post-Quality한다.",
+  "mode": "conversation-process",
+  "cryptographic_user_proof": false,
+  "signed_platform_event": null,
+  "scope": "candidate Quality와 다른 verifier clean Trust PASS 뒤 기존 ORBIT/user dirt와 보존 worktree를 reset·clean·삭제하지 않고 main에 ff-only 통합/post-Quality한다.",
+  "scope_digest": "61d3dab749f1322e648263195e40706d8a375eda7b4ec409570446b256358239",
+  "warning": "conversation-process는 cryptographic user proof나 signed platform event가 아닙니다."
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": "orbit-gate-request/v2",
+  "request_id": "gate-20260804T061128Z-d03b40a3cc1b",
+  "nonce": "d03b40a3cc1b8ea5384d57109fea5759f2a139c22f37f90a",
+  "created_at": "2026-08-04T06:11:28+00:00",
+  "expires_at": "2026-08-05T06:11:28+00:00",
+  "mode": "conversation-process",
+  "scope": "기준 커밋 756e554ea8239fdbb3f32935875707b6a41d392c의 isolated recovery candidate에서 Windows source/runtime resolver의 rooted drive-letter path를 forward-slash 형식으로 정규화한 뒤 configured distribution의 wslpath로 전달하고, 공백 없는 LocalAppData runtime과 공백·Unicode palette path를 보존하며 drive-relative·malformed path를 inspector_root_invalid로 fail-closed한다. 기존 WSL UNC direct parser, schema-2 sidecar, rollback, CLI·report·PASS/REVIEW/FAIL 계약은 변경하지 않는다. 신규 locked validation 4개와 기존 26개, 문서·migration target hash·Quality profile을 갱신하고 candidate Quality와 다른 verifier clean Trust PASS 뒤 기존 ORBIT/user dirt와 보존 worktree를 reset·clean·삭제하지 않고 main에 ff-only 통합/post-Quality한다. 그 뒤 현재 복원된 legacy 설치본을 새 Git 밖 timestamped 9-entry byte backup과 SHA-256 manifest로 보존하고 integrated installer로 LocalAppData launcher·checker·collector·resolver·schema-2 sidecar와 Ctrl+Shift+Q shortcut을 새 저장소 UNC source root 및 기본 C-drive LocalAppData runtime root로 재전환한다. Program JSX가 expected installed hash와 같을 때만 Program Files write와 Illustrator restart 없이 진행하고 drift면 BLOCKED한다. installed positive/negative/UNC/drive/rollback 검증 뒤 active document가 지정 폴더의 saved test AI인지 다시 확인하고, 지정 20개 AI와 명시적 palette만 사용해 Git 밖 runtime에서 explicit Quiet cold/warm, report JSON·Markdown·material reference·PNG, batch/multi-design, active document, Start Menu shortcut, 실제 Ctrl+Shift+Q와 새 성능을 검증한다. 구조·계약·문서·입력 hash 보존 실패 시 current=expected-post인 실제 변경 대상만 fresh backup으로 rollback한다. campus-look-ops·legacy source·기존 열린 3개 문서·remote·push·PR·배포·network install·외부 API·유료 호출은 변경하지 않고 AI·palette·원시 output·backup은 Git에 추가하지 않는다.",
+  "scope_artifact": "docs/orbit/scopes/windows-illustrator-drive-path-recovery-v03/04-gates/pre-implementation-gate.md",
+  "scope_digest": "f091325e4f9c74e0ec4c682c823bcfcc57b5604d16caeda83b366eb2cb858a2f",
+  "plan_digest": "68e3674855f46dfdbd61669757770c0faf174c426bbd8c595556a8950dd950cb",
+  "planning_evidence": {
+    "docs/orbit/scopes/windows-illustrator-drive-path-recovery-v03/03-planning/backlog.yaml": "4aa3b4771630b128b20e8b0b36be78d8126788d052e84e09198c273025ee0b27",
+    "docs/orbit/scopes/windows-illustrator-drive-path-recovery-v03/03-planning/validation-plan.md": "811ac9567dce117deffc8e657f1aa6b851deaddc6ad21e4c96f8be35c1c8a35c"
+  },
+  "bases": [
+    {
+      "repository_root": "/home/doggabiya/campus-look-illustrator-inspector",
+      "common_git_dir": "/home/doggabiya/campus-look-illustrator-inspector/.git",
+      "commit": "756e554ea8239fdbb3f32935875707b6a41d392c"
+    }
+  ],
+  "external_actions": [
+    "승인 base의 isolated candidate에서 drive-path 최소 수정·문서·migration hash·30개 locked validation을 구현·커밋하고 Quality·clean Trust 뒤 main ff-only integrate/post-Quality",
+    "Git 밖 fresh 9-entry backup 뒤 LocalAppData installed files·schema2 sidecar와 Start Menu shortcut을 새 source 및 기본 C-drive runtime 기준으로 재설치",
+    "Program JSX write/Illustrator restart 없이 saved designated active AI, 지정 20개 AI와 palette로 actual Quiet·batch·active·shortcut·hotkey·performance 실행",
+    "승인된 failure trigger에서 모든 current=expected-post를 확인한 실제 변경 target만 fresh backup bytes 또는 recorded absence로 rollback"
+  ],
+  "cryptographic_user_proof_available": false,
+  "warning": "conversation-process는 signed platform event가 없어 agent self-entry를 기술적으로 방지하지 못합니다.",
+  "lifecycle_scope_id": "windows-illustrator-drive-path-recovery-v03",
+  "scope_manifest_sha256": "a5f9d87ebac6967fcf379a72bba50fc4e1213f55c21e138ce81976661c140329"
+}

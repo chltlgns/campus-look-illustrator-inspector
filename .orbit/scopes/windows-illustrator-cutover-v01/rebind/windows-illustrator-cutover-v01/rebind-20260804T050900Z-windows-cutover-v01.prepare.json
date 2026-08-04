@@ -1,0 +1,21 @@
+{
+  "schema_version": "orbit-change-rebind-approval-prepare/v1",
+  "request_id": "rebind-20260804T050900Z-windows-cutover-v01",
+  "request_digest": "b3609d1ad76d30b981895450928d6f2aca74802e57394c68c516c83913cfc6df",
+  "change_identity_digest": "95b2c23d6b94010fce18a8f8e6452a39510dab58bd62b24abd533fd607edb4cd",
+  "approval": {
+    "schema_version": "orbit-change-rebind-approval/v1",
+    "request_id": "rebind-20260804T050900Z-windows-cutover-v01",
+    "request_digest": "b3609d1ad76d30b981895450928d6f2aca74802e57394c68c516c83913cfc6df",
+    "approved_at": "2026-08-04T05:01:36+00:00",
+    "approved_by": "user",
+    "approval_verbatim": "승인된 전체 rebind 범위입니다. Request ID rebind-20260804T050900Z-windows-cutover-v01, request digest b3609d1ad76d30b981895450928d6f2aca74802e57394c68c516c83913cfc6df. candidate Quality와 다른 verifier의 clean Trust PASS 뒤 기존 ORBIT control-plane 변경과 보존 worktree를 reset·clean·삭제하지 않고 새 저장소 main에만 ff-only 통합/post-Quality한다.",
+    "mode": "conversation-process",
+    "cryptographic_user_proof": false,
+    "signed_platform_event": null,
+    "scope": "candidate Quality와 다른 verifier의 clean Trust PASS 뒤 기존 ORBIT control-plane 변경과 보존 worktree를 reset·clean·삭제하지 않고 새 저장소 main에만 ff-only 통합/post-Quality한다.",
+    "scope_digest": "ee3875c04bd059a38c18c8d32ee095cf8cd63f5533f52f510eb8fa66e5f054cf",
+    "warning": "conversation-process는 cryptographic user proof나 signed platform event가 아닙니다."
+  },
+  "approval_sha256": "73f60068a192866a52c357105a31c31d22d99cb5b9fca24eb157be2c44354c75"
+}

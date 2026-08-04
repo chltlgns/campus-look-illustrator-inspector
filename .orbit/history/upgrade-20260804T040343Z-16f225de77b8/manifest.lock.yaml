@@ -1,0 +1,6 @@
+schema_version: orbit-lock/v1
+core_version: "0.4.3"
+profile: "strict"
+synced_at: "2026-08-04T03:02:36+00:00"
+source: "${ORBIT_HOME}"
+workflow_sha256: "3c5e4afb71960ccf707ad7bd313ad81d58e978bdbf3d51767e22744de2e7cd16"

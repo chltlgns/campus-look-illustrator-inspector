@@ -1,0 +1,14 @@
+{
+  "schema_version": "orbit-change-rebind-approval/v1",
+  "request_id": "rebind-20260804T052600Z-cutover-recovery-v02",
+  "request_digest": "a40527a25515aca9a2abc9c3f401f15fc8c28050eecd0345cc9a9a6305516600",
+  "approved_at": "2026-08-04T05:25:58+00:00",
+  "approved_by": "user",
+  "approval_verbatim": "승인된 전체 rebind 범위입니다. candidate Quality·다른 verifier clean Trust PASS 뒤 기존 ORBIT/user dirt와 보존 worktree를 reset·clean·삭제하지 않고 main에 ff-only 통합/post-Quality한다.",
+  "mode": "conversation-process",
+  "cryptographic_user_proof": false,
+  "signed_platform_event": null,
+  "scope": "candidate Quality·다른 verifier clean Trust PASS 뒤 기존 ORBIT/user dirt와 보존 worktree를 reset·clean·삭제하지 않고 main에 ff-only 통합/post-Quality한다.",
+  "scope_digest": "afb2b45bab369ed1b7451bfc1dbef034932966124dcfe6d4a216832219bde938",
+  "warning": "conversation-process는 cryptographic user proof나 signed platform event가 아닙니다."
+}

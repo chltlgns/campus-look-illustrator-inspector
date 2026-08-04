@@ -1,0 +1,38 @@
+schema_version: orbit-backlog/v1
+status: ready
+items:
+  - id: TASK-DP-001
+    requirement_ids: [REQ-DP-001, REQ-DP-002]
+    title: "rooted drive path normalization과 malformed drive fail-closed"
+    owner: codex
+    depends_on: []
+    risk: critical
+    done_when: "DP-P01/DP-P02/DP-N01이 exact conversion/error와 write 0을 검증"
+  - id: TASK-DP-002
+    requirement_ids: [REQ-DP-001, REQ-DP-002, REQ-DP-003, REQ-DP-005]
+    title: "문서·migration hash·4개 locked validation·Quality profile 갱신"
+    owner: codex
+    depends_on: [TASK-DP-001]
+    risk: high
+    done_when: "기존 26개와 신규 DP-P01/DP-P02/DP-N01/DP-R01, migration, lint/check/test가 clean candidate에서 PASS"
+  - id: TASK-DP-003
+    requirement_ids: [REQ-DP-003, REQ-DP-005]
+    title: "candidate Quality·다른 verifier clean Trust·ff-only integration·post-Quality"
+    owner: codex
+    depends_on: [TASK-DP-002]
+    risk: high
+    done_when: "commit-bound receipts PASS, main exact candidate, existing ORBIT/user dirt와 preserved worktree 보존"
+  - id: TASK-DP-004
+    requirement_ids: [REQ-DP-003, REQ-DP-005]
+    title: "fresh 9-entry Windows backup과 default C-drive runtime 재설치"
+    owner: codex
+    depends_on: [TASK-DP-003]
+    risk: critical
+    done_when: "Program JSX preflight equality, backup hash PASS, schema2 default runtime, installed hashes/negative/rollback eligibility PASS"
+  - id: TASK-DP-005
+    requirement_ids: [REQ-DP-004, REQ-DP-005]
+    title: "지정 AI 실제 regression·multi-design·shortcut/hotkey·성능"
+    owner: codex
+    depends_on: [TASK-DP-004]
+    risk: critical
+    done_when: "saved readiness와 input hash 보존 뒤 actual matrix PASS 또는 정확한 blocker와 guarded rollback"

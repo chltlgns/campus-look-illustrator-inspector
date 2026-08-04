@@ -1,0 +1,19 @@
+{
+  "schema_version": "orbit-project-upgrade-plan/v1",
+  "project_state_from": "orbit-project-state/v1",
+  "project_state_to": "orbit-project-state/v2",
+  "legacy_scope_id": "inspector-source-split-v01",
+  "pre_state_sha256": "382b15409bdd58be32185c6ded440b5c53accb06eb220747fbaf875a6bda7867",
+  "pre_lock_sha256": "6638db092eff8fb1549d1d84d3e22cdb0254bdc80c9479f5f81939cf738ac7a5",
+  "pre_core_snapshot_sha256": "f752340c17fc252d8ff1671ad77d2c7868f0a8ea5c157d5ac6542263270b9cf6",
+  "target_state_sha256": "f40f5edcf729214c3cf7bd54e40d2736f5c21f4c9214fa626c490c0668d9a801",
+  "legacy_evidence_manifest_sha256": "c996819b9d12b2022ce367c9ee90ecf8fd2e6b3db7ac07a349f73c66a66a3401",
+  "legacy_evidence_count": 19,
+  "target_core_version": "0.4.3",
+  "target_workflow_sha256": "3c5e4afb71960ccf707ad7bd313ad81d58e978bdbf3d51767e22744de2e7cd16",
+  "created_paths": [
+    ".orbit/upgrades/<upgrade-id>.json",
+    ".orbit/history/<upgrade-id>/"
+  ],
+  "plan_digest": "16f225de77b847674b5559f35381abada129b19747730a3c79eebb7ab94158fc"
+}

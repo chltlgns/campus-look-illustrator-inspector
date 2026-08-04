@@ -1,0 +1,15 @@
+{
+  "schema_version": "orbit-change-rebind-supersede/v1",
+  "change_id": "windows-illustrator-cutover-v01",
+  "change_identity_digest": "95b2c23d6b94010fce18a8f8e6452a39510dab58bd62b24abd533fd607edb4cd",
+  "old_request_id": "rebind-20260804T050500Z-windows-cutover-v01",
+  "old_request_path": ".orbit/scopes/windows-illustrator-cutover-v01/rebind/windows-illustrator-cutover-v01/rebind-20260804T050500Z-windows-cutover-v01.request.json",
+  "old_request_digest": "06ea89bcbf8480e25d60e3c7f18c3403d1c3e687fae668d83b55a280b0ce25db",
+  "new_request_id": "rebind-20260804T050900Z-windows-cutover-v01",
+  "new_request_path": ".orbit/scopes/windows-illustrator-cutover-v01/rebind/windows-illustrator-cutover-v01/rebind-20260804T050900Z-windows-cutover-v01.request.json",
+  "new_request_digest": "b3609d1ad76d30b981895450928d6f2aca74802e57394c68c516c83913cfc6df",
+  "new_scope_digest": "ee3875c04bd059a38c18c8d32ee095cf8cd63f5533f52f510eb8fa66e5f054cf",
+  "superseded_by": "codex",
+  "reason": "이전 관측은 legacy self-target에서 Git 비추적 ORBIT machine-state를 포함하여 요청 자체를 drift로 분류했다.",
+  "superseded_at": "2026-08-04T05:01:35+00:00"
+}

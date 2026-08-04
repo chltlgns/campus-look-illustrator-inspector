@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "campuslook-illustrator-activation-blocker/v1",
+  "observedAt": "2026-08-04T05:05:00Z",
+  "integratedOid": "869e23dafe42da1c87fa4d38b19c60f771d30444",
+  "backupManifest": "C:\\Users\\GOLD\\AppData\\Local\\Campuslook\\IllustratorProofCheck.rollback\\20260804T050356Z-869e23d\\manifest.json",
+  "structuralInstall": {
+    "result": "PASS",
+    "installedFileHashMismatches": 0,
+    "sidecarSchemaVersion": 2,
+    "sidecarSourceRootKind": "wsl-localhost-unc",
+    "sidecarRuntimeRootKind": "localappdata-external-runtime",
+    "negativeRootChecks": "PASS",
+    "shortcutAndHotkey": "PASS",
+    "programJsxUnchanged": true
+  },
+  "actualActivation": {
+    "result": "BLOCKED",
+    "mode": "explicit-quiet-cold",
+    "selectedAuthorizedAiCount": 1,
+    "aiProcessingStarted": false,
+    "exitCode": 1,
+    "failure": "unc_root_conversion_failed",
+    "detail": "wslpath -u does not accept the configured \\\\wsl.localhost\\Ubuntu source root in this PowerShell-to-WSL invocation; backslashes are lost before a Linux path is returned.",
+    "existingIllustratorProcessCount": 1,
+    "existingDocumentCountBefore": 3,
+    "existingDocumentCountAfter": 3,
+    "activeDocumentSavedBefore": false,
+    "activeDocumentSavedAfter": false,
+    "activeDocumentIdentityPreserved": true
+  },
+  "rollback": {
+    "helperExitCode": 1,
+    "helperFailure": "unchanged_protected_program_jsx_copy_denied",
+    "manifestEntryCount": 9,
+    "preStateMismatchCountAfterHelper": 0,
+    "legacyLauncherRootRestored": true,
+    "resolverPresentAfter": false,
+    "sidecarPresentAfter": false,
+    "runtimeFileCountAfter": 0,
+    "effectiveState": "RESTORED"
+  },
+  "requiredCorrections": [
+    "Convert validated WSL UNC roots directly to Linux paths and require the UNC distribution to match the selected WSL distribution before falling back to wslpath.",
+    "During rollback, skip writes for pre-existing targets whose current hash already equals the pre-state hash, so an unchanged protected Program JSX does not require elevation."
+  ],
+  "customerArtifactsStored": false,
+  "paidOrExternalApiCalls": 0
+}

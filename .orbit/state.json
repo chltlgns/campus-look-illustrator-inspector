@@ -1,67 +1,517 @@
 {
-  "schema_version": "orbit-project-state/v1",
+  "schema_version": "orbit-project-state/v3",
   "project": {
     "name": "Campuslook Illustrator Inspector"
   },
   "profile": "strict",
-  "core_version": "0.4.2",
+  "core_version": "0.4.4",
   "created_at": "2026-08-04T02:08:43+00:00",
-  "updated_at": "2026-08-04T02:16:30+00:00",
-  "stages": {
-    "objective": {
-      "status": "completed",
-      "started_at": "2026-08-04T02:08:54+00:00",
-      "completed_at": "2026-08-04T02:10:17+00:00",
-      "evidence": {
-        "docs/orbit/00-objective/intent.yaml": "bf222a890890def8c0d74322e2a53ff4e210890c7091494b46851258527c6277",
-        "docs/orbit/00-objective/assumptions.yaml": "08f7ff9b77f523614ef6d87017f414b034327c64aa7d7a9ee189cdc8db91c6ae"
+  "updated_at": "2026-08-04T23:42:12+00:00",
+  "scope_order": [
+    "inspector-source-split-v01",
+    "windows-illustrator-cutover-v01",
+    "windows-illustrator-cutover-recovery-v02",
+    "windows-illustrator-drive-path-recovery-v03"
+  ],
+  "active_scope_id": null,
+  "scopes": {
+    "inspector-source-split-v01": {
+      "scope_id": "inspector-source-split-v01",
+      "name": "Campuslook Illustrator Inspector",
+      "profile": "strict",
+      "created_at": "2026-08-04T02:08:43+00:00",
+      "depends_on": [],
+      "artifact_root": "docs/orbit",
+      "runtime_root": ".orbit",
+      "lifecycle_status": "completed",
+      "migration": {
+        "from_schema": "orbit-project-state/v1",
+        "source_core_version": "0.4.3"
+      },
+      "stages": {
+        "objective": {
+          "status": "completed",
+          "started_at": "2026-08-04T02:08:54+00:00",
+          "completed_at": "2026-08-04T02:10:17+00:00",
+          "evidence": {
+            "docs/orbit/00-objective/intent.yaml": "bf222a890890def8c0d74322e2a53ff4e210890c7091494b46851258527c6277",
+            "docs/orbit/00-objective/assumptions.yaml": "08f7ff9b77f523614ef6d87017f414b034327c64aa7d7a9ee189cdc8db91c6ae"
+          }
+        },
+        "research": {
+          "status": "completed",
+          "started_at": "2026-08-04T02:10:24+00:00",
+          "completed_at": "2026-08-04T02:12:08+00:00",
+          "evidence": {
+            "docs/orbit/01-research/evidence-ledger.md": "7da1b6ea58e36ff423039a05079d07a2f9ddfa4c66dd9e772242cd6a7a04708d",
+            "docs/orbit/01-research/research-report.md": "9423ef362109fc0981ec1e5f30fc57ce5cd665184a9ab716c1578da48f265096"
+          }
+        },
+        "blueprint": {
+          "status": "completed",
+          "started_at": "2026-08-04T02:12:14+00:00",
+          "completed_at": "2026-08-04T02:14:48+00:00",
+          "evidence": {
+            "docs/orbit/02-blueprint/requirements.md": "a2c494c2e9fbfe9b12091644a8ec2508be0dfb00ab17f4c5e95a822ff4dd66ff",
+            "docs/orbit/02-blueprint/architecture.md": "b03bc4a3186752f00ca0081d93c5cc2ddb0572f5f8c729112953fb080ef18360",
+            "docs/orbit/02-blueprint/decisions.md": "7938ec459542a37963d51cfaa8e4a1b139608bd3ac1e57f141726b906c02af4a"
+          }
+        },
+        "planning": {
+          "status": "completed",
+          "started_at": "2026-08-04T02:14:54+00:00",
+          "completed_at": "2026-08-04T02:16:30+00:00",
+          "evidence": {
+            "docs/orbit/03-planning/backlog.yaml": "27412ed342b26e6b6d8366db91e4765459c260ccb431a0b91948db06cc21dd72",
+            "docs/orbit/03-planning/validation-plan.md": "71fe81c77a3e32892b5806878cbd5bcd7a3aa5e9382b7891428d0fee4c958ca8"
+          }
+        },
+        "gate": {
+          "status": "completed",
+          "started_at": "2026-08-04T02:17:42+00:00",
+          "completed_at": "2026-08-04T02:25:09+00:00",
+          "evidence": {
+            "docs/orbit/04-gates/pre-implementation-gate.md": "486e4332b05545f417b519c5b613d07a0caa28dc9331c80448ca1c5cafec074f",
+            ".orbit/gates/gate-20260804T021917Z-71d54ce764de.request.json": "a8a3437f3e4e1b3c98c479ff90f99d9e8ea3705aab0d46da14a6bdba6bb281a4",
+            ".orbit/gates/gate-20260804T021917Z-71d54ce764de.approval.json": "dab82e36daaef9dc8967546b5dd9abb2c910e64a816f5774a69ea1811c44dda7"
+          },
+          "active_request": {
+            "request_id": "gate-20260804T021917Z-71d54ce764de",
+            "path": ".orbit/gates/gate-20260804T021917Z-71d54ce764de.request.json",
+            "request_digest": "a8a3437f3e4e1b3c98c479ff90f99d9e8ea3705aab0d46da14a6bdba6bb281a4"
+          },
+          "approved_by": "user",
+          "approval_note": "요청 ID gate-20260804T021917Z-71d54ce764de, 요청 SHA-256 a8a3437f3e4e1b3c98c479ff90f99d9e8ea3705aab0d46da14a6bdba6bb281a4의 다음 전체 범위를 승인합니다: 기준 커밋 d68d1fc65606fe9ae62c3655ea643f90d8c3ee3a의 isolated candidate에서 Campuslook Illustrator 검사기를 독립 저장소로 source-only 분리한다: 기존 /home/doggabiya/campus-look-ops/일러스트 확인용 스크립트의 승인된 Node/Bash/PowerShell/JSX 소스만 복제하고 원본·대상 SHA-256 migration manifest를 남긴다. reports, downloads, samples, .cache, .memory-bank, NUL, AI/PDF/EPS/JPG/PNG, 1MB 초과 artifact, 메일 다운로드·자격증명 의존 코드는 포함하지 않는다. PowerShell launcher의 기존 parent 절대경로를 제거하고 explicit environment override 또는 installer-generated sidecar root를 필수 파일과 함께 fail-closed 검증한다. 기존 check-proof.sh 입력과 report.json/report.md/material reference 출력 및 PASS/REVIEW/FAIL 의미를 보존하고, CLI/JSON integration contract·정제 README·result schema·migration verifier·8개 locked local validation을 추가한다. 기존 campus-look-ops와 기존 검사기 폴더, 실행 중인 프로세스, Windows Illustrator 설치·단축키는 변경하지 않는다. candidate Quality와 clean independent Trust PASS 뒤 새 저장소 main에만 ff-only 통합하며 remote 생성, push, PR, 배포, network install, 외부 API와 유료 호출은 0건이다.",
+          "attestation": {
+            "schema_version": "orbit-gate-approval/v1",
+            "request_id": "gate-20260804T021917Z-71d54ce764de",
+            "request_digest": "a8a3437f3e4e1b3c98c479ff90f99d9e8ea3705aab0d46da14a6bdba6bb281a4",
+            "approved_at": "2026-08-04T02:25:09+00:00",
+            "approved_by": "user",
+            "approval_verbatim": "요청 ID gate-20260804T021917Z-71d54ce764de, 요청 SHA-256 a8a3437f3e4e1b3c98c479ff90f99d9e8ea3705aab0d46da14a6bdba6bb281a4의 다음 전체 범위를 승인합니다: 기준 커밋 d68d1fc65606fe9ae62c3655ea643f90d8c3ee3a의 isolated candidate에서 Campuslook Illustrator 검사기를 독립 저장소로 source-only 분리한다: 기존 /home/doggabiya/campus-look-ops/일러스트 확인용 스크립트의 승인된 Node/Bash/PowerShell/JSX 소스만 복제하고 원본·대상 SHA-256 migration manifest를 남긴다. reports, downloads, samples, .cache, .memory-bank, NUL, AI/PDF/EPS/JPG/PNG, 1MB 초과 artifact, 메일 다운로드·자격증명 의존 코드는 포함하지 않는다. PowerShell launcher의 기존 parent 절대경로를 제거하고 explicit environment override 또는 installer-generated sidecar root를 필수 파일과 함께 fail-closed 검증한다. 기존 check-proof.sh 입력과 report.json/report.md/material reference 출력 및 PASS/REVIEW/FAIL 의미를 보존하고, CLI/JSON integration contract·정제 README·result schema·migration verifier·8개 locked local validation을 추가한다. 기존 campus-look-ops와 기존 검사기 폴더, 실행 중인 프로세스, Windows Illustrator 설치·단축키는 변경하지 않는다. candidate Quality와 clean independent Trust PASS 뒤 새 저장소 main에만 ff-only 통합하며 remote 생성, push, PR, 배포, network install, 외부 API와 유료 호출은 0건이다.",
+            "mode": "conversation-process",
+            "cryptographic_user_proof": false,
+            "signed_platform_event": null,
+            "plan_digest": "9b693fc0b95a032f84b5f12fec608950564e211eb6edab9dc7737ea3137b91cd",
+            "scope_digest": "a03815f402f549bf604c6291ddcf27109344d63a98b11c0326a3a26dda4011ff",
+            "bases": [
+              {
+                "repository_root": "/home/doggabiya/campus-look-illustrator-inspector",
+                "common_git_dir": "/home/doggabiya/campus-look-illustrator-inspector/.git",
+                "commit": "d68d1fc65606fe9ae62c3655ea643f90d8c3ee3a"
+              }
+            ],
+            "external_actions": [
+              "승인 base에서 격리 Git worktree와 candidate branch 생성, 허용 source-only 파일의 로컬 복제·수정, 로컬 테스트·커밋, 독립 Trust PASS 뒤 새 저장소 main ff-only 통합",
+              "campus-look-ops와 기존 검사기 폴더·Windows 설치·실제 Illustrator·고객 데이터·원격 Git·외부 API·유료 호출 변경 0건"
+            ],
+            "warning": "conversation-process는 signed platform event가 없어 agent self-entry를 기술적으로 방지하지 못합니다.",
+            "approval_path": ".orbit/gates/gate-20260804T021917Z-71d54ce764de.approval.json",
+            "approval_digest": "dab82e36daaef9dc8967546b5dd9abb2c910e64a816f5774a69ea1811c44dda7"
+          }
+        },
+        "implementation": {
+          "status": "completed",
+          "started_at": "2026-08-04T02:25:31+00:00",
+          "completed_at": "2026-08-04T02:58:56+00:00",
+          "evidence": {
+            "docs/orbit/05-implementation/implementation-log.md": "0316af09428de34ad9361255f25954f04b80cc2a1a84eb73fc0a14b0123bf056",
+            ".orbit/trust/inspector-source-split-v01-d93a0157d8e7.json": "7eb43cfa4b6fcb2edf788eba4c299252c7c3b03d2cf9b0388d207dac2234dcc4",
+            ".orbit/quality/post-integration-recovery-inspector-source-split-v01-d93a0157d8e7.json": "35351c7ded7f48cde17fda05a443050667ea31c9ff6a374e1e9ddb200bcd6d86"
+          }
+        },
+        "trust": {
+          "status": "completed",
+          "started_at": "2026-08-04T02:58:56+00:00",
+          "completed_at": "2026-08-04T02:59:43+00:00",
+          "evidence": {
+            "docs/orbit/06-trust/verification-report.md": "d1662650920aa5959178e78ec2d0d60e70a4689eb3e29ec2ce40ee133c688418",
+            "docs/orbit/06-trust/release-gate.md": "47f6e76832507337ebecef44698982009b5aaaadb3c5ee8533367bbc153bea7a",
+            ".orbit/trust/inspector-source-split-v01-d93a0157d8e7.json": "7eb43cfa4b6fcb2edf788eba4c299252c7c3b03d2cf9b0388d207dac2234dcc4",
+            ".orbit/quality/post-integration-recovery-inspector-source-split-v01-d93a0157d8e7.json": "35351c7ded7f48cde17fda05a443050667ea31c9ff6a374e1e9ddb200bcd6d86"
+          }
+        }
+      },
+      "terminal_disposition": null,
+      "recovers_from": null
+    },
+    "windows-illustrator-cutover-v01": {
+      "scope_id": "windows-illustrator-cutover-v01",
+      "name": "Windows Illustrator 운영 전환 및 실제 AI 회귀",
+      "profile": "strict",
+      "created_at": "2026-08-04T04:03:55+00:00",
+      "depends_on": [
+        "inspector-source-split-v01"
+      ],
+      "artifact_root": "docs/orbit/scopes/windows-illustrator-cutover-v01",
+      "runtime_root": ".orbit/scopes/windows-illustrator-cutover-v01",
+      "lifecycle_status": "terminal_blocked",
+      "migration": null,
+      "stages": {
+        "objective": {
+          "status": "completed",
+          "started_at": "2026-08-04T04:04:04+00:00",
+          "completed_at": "2026-08-04T04:05:19+00:00",
+          "evidence": {
+            "docs/orbit/scopes/windows-illustrator-cutover-v01/00-objective/intent.yaml": "5a6f2c286eb6f1209e8cf504275b43c0a65bbc2053f4d298ecda33c6e407fcd8",
+            "docs/orbit/scopes/windows-illustrator-cutover-v01/00-objective/assumptions.yaml": "3fa813d9c9f4292cba4fb6833bc1d3f546f67befb4a1eeae95154eadd52a69c2"
+          }
+        },
+        "research": {
+          "status": "completed",
+          "started_at": "2026-08-04T04:05:34+00:00",
+          "completed_at": "2026-08-04T04:07:20+00:00",
+          "evidence": {
+            "docs/orbit/scopes/windows-illustrator-cutover-v01/01-research/evidence-ledger.md": "8b7ad4c86386bf5fae5c331d75532ea6c87cc3317a43340b6d11b06260d741c7",
+            "docs/orbit/scopes/windows-illustrator-cutover-v01/01-research/research-report.md": "76a3e2d18e00458139095519e4c506e9394409527c20427192a2b005d9e204ff"
+          }
+        },
+        "blueprint": {
+          "status": "completed",
+          "started_at": "2026-08-04T04:07:25+00:00",
+          "completed_at": "2026-08-04T04:09:58+00:00",
+          "evidence": {
+            "docs/orbit/scopes/windows-illustrator-cutover-v01/02-blueprint/requirements.md": "3c8afd95a52bb65cd83e9d47052016f44de436cbde30be08f46812664d72ebf3",
+            "docs/orbit/scopes/windows-illustrator-cutover-v01/02-blueprint/architecture.md": "c03968506b18eb294bbb23720a8a3dc7aa8909eb40d294b9d3713c9c587c9c2c",
+            "docs/orbit/scopes/windows-illustrator-cutover-v01/02-blueprint/decisions.md": "986db1a5b134474ff88d1af3f844b5a107785bae12ab269f1c2556645a6576d0"
+          }
+        },
+        "planning": {
+          "status": "completed",
+          "started_at": "2026-08-04T04:10:22+00:00",
+          "completed_at": "2026-08-04T04:11:27+00:00",
+          "evidence": {
+            "docs/orbit/scopes/windows-illustrator-cutover-v01/03-planning/backlog.yaml": "9a165d73bf2f41d9dbf833b59900c189f061c1755ac414c0d81b0e58911bd4a4",
+            "docs/orbit/scopes/windows-illustrator-cutover-v01/03-planning/validation-plan.md": "4fed7afe78b605a76faed2f6f5ec6dbf54c07514d09912548642984e5de45360"
+          }
+        },
+        "gate": {
+          "status": "completed",
+          "started_at": "2026-08-04T04:11:33+00:00",
+          "completed_at": "2026-08-04T04:40:00+00:00",
+          "evidence": {
+            "docs/orbit/scopes/windows-illustrator-cutover-v01/04-gates/pre-implementation-gate.md": "97df98c10e00bb01066a5b86e09c0e80cf3799540fbeb0dbedd833a3e09d50ef",
+            ".orbit/scopes/windows-illustrator-cutover-v01/gates/gate-20260804T041337Z-e1483663bd19.request.json": "fba52beff089aafac8dea1537d9d219e73db725e2056edfd810e54854e70c155",
+            ".orbit/scopes/windows-illustrator-cutover-v01/gates/gate-20260804T041337Z-e1483663bd19.approval.json": "ef8e89d665ccaf8ac6c8135ce3f7d7c9783f163d9454d8889bfb22687a400c62"
+          },
+          "active_request": {
+            "request_id": "gate-20260804T041337Z-e1483663bd19",
+            "path": ".orbit/scopes/windows-illustrator-cutover-v01/gates/gate-20260804T041337Z-e1483663bd19.request.json",
+            "request_digest": "fba52beff089aafac8dea1537d9d219e73db725e2056edfd810e54854e70c155"
+          },
+          "approved_by": "user",
+          "approval_note": "요청 ID gate-20260804T041337Z-e1483663bd19, 요청 SHA-256 fba52beff089aafac8dea1537d9d219e73db725e2056edfd810e54854e70c155의 다음 전체 범위를 승인합니다: 기준 커밋 d93a0157d8e7d757ed99f0cf7ba74a9af1c35300의 isolated candidate에서 Campuslook Illustrator 검사기의 external runtime root와 sidecar schema 2, fail-closed source/runtime resolver, Windows preflight·byte-backup·hash-guarded rollback 도구, 문서·migration target hash·12개 locked validation을 구현한다. candidate Quality와 다른 verifier의 clean Trust PASS 뒤 기존 ORBIT control-plane 변경과 보존 worktree를 reset·clean·삭제하지 않고 새 저장소 main에만 ff-only 통합/post-Quality한다. 그 뒤 설치 직전 기존 LocalAppData 설치 폴더, Start Menu shortcut, program JSX를 Git 밖 timestamped backup과 SHA-256 manifest로 보존하고, 통합된 새 installer로 LocalAppData launcher·checker·collector·resolver·schema-2 sidecar와 Ctrl+Shift+Q shortcut을 새 저장소 UNC root, Ubuntu, Git 밖 LocalAppData runtime root 기준으로 전환한다. program JSX가 install 시점에도 candidate와 hash-equal이면 쓰거나 Illustrator를 재시작하지 않고, drift면 BLOCKED한다. installed positive/negative root 검증 후 사용자가 지정한 비민감 test AI가 제공되고 saved active readiness가 확인된 경우에만 Git 밖 runtime에서 explicit Quiet, cold/warm 성능, active document, multi-design, Start Menu shortcut과 실제 Ctrl+Shift+Q 회귀를 수행한다. structural·contract·document-preservation 실패 시 current hash가 expected post-state와 일치할 때만 backup에서 실제 변경 대상을 rollback한다. campus-look-ops와 legacy 검사기 source, 기존 열린 Illustrator 문서, remote·push·PR·배포·network install·외부 API·유료 호출은 변경하지 않으며 고객 입력·원시 출력·backup을 Git에 추가하지 않는다. 테스트 디렉터리: /mnt/c/Users/GOLD/Desktop/추가_야구점퍼_시안_실전검사_20260803. 다중 시안 포함 여부는 모름.",
+          "attestation": {
+            "schema_version": "orbit-gate-approval/v2",
+            "request_id": "gate-20260804T041337Z-e1483663bd19",
+            "request_digest": "fba52beff089aafac8dea1537d9d219e73db725e2056edfd810e54854e70c155",
+            "approved_at": "2026-08-04T04:40:00+00:00",
+            "approved_by": "user",
+            "approval_verbatim": "요청 ID gate-20260804T041337Z-e1483663bd19, 요청 SHA-256 fba52beff089aafac8dea1537d9d219e73db725e2056edfd810e54854e70c155의 다음 전체 범위를 승인합니다: 기준 커밋 d93a0157d8e7d757ed99f0cf7ba74a9af1c35300의 isolated candidate에서 Campuslook Illustrator 검사기의 external runtime root와 sidecar schema 2, fail-closed source/runtime resolver, Windows preflight·byte-backup·hash-guarded rollback 도구, 문서·migration target hash·12개 locked validation을 구현한다. candidate Quality와 다른 verifier의 clean Trust PASS 뒤 기존 ORBIT control-plane 변경과 보존 worktree를 reset·clean·삭제하지 않고 새 저장소 main에만 ff-only 통합/post-Quality한다. 그 뒤 설치 직전 기존 LocalAppData 설치 폴더, Start Menu shortcut, program JSX를 Git 밖 timestamped backup과 SHA-256 manifest로 보존하고, 통합된 새 installer로 LocalAppData launcher·checker·collector·resolver·schema-2 sidecar와 Ctrl+Shift+Q shortcut을 새 저장소 UNC root, Ubuntu, Git 밖 LocalAppData runtime root 기준으로 전환한다. program JSX가 install 시점에도 candidate와 hash-equal이면 쓰거나 Illustrator를 재시작하지 않고, drift면 BLOCKED한다. installed positive/negative root 검증 후 사용자가 지정한 비민감 test AI가 제공되고 saved active readiness가 확인된 경우에만 Git 밖 runtime에서 explicit Quiet, cold/warm 성능, active document, multi-design, Start Menu shortcut과 실제 Ctrl+Shift+Q 회귀를 수행한다. structural·contract·document-preservation 실패 시 current hash가 expected post-state와 일치할 때만 backup에서 실제 변경 대상을 rollback한다. campus-look-ops와 legacy 검사기 source, 기존 열린 Illustrator 문서, remote·push·PR·배포·network install·외부 API·유료 호출은 변경하지 않으며 고객 입력·원시 출력·backup을 Git에 추가하지 않는다. 테스트 디렉터리: /mnt/c/Users/GOLD/Desktop/추가_야구점퍼_시안_실전검사_20260803. 다중 시안 포함 여부는 모름.",
+            "mode": "conversation-process",
+            "cryptographic_user_proof": false,
+            "signed_platform_event": null,
+            "plan_digest": "269cc031c655f2e2ee11b9ae0aabdc796c7afd59afcddb7b32ca25a3f975b20a",
+            "scope_digest": "833ac0e1a8a4fbc2080881b005cf48bc6415caba4c09df2beb95a0c1c06af23a",
+            "bases": [
+              {
+                "repository_root": "/home/doggabiya/campus-look-illustrator-inspector",
+                "common_git_dir": "/home/doggabiya/campus-look-illustrator-inspector/.git",
+                "commit": "d93a0157d8e7d757ed99f0cf7ba74a9af1c35300"
+              }
+            ],
+            "external_actions": [
+              "승인 base의 isolated Git candidate에서 source/runtime/installer/backup/rollback/test 문서와 validation을 로컬 변경·커밋하고 Quality·clean Trust 뒤 main ff-only integrate/post-Quality",
+              "Git 밖 timestamped Windows backup 생성 후 C:/Users/GOLD/AppData/Local/Campuslook/IllustratorProofCheck의 installed 파일·schema-2 sidecar와 Start Menu Illustrator Proof Check.lnk를 새 repository/runtime root로 create/update",
+              "program JSX hash-equal이면 Windows program files와 Illustrator process write 0; drift면 중단. user-designated test AI와 active readiness가 있을 때만 Git 밖 output으로 actual Illustrator/shortcut/hotkey/performance 회귀",
+              "승인된 failure trigger에서 expected-post hash가 맞는 LocalAppData/shortcut/실제 변경 JSX만 backup bytes 또는 recorded absence로 rollback"
+            ],
+            "warning": "conversation-process는 signed platform event가 없어 agent self-entry를 기술적으로 방지하지 못합니다.",
+            "lifecycle_scope_id": "windows-illustrator-cutover-v01",
+            "scope_manifest_sha256": "57601f2619e6fb6280f44563f106d3b9ab34cdd9ff09953b07cb932507954e8c",
+            "approval_path": ".orbit/scopes/windows-illustrator-cutover-v01/gates/gate-20260804T041337Z-e1483663bd19.approval.json",
+            "approval_digest": "ef8e89d665ccaf8ac6c8135ce3f7d7c9783f163d9454d8889bfb22687a400c62"
+          }
+        },
+        "implementation": {
+          "status": "in_progress",
+          "started_at": "2026-08-04T04:40:23+00:00",
+          "completed_at": null,
+          "evidence": {}
+        },
+        "trust": {
+          "status": "blocked",
+          "started_at": null,
+          "completed_at": null,
+          "evidence": {}
+        }
+      },
+      "terminal_disposition": {
+        "schema_version": "orbit-terminal-disposition/v2",
+        "operation_id": "recover-actual-activation-20260804T0510Z",
+        "blocked_at": "2026-08-04T05:09:21+00:00",
+        "actor": "codex",
+        "reason": "통합·설치 후 실제 Quiet 활성화에서 WSL UNC 변환이 실패했고, 실질 rollback은 완료됐지만 동일한 보호 JSX 복사 때문에 helper가 nonzero로 종료했다. 실패 scope를 보존하고 두 결함을 수정·재검증하는 fresh successor가 필요하다.",
+        "source_state_sha256": "cf7c070a10749ce01d4bcca8430142ba26d66f3b9058026c2b8855e16c1618f0",
+        "transition_prepare_path": ".orbit/recoveries/recover-actual-activation-20260804T0510Z.prepare.json",
+        "recovery_kind": "post_integration_actual_activation"
+      },
+      "recovers_from": null
+    },
+    "windows-illustrator-cutover-recovery-v02": {
+      "scope_id": "windows-illustrator-cutover-recovery-v02",
+      "name": "Windows Illustrator UNC 및 rollback 복구 전환",
+      "profile": "strict",
+      "created_at": "2026-08-04T05:09:21+00:00",
+      "depends_on": [
+        "inspector-source-split-v01"
+      ],
+      "artifact_root": "docs/orbit/scopes/windows-illustrator-cutover-recovery-v02",
+      "runtime_root": ".orbit/scopes/windows-illustrator-cutover-recovery-v02",
+      "lifecycle_status": "terminal_blocked",
+      "migration": null,
+      "stages": {
+        "objective": {
+          "status": "completed",
+          "started_at": "2026-08-04T05:12:16+00:00",
+          "completed_at": "2026-08-04T05:12:17+00:00",
+          "evidence": {
+            "docs/orbit/scopes/windows-illustrator-cutover-recovery-v02/00-objective/intent.yaml": "a6f121d674312c5670d93a8a531679794905b431b974bfac0416b2f2d88df5c4",
+            "docs/orbit/scopes/windows-illustrator-cutover-recovery-v02/00-objective/assumptions.yaml": "2ffc9fb7009c58cbd328e2b0065da6b5e7095263e4f49c4b805b6cc1e59295b8"
+          }
+        },
+        "research": {
+          "status": "completed",
+          "started_at": "2026-08-04T05:12:18+00:00",
+          "completed_at": "2026-08-04T05:12:18+00:00",
+          "evidence": {
+            "docs/orbit/scopes/windows-illustrator-cutover-recovery-v02/01-research/evidence-ledger.md": "9750772f0c65e32f04c86ae7d30320cf788010cb6ec096116a5e9ffa00e53deb",
+            "docs/orbit/scopes/windows-illustrator-cutover-recovery-v02/01-research/research-report.md": "5ef179eaad4fe1acecf33517b2446d4da60bfade4f1cf15010663e40d5eda8df"
+          }
+        },
+        "blueprint": {
+          "status": "completed",
+          "started_at": "2026-08-04T05:12:19+00:00",
+          "completed_at": "2026-08-04T05:12:20+00:00",
+          "evidence": {
+            "docs/orbit/scopes/windows-illustrator-cutover-recovery-v02/02-blueprint/requirements.md": "126610d43296e466f58fcab15efbd8605f387ff1dee728729c37598f3fde3911",
+            "docs/orbit/scopes/windows-illustrator-cutover-recovery-v02/02-blueprint/architecture.md": "6f987c952118a81f19d5b06aadc032a693374693b06ef355c542831aad4856b3",
+            "docs/orbit/scopes/windows-illustrator-cutover-recovery-v02/02-blueprint/decisions.md": "d12242f9ca91ec8388d74563eb5dd25ef2c4fa3bb59343ea486c94ab5507239b"
+          }
+        },
+        "planning": {
+          "status": "completed",
+          "started_at": "2026-08-04T05:12:20+00:00",
+          "completed_at": "2026-08-04T05:12:21+00:00",
+          "evidence": {
+            "docs/orbit/scopes/windows-illustrator-cutover-recovery-v02/03-planning/backlog.yaml": "1a2b6dd6e4008448e293d219f55578adf4125674c0d9d79a54d6ccb1daf928f1",
+            "docs/orbit/scopes/windows-illustrator-cutover-recovery-v02/03-planning/validation-plan.md": "0b9630f0a72c7d4d8c2c0d901b516951cd0c70ee6565e0644c1cf616400971ca"
+          }
+        },
+        "gate": {
+          "status": "completed",
+          "started_at": "2026-08-04T05:13:00+00:00",
+          "completed_at": "2026-08-04T05:14:48+00:00",
+          "evidence": {
+            "docs/orbit/scopes/windows-illustrator-cutover-recovery-v02/04-gates/pre-implementation-gate.md": "12191b5890da2050f27d601db818fabfec89f67475d4034d9149ae55460bc1b4",
+            ".orbit/scopes/windows-illustrator-cutover-recovery-v02/gates/gate-20260804T051300Z-8e29e5716b1c.request.json": "b5e316ac5bab8a2b131eab02f6630c4afef4b4303211fbde7b72904dbf4652a3",
+            ".orbit/scopes/windows-illustrator-cutover-recovery-v02/gates/gate-20260804T051300Z-8e29e5716b1c.approval.json": "a8ea13c4e2ea67f2eeb7c6426b6716b1b5d74a5c5c6989988a0e38eb9c1bf6af"
+          },
+          "active_request": {
+            "request_id": "gate-20260804T051300Z-8e29e5716b1c",
+            "path": ".orbit/scopes/windows-illustrator-cutover-recovery-v02/gates/gate-20260804T051300Z-8e29e5716b1c.request.json",
+            "request_digest": "b5e316ac5bab8a2b131eab02f6630c4afef4b4303211fbde7b72904dbf4652a3"
+          },
+          "approved_by": "user",
+          "approval_note": "요청 ID gate-20260804T051300Z-8e29e5716b1c, 요청 SHA-256 b5e316ac5bab8a2b131eab02f6630c4afef4b4303211fbde7b72904dbf4652a3 의 다음 전체 범위를 승인합니다: 기준 커밋 869e23dafe42da1c87fa4d38b19c60f771d30444의 isolated recovery candidate에서 Windows launcher가 검증된 \\\\wsl.localhost 및 \\\\wsl$ source UNC를 configured distribution과 일치할 때만 Linux 절대경로로 직접 변환하고 mismatch·빈 경로를 inspector_root_invalid로 fail-closed하도록 수정한다. Windows rollback은 전체 current=expected-post guard를 유지하면서 current=pre인 entry를 write 없이 건너뛰도록 수정한다. 문서와 migration target hash, 기존 locked validation 20개와 신규 recovery validation 6개, Quality profile을 갱신하고 candidate Quality·다른 verifier clean Trust PASS 뒤 기존 ORBIT/user dirt와 보존 worktree를 reset·clean·삭제하지 않고 main에 ff-only 통합/post-Quality한다. 그 뒤 현재 복원된 legacy 설치본을 새 Git 밖 timestamped 9-entry byte backup과 SHA-256 manifest로 다시 보존하고, integrated installer로 LocalAppData launcher·checker·collector·resolver·schema-2 sidecar와 Ctrl+Shift+Q shortcut을 새 저장소 UNC root 및 외부 LocalAppData runtime root로 재전환한다. Program JSX가 expected installed hash와 같을 때만 Program Files write와 Illustrator restart 없이 진행하고 drift면 BLOCKED한다. installed positive/negative/UNC/rollback 검증 뒤 active document가 사용자가 준비한 saved test AI임이 확인된 경우에만 지정된 20개 AI 폴더 범위에서 explicit Quiet cold/warm, report 계약, batch/multi-design, active document, Start Menu shortcut과 실제 Ctrl+Shift+Q 회귀 및 새 성능을 측정한다. 구조·계약·문서보존 실패 시 current=expected-post인 실제 변경 대상만 fresh backup으로 rollback한다. campus-look-ops·legacy source·기존 열린 문서·remote·push·PR·배포·network install·외부 API·유료 호출은 변경하지 않고 AI·원시 output·backup은 Git에 추가하지 않는다.",
+          "attestation": {
+            "schema_version": "orbit-gate-approval/v2",
+            "request_id": "gate-20260804T051300Z-8e29e5716b1c",
+            "request_digest": "b5e316ac5bab8a2b131eab02f6630c4afef4b4303211fbde7b72904dbf4652a3",
+            "approved_at": "2026-08-04T05:14:48+00:00",
+            "approved_by": "user",
+            "approval_verbatim": "요청 ID gate-20260804T051300Z-8e29e5716b1c, 요청 SHA-256 b5e316ac5bab8a2b131eab02f6630c4afef4b4303211fbde7b72904dbf4652a3 의 다음 전체 범위를 승인합니다: 기준 커밋 869e23dafe42da1c87fa4d38b19c60f771d30444의 isolated recovery candidate에서 Windows launcher가 검증된 \\\\wsl.localhost 및 \\\\wsl$ source UNC를 configured distribution과 일치할 때만 Linux 절대경로로 직접 변환하고 mismatch·빈 경로를 inspector_root_invalid로 fail-closed하도록 수정한다. Windows rollback은 전체 current=expected-post guard를 유지하면서 current=pre인 entry를 write 없이 건너뛰도록 수정한다. 문서와 migration target hash, 기존 locked validation 20개와 신규 recovery validation 6개, Quality profile을 갱신하고 candidate Quality·다른 verifier clean Trust PASS 뒤 기존 ORBIT/user dirt와 보존 worktree를 reset·clean·삭제하지 않고 main에 ff-only 통합/post-Quality한다. 그 뒤 현재 복원된 legacy 설치본을 새 Git 밖 timestamped 9-entry byte backup과 SHA-256 manifest로 다시 보존하고, integrated installer로 LocalAppData launcher·checker·collector·resolver·schema-2 sidecar와 Ctrl+Shift+Q shortcut을 새 저장소 UNC root 및 외부 LocalAppData runtime root로 재전환한다. Program JSX가 expected installed hash와 같을 때만 Program Files write와 Illustrator restart 없이 진행하고 drift면 BLOCKED한다. installed positive/negative/UNC/rollback 검증 뒤 active document가 사용자가 준비한 saved test AI임이 확인된 경우에만 지정된 20개 AI 폴더 범위에서 explicit Quiet cold/warm, report 계약, batch/multi-design, active document, Start Menu shortcut과 실제 Ctrl+Shift+Q 회귀 및 새 성능을 측정한다. 구조·계약·문서보존 실패 시 current=expected-post인 실제 변경 대상만 fresh backup으로 rollback한다. campus-look-ops·legacy source·기존 열린 문서·remote·push·PR·배포·network install·외부 API·유료 호출은 변경하지 않고 AI·원시 output·backup은 Git에 추가하지 않는다.",
+            "mode": "conversation-process",
+            "cryptographic_user_proof": false,
+            "signed_platform_event": null,
+            "plan_digest": "6e07df2581c8c633a15f331577dc35987f20462b2ee153ed5d3cd8c9da726178",
+            "scope_digest": "cbe24bec4af81b70ca8c2c3ee4abb9effe34c191ada90327d55e201c2c2b5404",
+            "bases": [
+              {
+                "repository_root": "/home/doggabiya/campus-look-illustrator-inspector",
+                "common_git_dir": "/home/doggabiya/campus-look-illustrator-inspector/.git",
+                "commit": "869e23dafe42da1c87fa4d38b19c60f771d30444"
+              }
+            ],
+            "external_actions": [
+              "승인 base의 isolated recovery candidate에서 두 결함·문서·hash·26개 locked validation을 구현·커밋하고 Quality·clean Trust 뒤 main ff-only integrate/post-Quality",
+              "Git 밖 fresh timestamped backup 생성 후 LocalAppData installed files·schema2 sidecar와 Start Menu shortcut을 새 UNC source/external runtime 기준으로 재설치",
+              "Program JSX hash-equal이면 Program Files write/Illustrator restart 0; saved active readiness 뒤에만 지정 20개 AI의 actual Illustrator/shortcut/hotkey/performance 회귀",
+              "승인된 failure trigger에서 expected-post hash가 맞는 실제 변경 대상만 fresh backup bytes 또는 recorded absence로 rollback"
+            ],
+            "warning": "conversation-process는 signed platform event가 없어 agent self-entry를 기술적으로 방지하지 못합니다.",
+            "lifecycle_scope_id": "windows-illustrator-cutover-recovery-v02",
+            "scope_manifest_sha256": "148bc7e1db271b2cad0614b5708e89df0347309aaad37202b5b8ce9bcae13b09",
+            "approval_path": ".orbit/scopes/windows-illustrator-cutover-recovery-v02/gates/gate-20260804T051300Z-8e29e5716b1c.approval.json",
+            "approval_digest": "a8ea13c4e2ea67f2eeb7c6426b6716b1b5d74a5c5c6989988a0e38eb9c1bf6af"
+          }
+        },
+        "implementation": {
+          "status": "ready",
+          "started_at": null,
+          "completed_at": null,
+          "evidence": {}
+        },
+        "trust": {
+          "status": "blocked",
+          "started_at": null,
+          "completed_at": null,
+          "evidence": {}
+        }
+      },
+      "terminal_disposition": {
+        "schema_version": "orbit-terminal-disposition/v2",
+        "operation_id": "recover-drive-path-actual-20260804T0605Z",
+        "blocked_at": "2026-08-04T06:05:33+00:00",
+        "actor": "codex",
+        "reason": "통합·설치와 saved readiness 뒤 첫 explicit Quiet가 공백 없는 LocalAppData drive-letter argument의 백슬래시 소실로 wslpath 전에 실패했다. AI processing과 output은 0이고 fresh manifest rollback은 exit 0, 9-entry pre-state mismatch 0이었다. v02를 보존하고 drive-path normalization을 구현·재검증하는 fresh successor가 필요하다.",
+        "source_state_sha256": "f3b179e062756dff8490b1de98316594f0a633e14b98a14c90f3faba85a197b4",
+        "transition_prepare_path": ".orbit/recoveries/recover-drive-path-actual-20260804T0605Z.prepare.json",
+        "recovery_kind": "post_integration_actual_activation"
+      },
+      "recovers_from": {
+        "schema_version": "orbit-recovers-from/v1",
+        "operation_id": "recover-actual-activation-20260804T0510Z",
+        "source_scope_id": "windows-illustrator-cutover-v01",
+        "transition_prepare_path": ".orbit/recoveries/recover-actual-activation-20260804T0510Z.prepare.json"
       }
     },
-    "research": {
-      "status": "completed",
-      "started_at": "2026-08-04T02:10:24+00:00",
-      "completed_at": "2026-08-04T02:12:08+00:00",
-      "evidence": {
-        "docs/orbit/01-research/evidence-ledger.md": "7da1b6ea58e36ff423039a05079d07a2f9ddfa4c66dd9e772242cd6a7a04708d",
-        "docs/orbit/01-research/research-report.md": "9423ef362109fc0981ec1e5f30fc57ce5cd665184a9ab716c1578da48f265096"
+    "windows-illustrator-drive-path-recovery-v03": {
+      "scope_id": "windows-illustrator-drive-path-recovery-v03",
+      "name": "Windows Illustrator drive-path 실제 활성화 복구",
+      "profile": "strict",
+      "created_at": "2026-08-04T06:05:33+00:00",
+      "depends_on": [
+        "inspector-source-split-v01"
+      ],
+      "artifact_root": "docs/orbit/scopes/windows-illustrator-drive-path-recovery-v03",
+      "runtime_root": ".orbit/scopes/windows-illustrator-drive-path-recovery-v03",
+      "lifecycle_status": "completed",
+      "migration": null,
+      "stages": {
+        "objective": {
+          "status": "completed",
+          "started_at": "2026-08-04T06:06:06+00:00",
+          "completed_at": "2026-08-04T06:07:04+00:00",
+          "evidence": {
+            "docs/orbit/scopes/windows-illustrator-drive-path-recovery-v03/00-objective/intent.yaml": "66bfd9bf75bf69ea5acd7d935c7e2370820d2793c965f151fb0a49ce90a0682f",
+            "docs/orbit/scopes/windows-illustrator-drive-path-recovery-v03/00-objective/assumptions.yaml": "fb64338583110739f61d4e030e0f4da03d7da305c75708e70a4aff492d98b76e"
+          }
+        },
+        "research": {
+          "status": "completed",
+          "started_at": "2026-08-04T06:07:10+00:00",
+          "completed_at": "2026-08-04T06:07:57+00:00",
+          "evidence": {
+            "docs/orbit/scopes/windows-illustrator-drive-path-recovery-v03/01-research/evidence-ledger.md": "1230226c3a40f8894bd9cfeb81b6596dbf44a7b7d5a0458d77b0a69539616057",
+            "docs/orbit/scopes/windows-illustrator-drive-path-recovery-v03/01-research/research-report.md": "b6fc3c2e99bd2b97ec57f20d3a924938b8dd9fb4b38a6c89dc5935e229f72b91"
+          }
+        },
+        "blueprint": {
+          "status": "completed",
+          "started_at": "2026-08-04T06:08:10+00:00",
+          "completed_at": "2026-08-04T06:10:00+00:00",
+          "evidence": {
+            "docs/orbit/scopes/windows-illustrator-drive-path-recovery-v03/02-blueprint/requirements.md": "108f064ccce90c89169b9c5e184f9c84267fd516338bc160532fadbee00bae14",
+            "docs/orbit/scopes/windows-illustrator-drive-path-recovery-v03/02-blueprint/architecture.md": "4614e05dac8419b5e7267ec25e760a52c54f9fee373e03c6d66455d1a5a8a1fc",
+            "docs/orbit/scopes/windows-illustrator-drive-path-recovery-v03/02-blueprint/decisions.md": "27fb640f120ff04e54a6434d299ccacb9d8b7e494c094ae4c3ebe0701c59bd5d"
+          }
+        },
+        "planning": {
+          "status": "completed",
+          "started_at": "2026-08-04T06:10:00+00:00",
+          "completed_at": "2026-08-04T06:10:46+00:00",
+          "evidence": {
+            "docs/orbit/scopes/windows-illustrator-drive-path-recovery-v03/03-planning/backlog.yaml": "4aa3b4771630b128b20e8b0b36be78d8126788d052e84e09198c273025ee0b27",
+            "docs/orbit/scopes/windows-illustrator-drive-path-recovery-v03/03-planning/validation-plan.md": "811ac9567dce117deffc8e657f1aa6b851deaddc6ad21e4c96f8be35c1c8a35c"
+          }
+        },
+        "gate": {
+          "status": "completed",
+          "started_at": "2026-08-04T06:11:02+00:00",
+          "completed_at": "2026-08-04T06:18:05+00:00",
+          "evidence": {
+            "docs/orbit/scopes/windows-illustrator-drive-path-recovery-v03/04-gates/pre-implementation-gate.md": "3282350288c282d3663340ef9197eb3080ce982cda69b9831af958fefbc9f94b",
+            ".orbit/scopes/windows-illustrator-drive-path-recovery-v03/gates/gate-20260804T061128Z-d03b40a3cc1b.request.json": "810415913799e55b05aae20dc9374093345e1745e522155475a69020b87dc451",
+            ".orbit/scopes/windows-illustrator-drive-path-recovery-v03/gates/gate-20260804T061128Z-d03b40a3cc1b.approval.json": "58a3aa5aaba0db5d8177f1475a79750353d1cff8274eaa02b1163a5805c3567c"
+          },
+          "active_request": {
+            "request_id": "gate-20260804T061128Z-d03b40a3cc1b",
+            "path": ".orbit/scopes/windows-illustrator-drive-path-recovery-v03/gates/gate-20260804T061128Z-d03b40a3cc1b.request.json",
+            "request_digest": "810415913799e55b05aae20dc9374093345e1745e522155475a69020b87dc451"
+          },
+          "approved_by": "user",
+          "approval_note": "요청 ID gate-20260804T061128Z-d03b40a3cc1b, 요청 SHA-256 810415913799e55b05aae20dc9374093345e1745e522155475a69020b87dc451 의 다음 전체 범위를 승인합니다: 기준 커밋 756e554ea8239fdbb3f32935875707b6a41d392c의 isolated recovery candidate에서 Windows source/runtime resolver의 rooted drive-letter path를 forward-slash 형식으로 정규화한 뒤 configured distribution의 wslpath로 전달하고, 공백 없는 LocalAppData runtime과 공백·Unicode palette path를 보존하며 drive-relative·malformed path를 inspector_root_invalid로 fail-closed한다. 기존 WSL UNC direct parser, schema-2 sidecar, rollback, CLI·report·PASS/REVIEW/FAIL 계약은 변경하지 않는다. 신규 locked validation 4개와 기존 26개, 문서·migration target hash·Quality profile을 갱신하고 candidate Quality와 다른 verifier clean Trust PASS 뒤 기존 ORBIT/user dirt와 보존 worktree를 reset·clean·삭제하지 않고 main에 ff-only 통합/post-Quality한다. 그 뒤 현재 복원된 legacy 설치본을 새 Git 밖 timestamped 9-entry byte backup과 SHA-256 manifest로 보존하고 integrated installer로 LocalAppData launcher·checker·collector·resolver·schema-2 sidecar와 Ctrl+Shift+Q shortcut을 새 저장소 UNC source root 및 기본 C-drive LocalAppData runtime root로 재전환한다. Program JSX가 expected installed hash와 같을 때만 Program Files write와 Illustrator restart 없이 진행하고 drift면 BLOCKED한다. installed positive/negative/UNC/drive/rollback 검증 뒤 active document가 지정 폴더의 saved test AI인지 다시 확인하고, 지정 20개 AI와 명시적 palette만 사용해 Git 밖 runtime에서 explicit Quiet cold/warm, report JSON·Markdown·material reference·PNG, batch/multi-design, active document, Start Menu shortcut, 실제 Ctrl+Shift+Q와 새 성능을 검증한다. 구조·계약·문서·입력 hash 보존 실패 시 current=expected-post인 실제 변경 대상만 fresh backup으로 rollback한다. campus-look-ops·legacy source·기존 열린 3개 문서·remote·push·PR·배포·network install·외부 API·유료 호출은 변경하지 않고 AI·palette·원시 output·backup은 Git에 추가하지 않는다.",
+          "attestation": {
+            "schema_version": "orbit-gate-approval/v2",
+            "request_id": "gate-20260804T061128Z-d03b40a3cc1b",
+            "request_digest": "810415913799e55b05aae20dc9374093345e1745e522155475a69020b87dc451",
+            "approved_at": "2026-08-04T06:18:05+00:00",
+            "approved_by": "user",
+            "approval_verbatim": "요청 ID gate-20260804T061128Z-d03b40a3cc1b, 요청 SHA-256 810415913799e55b05aae20dc9374093345e1745e522155475a69020b87dc451 의 다음 전체 범위를 승인합니다: 기준 커밋 756e554ea8239fdbb3f32935875707b6a41d392c의 isolated recovery candidate에서 Windows source/runtime resolver의 rooted drive-letter path를 forward-slash 형식으로 정규화한 뒤 configured distribution의 wslpath로 전달하고, 공백 없는 LocalAppData runtime과 공백·Unicode palette path를 보존하며 drive-relative·malformed path를 inspector_root_invalid로 fail-closed한다. 기존 WSL UNC direct parser, schema-2 sidecar, rollback, CLI·report·PASS/REVIEW/FAIL 계약은 변경하지 않는다. 신규 locked validation 4개와 기존 26개, 문서·migration target hash·Quality profile을 갱신하고 candidate Quality와 다른 verifier clean Trust PASS 뒤 기존 ORBIT/user dirt와 보존 worktree를 reset·clean·삭제하지 않고 main에 ff-only 통합/post-Quality한다. 그 뒤 현재 복원된 legacy 설치본을 새 Git 밖 timestamped 9-entry byte backup과 SHA-256 manifest로 보존하고 integrated installer로 LocalAppData launcher·checker·collector·resolver·schema-2 sidecar와 Ctrl+Shift+Q shortcut을 새 저장소 UNC source root 및 기본 C-drive LocalAppData runtime root로 재전환한다. Program JSX가 expected installed hash와 같을 때만 Program Files write와 Illustrator restart 없이 진행하고 drift면 BLOCKED한다. installed positive/negative/UNC/drive/rollback 검증 뒤 active document가 지정 폴더의 saved test AI인지 다시 확인하고, 지정 20개 AI와 명시적 palette만 사용해 Git 밖 runtime에서 explicit Quiet cold/warm, report JSON·Markdown·material reference·PNG, batch/multi-design, active document, Start Menu shortcut, 실제 Ctrl+Shift+Q와 새 성능을 검증한다. 구조·계약·문서·입력 hash 보존 실패 시 current=expected-post인 실제 변경 대상만 fresh backup으로 rollback한다. campus-look-ops·legacy source·기존 열린 3개 문서·remote·push·PR·배포·network install·외부 API·유료 호출은 변경하지 않고 AI·palette·원시 output·backup은 Git에 추가하지 않는다.",
+            "mode": "conversation-process",
+            "cryptographic_user_proof": false,
+            "signed_platform_event": null,
+            "plan_digest": "68e3674855f46dfdbd61669757770c0faf174c426bbd8c595556a8950dd950cb",
+            "scope_digest": "f091325e4f9c74e0ec4c682c823bcfcc57b5604d16caeda83b366eb2cb858a2f",
+            "bases": [
+              {
+                "repository_root": "/home/doggabiya/campus-look-illustrator-inspector",
+                "common_git_dir": "/home/doggabiya/campus-look-illustrator-inspector/.git",
+                "commit": "756e554ea8239fdbb3f32935875707b6a41d392c"
+              }
+            ],
+            "external_actions": [
+              "승인 base의 isolated candidate에서 drive-path 최소 수정·문서·migration hash·30개 locked validation을 구현·커밋하고 Quality·clean Trust 뒤 main ff-only integrate/post-Quality",
+              "Git 밖 fresh 9-entry backup 뒤 LocalAppData installed files·schema2 sidecar와 Start Menu shortcut을 새 source 및 기본 C-drive runtime 기준으로 재설치",
+              "Program JSX write/Illustrator restart 없이 saved designated active AI, 지정 20개 AI와 palette로 actual Quiet·batch·active·shortcut·hotkey·performance 실행",
+              "승인된 failure trigger에서 모든 current=expected-post를 확인한 실제 변경 target만 fresh backup bytes 또는 recorded absence로 rollback"
+            ],
+            "warning": "conversation-process는 signed platform event가 없어 agent self-entry를 기술적으로 방지하지 못합니다.",
+            "lifecycle_scope_id": "windows-illustrator-drive-path-recovery-v03",
+            "scope_manifest_sha256": "a5f9d87ebac6967fcf379a72bba50fc4e1213f55c21e138ce81976661c140329",
+            "approval_path": ".orbit/scopes/windows-illustrator-drive-path-recovery-v03/gates/gate-20260804T061128Z-d03b40a3cc1b.approval.json",
+            "approval_digest": "58a3aa5aaba0db5d8177f1475a79750353d1cff8274eaa02b1163a5805c3567c"
+          }
+        },
+        "implementation": {
+          "status": "completed",
+          "started_at": "2026-08-04T06:50:01+00:00",
+          "completed_at": "2026-08-04T06:50:03+00:00",
+          "evidence": {
+            "docs/orbit/scopes/windows-illustrator-drive-path-recovery-v03/05-implementation/implementation-log.md": "6aec73beaa35a572ae7d32bcfa29a080ec12bf53898e4fbb0835087f2f8c3e03",
+            ".orbit/scopes/windows-illustrator-drive-path-recovery-v03/changes/windows-illustrator-drive-path-recovery-v03.json": "211d01fa9946fb5ece086820acbabd9f1614b713597e7618e3aa23896eb54fd5",
+            ".orbit/scopes/windows-illustrator-drive-path-recovery-v03/quality/post-integration-windows-illustrator-drive-path-recovery-v03-98d40da5bf7e.json": "cda9fa1fcd0689b5c93fe94a4f4494c755e5122b3c9fe3fd45702d556142845d"
+          }
+        },
+        "trust": {
+          "status": "completed",
+          "started_at": "2026-08-04T06:50:03+00:00",
+          "completed_at": "2026-08-04T06:50:36+00:00",
+          "evidence": {
+            "docs/orbit/scopes/windows-illustrator-drive-path-recovery-v03/06-trust/verification-report.md": "268c5f27e2d80841228de8827071d86cb7a0b51d9307480f1652eb05e11747c7",
+            "docs/orbit/scopes/windows-illustrator-drive-path-recovery-v03/06-trust/release-gate.md": "64baaace4b64c894b40177716ad7d87c7ad25f5a7d79c29e8b7532f2af4665ca",
+            ".orbit/scopes/windows-illustrator-drive-path-recovery-v03/trust/windows-illustrator-drive-path-recovery-v03-98d40da5bf7e.json": "700c8ea1fb8ce4f8f1b30e562eb22728fb4c46e9fa56b7d2dd75a5f85ca0ff13"
+          }
+        }
+      },
+      "terminal_disposition": null,
+      "recovers_from": {
+        "schema_version": "orbit-recovers-from/v1",
+        "operation_id": "recover-drive-path-actual-20260804T0605Z",
+        "source_scope_id": "windows-illustrator-cutover-recovery-v02",
+        "transition_prepare_path": ".orbit/recoveries/recover-drive-path-actual-20260804T0605Z.prepare.json"
       }
-    },
-    "blueprint": {
-      "status": "completed",
-      "started_at": "2026-08-04T02:12:14+00:00",
-      "completed_at": "2026-08-04T02:14:48+00:00",
-      "evidence": {
-        "docs/orbit/02-blueprint/requirements.md": "a2c494c2e9fbfe9b12091644a8ec2508be0dfb00ab17f4c5e95a822ff4dd66ff",
-        "docs/orbit/02-blueprint/architecture.md": "b03bc4a3186752f00ca0081d93c5cc2ddb0572f5f8c729112953fb080ef18360",
-        "docs/orbit/02-blueprint/decisions.md": "7938ec459542a37963d51cfaa8e4a1b139608bd3ac1e57f141726b906c02af4a"
-      }
-    },
-    "planning": {
-      "status": "completed",
-      "started_at": "2026-08-04T02:14:54+00:00",
-      "completed_at": "2026-08-04T02:16:30+00:00",
-      "evidence": {
-        "docs/orbit/03-planning/backlog.yaml": "27412ed342b26e6b6d8366db91e4765459c260ccb431a0b91948db06cc21dd72",
-        "docs/orbit/03-planning/validation-plan.md": "71fe81c77a3e32892b5806878cbd5bcd7a3aa5e9382b7891428d0fee4c958ca8"
-      }
-    },
-    "gate": {
-      "status": "ready",
-      "started_at": null,
-      "completed_at": null,
-      "evidence": {}
-    },
-    "implementation": {
-      "status": "blocked",
-      "started_at": null,
-      "completed_at": null,
-      "evidence": {}
-    },
-    "trust": {
-      "status": "blocked",
-      "started_at": null,
-      "completed_at": null,
-      "evidence": {}
     }
   }
 }

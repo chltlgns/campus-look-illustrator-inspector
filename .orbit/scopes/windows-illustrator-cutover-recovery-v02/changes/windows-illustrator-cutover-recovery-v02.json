@@ -1,0 +1,48 @@
+{
+  "schema_version": "orbit-change/v2",
+  "change_id": "windows-illustrator-cutover-recovery-v02",
+  "state": "integrated",
+  "created_at": "2026-08-04T05:15:10+00:00",
+  "created_by": "codex",
+  "repository_root": "/home/doggabiya/campus-look-illustrator-inspector",
+  "common_git_dir": "/home/doggabiya/campus-look-illustrator-inspector/.git",
+  "target_root": "/home/doggabiya/campus-look-illustrator-inspector",
+  "target_branch": "main",
+  "target_head": "869e23dafe42da1c87fa4d38b19c60f771d30444",
+  "target_status_before": {
+    "dirty": true,
+    "entry_count": 62,
+    "sha256": "26f0354dfb04afb872fb284c25ff2fc7c3b6e32e74656ad9d2a50eddf7509ea9"
+  },
+  "target_status_after_create": {
+    "dirty": true,
+    "entry_count": 62,
+    "sha256": "26f0354dfb04afb872fb284c25ff2fc7c3b6e32e74656ad9d2a50eddf7509ea9"
+  },
+  "base_oid": "869e23dafe42da1c87fa4d38b19c60f771d30444",
+  "candidate_branch": "orbit/windows-illustrator-cutover-recovery-v02",
+  "candidate_worktree": "/home/doggabiya/worktrees/campus-look-illustrator-cutover-recovery-v02",
+  "candidate_oid": "756e554ea8239fdbb3f32935875707b6a41d392c",
+  "approval_request_digest": "b5e316ac5bab8a2b131eab02f6630c4afef4b4303211fbde7b72904dbf4652a3",
+  "trust_receipt": ".orbit/scopes/windows-illustrator-cutover-recovery-v02/trust/windows-illustrator-cutover-recovery-v02-756e554ea823.json",
+  "trust_receipt_sha256": "1ae443d3c0a7b9c1a6efc1a2c224b494151d339cfb16935f675e1f8b270dcc10",
+  "lifecycle_scope_id": "windows-illustrator-cutover-recovery-v02",
+  "scope_manifest_sha256": "148bc7e1db271b2cad0614b5708e89df0347309aaad37202b5b8ce9bcae13b09",
+  "identity_digest": "a72962f220f0a62fa3606dcc12f07794eae84c3a3cacf88ec453ee8c5e7de72c",
+  "active_rebind": {
+    "request_id": "rebind-20260804T052600Z-cutover-recovery-v02",
+    "path": ".orbit/scopes/windows-illustrator-cutover-recovery-v02/rebind/windows-illustrator-cutover-recovery-v02/rebind-20260804T052600Z-cutover-recovery-v02.request.json",
+    "request_digest": "a40527a25515aca9a2abc9c3f401f15fc8c28050eecd0345cc9a9a6305516600",
+    "state": "approved",
+    "approval_path": ".orbit/scopes/windows-illustrator-cutover-recovery-v02/rebind/windows-illustrator-cutover-recovery-v02/rebind-20260804T052600Z-cutover-recovery-v02.approval.json",
+    "approval_digest": "5c8523db68e5eb85e9e3385bcec08377bca2ff75f97eb8bea05421b92220eadd",
+    "commit_path": ".orbit/scopes/windows-illustrator-cutover-recovery-v02/rebind/windows-illustrator-cutover-recovery-v02/rebind-20260804T052600Z-cutover-recovery-v02.commit.json",
+    "commit_digest": "6f6be864da1c97f105e45d1c5117c6ba906de1cb48116abf5e5902e996d6cb99"
+  },
+  "integrated_at": "2026-08-04T05:38:12+00:00",
+  "integrated_oid": "756e554ea8239fdbb3f32935875707b6a41d392c",
+  "post_quality_receipt": ".orbit/scopes/windows-illustrator-cutover-recovery-v02/quality/post-integration-windows-illustrator-cutover-recovery-v02-756e554ea823.json",
+  "post_quality_receipt_sha256": "e451defc3156b3dace1379232c493b564e8e793d375d1218b5e81809e3452923",
+  "cleanup": "removed",
+  "integrated_rebind_request_id": "rebind-20260804T052600Z-cutover-recovery-v02"
+}

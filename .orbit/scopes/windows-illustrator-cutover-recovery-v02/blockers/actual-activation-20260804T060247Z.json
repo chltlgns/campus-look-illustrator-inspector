@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "campuslook-actual-activation-blocker/v1",
+  "scopeId": "windows-illustrator-cutover-recovery-v02",
+  "observedAt": "2026-08-04T06:02:47Z",
+  "baseOid": "869e23dafe42da1c87fa4d38b19c60f771d30444",
+  "integratedOid": "756e554ea8239fdbb3f32935875707b6a41d392c",
+  "readiness": {
+    "illustratorProcessCount": 1,
+    "documentCountBeforeUserAuthorizedTestOpen": 3,
+    "documentCountAfterUserAuthorizedTestOpen": 4,
+    "activeInsideDesignatedTestRoot": true,
+    "activeSaved": true
+  },
+  "attempt": {
+    "mode": "explicit_quiet_cold_active_document",
+    "exitCode": 1,
+    "elapsedSeconds": 0.863,
+    "errorClass": "runtime_drive_path_conversion",
+    "error": "wslpath received C:UsersGOLDAppDataLocalCampuslookIllustratorProofCheckruntime",
+    "sourceUncConversionPassed": true,
+    "aiProcessingStarted": false,
+    "reportCreated": false,
+    "runtimeFileCountAfterFailure": 0,
+    "activeDocumentPreserved": true
+  },
+  "readOnlyReproduction": {
+    "rawDriveInputExitCode": 1,
+    "rawDriveInputLostBackslashes": true,
+    "forwardSlashNormalizedInputExitCode": 0,
+    "forwardSlashNormalizedRuntimeOutput": "/mnt/c/Users/GOLD/AppData/Local/Campuslook/IllustratorProofCheck/runtime",
+    "forwardSlashNormalizedPaletteExitCode": 0
+  },
+  "rollback": {
+    "backupId": "20260804T054037Z-756e554",
+    "guard": "all current entries matched recorded post-state before writes",
+    "exitCode": 0,
+    "writesPerformed": 3,
+    "preEqualSkipped": 6,
+    "preStateMismatchCount": 0
+  },
+  "currentState": {
+    "windowsInstall": "legacy_prestate",
+    "resolverExists": false,
+    "sidecarExists": false,
+    "runtimeFileCount": 0,
+    "programJsxSha256": "e0ed0de80902444470941e2804c88844e3e6535caada9e1e066a96dbe5f027e4",
+    "programJsxLastWriteTimeUtc": "2026-08-03T06:37:12.1186567Z",
+    "illustratorProcessCount": 1,
+    "illustratorDocumentCount": 4,
+    "activeInsideDesignatedTestRoot": true,
+    "activeSaved": true
+  },
+  "boundaries": {
+    "existingDocumentsSavedOrClosed": 0,
+    "illustratorRestarted": false,
+    "programFilesWrites": 0,
+    "parentOrLegacySourceWrites": 0,
+    "networkOrApiCalls": 0,
+    "gitAddedInputsOutputsOrBackup": 0
+  },
+  "recoveryHypothesis": "Normalize validated drive-letter paths to forward slashes before invoking wslpath, add no-space drive-path regression coverage, then repeat Quality, clean Trust, ff-only integration, backup, installation and actual regression under a new Gate."
+}

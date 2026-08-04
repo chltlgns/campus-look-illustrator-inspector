@@ -1,0 +1,55 @@
+schema_version: orbit-intent/v1
+status: approved
+created_at: "2026-08-04"
+profile: "strict"
+project:
+  name: "Windows Illustrator 운영 전환 및 실제 AI 회귀"
+  mission: "독립 저장소의 Campuslook Illustrator 검사기를 복구 가능한 방식으로 Windows Illustrator 2025 운영 경로에 전환하고, 사용자가 지정한 실제 테스트 AI로 기존 결과 계약과 성능을 검증한다."
+users:
+  - "Campuslook 작업자: Ctrl+Shift+Q 또는 Illustrator 메뉴에서 활성 야구점퍼 시안을 검사한다."
+  - "Campuslook 운영 개발자: Quiet JSON과 report schema를 통해 검사 결과와 성능을 확인한다."
+scope:
+  in:
+    - "현재 설치된 launcher, root sidecar, Start Menu shortcut, Illustrator JSX와 실행 프로세스를 읽기 전용으로 조사하고 digest 증거를 남긴다."
+    - "실제 설치 변경 전에 기존 LocalAppData 설치본, shortcut, Illustrator JSX를 저장소 밖의 timestamped backup으로 보존하고 byte digest manifest를 만든다."
+    - "검사기 runtime cache와 report/PNG 결과가 Git 저장소 밖의 명시적 Windows runtime root에 생성되도록 launcher, root resolver, installer와 계약·검증을 보완한다."
+    - "승인된 candidate와 Quality/Trust를 거친 소스로 Windows launcher, root resolver, sidecar, shortcut, 필요한 JSX를 설치한다."
+    - "sidecar가 /home/doggabiya/campus-look-illustrator-inspector의 Windows UNC root와 Ubuntu 배포판을 가리키는지 확인한다."
+    - "잘못된 root, sidecar 누락, 필수 파일 누락이 Illustrator·WSL·Node 실행 전에 inspector_root_invalid로 실패하는지 격리 fixture로 검증한다."
+    - "사용자가 지정한 실제 테스트 AI와 구성된 컬러판을 Git 밖에서 사용해 report.json, report.md, material reference, PNG, 상태 결합, 다중 시안, Quiet JSON, active-document, Ctrl+Shift+Q 경로를 검증한다."
+    - "새 환경의 cold/warm 단계별 실행 시간을 측정하고 historical 0.82초와 분리해 기록한다."
+    - "기존 parent와 원본 검사기 불변, rollback 재현 가능성, 최종 Quality와 독립 Trust를 증거로 남긴다."
+  out:
+    - "campus-look-ops 소스, Git, ORBIT, 실행 프로세스 변경"
+    - "기존 /home/doggabiya/campus-look-ops/일러스트 확인용 스크립트의 수정, 삭제, 이동, symlink 전환"
+    - "사용자가 지정하지 않은 고객 AI·PDF·PNG·보고서 탐색 또는 사용"
+    - "고객 입력, 테스트 출력, cache, backup의 Git 추가"
+    - "실행 중이던 Illustrator 문서의 저장 또는 종료"
+    - "remote 생성, push, PR, 배포, network install, 외부 API, 유료 호출"
+hard_boundaries:
+  - "digest-bound ORBIT Gate를 사용자가 현재 대화에서 승인하기 전에는 제품 소스와 Windows installer, sidecar, shortcut, JSX를 변경하지 않는다."
+  - "기존 설치본을 복구 가능한 backup과 digest로 보존하기 전에는 새 installer를 실행하지 않는다."
+  - "실제 테스트 AI 경로는 사용자가 명시해야 하며 임의 고객 파일을 검색하거나 대체하지 않는다."
+  - "테스트 입력·출력·성능 증거의 원시 산출물은 Git 저장소 밖에 두고 ORBIT에는 비민감 요약과 digest만 기록한다."
+  - "기존 Illustrator 프로세스를 종료하지 않으며 검사 전 존재한 문서를 저장하거나 닫지 않는다."
+  - "모든 검증 전에는 기존 검사기 폴더를 삭제·수정하거나 symlink로 바꾸지 않는다."
+  - "과금 가능 API를 호출하지 않으며 이 범위의 외부 API·network install 비용은 0원이다."
+success_criteria:
+  - id: SC-001
+    criterion: "설치된 launcher와 root resolver의 normalized SHA-256이 승인 candidate와 같고 sidecar가 새 저장소 root, Ubuntu, Git 밖 runtime root를 가리킨다."
+  - id: SC-002
+    criterion: "Start Menu shortcut이 설치된 active checker를 대상으로 하고 WorkingDirectory와 Ctrl+Shift+Q hotkey가 정확하며 실제 단축키 실행 증거가 있다."
+  - id: SC-003
+    criterion: "wrong root, missing sidecar, missing required file이 외부 프로세스 실행 전 inspector_root_invalid와 nonzero exit로 실패한다."
+  - id: SC-004
+    criterion: "지정 실제 AI 검사에서 report.json, report.md, material-color-reference JSON/CSV, proof PNG가 Git 밖에 생성되고 schema 3 및 PASS/REVIEW/FAIL 계약을 만족한다."
+  - id: SC-005
+    criterion: "active document, 다중 시안, Quiet JSON이 실행 증거와 함께 PASS하거나 충족하지 못한 정확한 원인으로 BLOCKED 처리된다."
+  - id: SC-006
+    criterion: "새 환경 성능을 cold/warm 및 phase timing으로 측정해 historical 0.82초와 별도 기록한다."
+  - id: SC-007
+    criterion: "backup 기반 rollback 절차가 dry inspection 또는 비파괴 검증으로 확인되고 parent·원본 검사기·기존 열린 Illustrator 문서가 불변이다."
+  - id: SC-008
+    criterion: "승인 candidate Quality, clean independent Trust, 설치 후 검증과 최종 ORBIT verify가 PASS한다."
+open_questions:
+  - "실제 회귀에 사용할 비민감 테스트 AI의 정확한 Windows 또는 WSL 경로를 사용자가 제공해야 한다."

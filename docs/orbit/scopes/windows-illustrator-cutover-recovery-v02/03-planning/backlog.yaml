@@ -1,0 +1,45 @@
+schema_version: orbit-backlog/v1
+status: ready
+items:
+  - id: TASK-001
+    requirement_ids: [REQ-R2-001, REQ-R2-002]
+    title: "WSL UNC direct conversion과 fail-closed distribution 검증"
+    owner: codex
+    depends_on: []
+    risk: high
+    done_when: "localhost/dollar UNC positive와 mismatch/empty negative가 locked validation에서 통과"
+  - id: TASK-002
+    requirement_ids: [REQ-R2-003]
+    title: "pre-equal protected target rollback no-op"
+    owner: codex
+    depends_on: []
+    risk: high
+    done_when: "전체 post guard를 유지한 fixture에서 protected identical file write 0 및 rollback exit 0"
+  - id: TASK-003
+    requirement_ids: [REQ-R2-001, REQ-R2-002, REQ-R2-003, REQ-R2-006]
+    title: "문서·migration hash·locked validation·Quality profile 갱신"
+    owner: codex
+    depends_on: [TASK-001, TASK-002]
+    risk: medium
+    done_when: "기존 8+12와 신규 recovery matrix, migration verifier, diff check가 clean candidate에서 PASS"
+  - id: TASK-004
+    requirement_ids: [REQ-R2-004, REQ-R2-006]
+    title: "Quality·clean Trust·ff-only integration·post-Quality"
+    owner: codex
+    depends_on: [TASK-003]
+    risk: high
+    done_when: "commit-bound receipts PASS, main exact candidate, ORBIT/user dirt 보존"
+  - id: TASK-005
+    requirement_ids: [REQ-R2-004]
+    title: "fresh Windows backup·재설치·installed contract 검증"
+    owner: codex
+    depends_on: [TASK-004]
+    risk: critical
+    done_when: "fresh 9-entry manifest, Program JSX write 0, sidecar/launcher/shortcut/negative root PASS"
+  - id: TASK-006
+    requirement_ids: [REQ-R2-005, REQ-R2-006]
+    title: "saved readiness 뒤 지정 AI 실제 회귀와 성능 측정"
+    owner: shared
+    depends_on: [TASK-005]
+    risk: critical
+    done_when: "actual modes PASS 또는 blocker/rollback이 정확히 기록됨"

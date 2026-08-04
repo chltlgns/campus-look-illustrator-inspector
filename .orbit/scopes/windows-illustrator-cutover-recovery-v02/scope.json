@@ -1,0 +1,8 @@
+{
+  "schema_version": "orbit-scope-runtime/v1",
+  "scope_id": "windows-illustrator-cutover-recovery-v02",
+  "name": "Windows Illustrator UNC 및 rollback 복구 전환",
+  "profile": "strict",
+  "inherited_stage_evidence": false,
+  "inherited_gate_approval": false
+}

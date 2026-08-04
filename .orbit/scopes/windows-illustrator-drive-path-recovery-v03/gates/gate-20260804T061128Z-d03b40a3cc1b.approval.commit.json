@@ -1,0 +1,16 @@
+{
+  "schema_version": "orbit-gate-approval-commit/v1",
+  "operation_id": "gate-approve:gate-20260804T061128Z-d03b40a3cc1b",
+  "request_id": "gate-20260804T061128Z-d03b40a3cc1b",
+  "request_digest": "810415913799e55b05aae20dc9374093345e1745e522155475a69020b87dc451",
+  "prepare_path": ".orbit/scopes/windows-illustrator-drive-path-recovery-v03/gates/gate-20260804T061128Z-d03b40a3cc1b.approval.prepare.json",
+  "prepare_sha256": "26b87bb260871b122719d5e673c04727de403369f10762866ac51f918c2e68ca",
+  "approval_path": ".orbit/scopes/windows-illustrator-drive-path-recovery-v03/gates/gate-20260804T061128Z-d03b40a3cc1b.approval.json",
+  "approval_sha256": "58a3aa5aaba0db5d8177f1475a79750353d1cff8274eaa02b1163a5805c3567c",
+  "gate_path": "docs/orbit/scopes/windows-illustrator-drive-path-recovery-v03/04-gates/pre-implementation-gate.md",
+  "gate_post_sha256": "3282350288c282d3663340ef9197eb3080ce982cda69b9831af958fefbc9f94b",
+  "state_path": ".orbit/state.json",
+  "state_post_sha256": "543821f4e8837e92aaee3e110b1875303ae611faa1cc1e6c7b5856d44c16b66e",
+  "committed_at": "2026-08-04T06:18:05+00:00",
+  "result": "PASS"
+}

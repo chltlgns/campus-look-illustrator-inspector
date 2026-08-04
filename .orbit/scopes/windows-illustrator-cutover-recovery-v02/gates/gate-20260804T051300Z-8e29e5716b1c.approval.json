@@ -1,0 +1,29 @@
+{
+  "schema_version": "orbit-gate-approval/v2",
+  "request_id": "gate-20260804T051300Z-8e29e5716b1c",
+  "request_digest": "b5e316ac5bab8a2b131eab02f6630c4afef4b4303211fbde7b72904dbf4652a3",
+  "approved_at": "2026-08-04T05:14:48+00:00",
+  "approved_by": "user",
+  "approval_verbatim": "요청 ID gate-20260804T051300Z-8e29e5716b1c, 요청 SHA-256 b5e316ac5bab8a2b131eab02f6630c4afef4b4303211fbde7b72904dbf4652a3 의 다음 전체 범위를 승인합니다: 기준 커밋 869e23dafe42da1c87fa4d38b19c60f771d30444의 isolated recovery candidate에서 Windows launcher가 검증된 \\\\wsl.localhost 및 \\\\wsl$ source UNC를 configured distribution과 일치할 때만 Linux 절대경로로 직접 변환하고 mismatch·빈 경로를 inspector_root_invalid로 fail-closed하도록 수정한다. Windows rollback은 전체 current=expected-post guard를 유지하면서 current=pre인 entry를 write 없이 건너뛰도록 수정한다. 문서와 migration target hash, 기존 locked validation 20개와 신규 recovery validation 6개, Quality profile을 갱신하고 candidate Quality·다른 verifier clean Trust PASS 뒤 기존 ORBIT/user dirt와 보존 worktree를 reset·clean·삭제하지 않고 main에 ff-only 통합/post-Quality한다. 그 뒤 현재 복원된 legacy 설치본을 새 Git 밖 timestamped 9-entry byte backup과 SHA-256 manifest로 다시 보존하고, integrated installer로 LocalAppData launcher·checker·collector·resolver·schema-2 sidecar와 Ctrl+Shift+Q shortcut을 새 저장소 UNC root 및 외부 LocalAppData runtime root로 재전환한다. Program JSX가 expected installed hash와 같을 때만 Program Files write와 Illustrator restart 없이 진행하고 drift면 BLOCKED한다. installed positive/negative/UNC/rollback 검증 뒤 active document가 사용자가 준비한 saved test AI임이 확인된 경우에만 지정된 20개 AI 폴더 범위에서 explicit Quiet cold/warm, report 계약, batch/multi-design, active document, Start Menu shortcut과 실제 Ctrl+Shift+Q 회귀 및 새 성능을 측정한다. 구조·계약·문서보존 실패 시 current=expected-post인 실제 변경 대상만 fresh backup으로 rollback한다. campus-look-ops·legacy source·기존 열린 문서·remote·push·PR·배포·network install·외부 API·유료 호출은 변경하지 않고 AI·원시 output·backup은 Git에 추가하지 않는다.",
+  "mode": "conversation-process",
+  "cryptographic_user_proof": false,
+  "signed_platform_event": null,
+  "plan_digest": "6e07df2581c8c633a15f331577dc35987f20462b2ee153ed5d3cd8c9da726178",
+  "scope_digest": "cbe24bec4af81b70ca8c2c3ee4abb9effe34c191ada90327d55e201c2c2b5404",
+  "bases": [
+    {
+      "repository_root": "/home/doggabiya/campus-look-illustrator-inspector",
+      "common_git_dir": "/home/doggabiya/campus-look-illustrator-inspector/.git",
+      "commit": "869e23dafe42da1c87fa4d38b19c60f771d30444"
+    }
+  ],
+  "external_actions": [
+    "승인 base의 isolated recovery candidate에서 두 결함·문서·hash·26개 locked validation을 구현·커밋하고 Quality·clean Trust 뒤 main ff-only integrate/post-Quality",
+    "Git 밖 fresh timestamped backup 생성 후 LocalAppData installed files·schema2 sidecar와 Start Menu shortcut을 새 UNC source/external runtime 기준으로 재설치",
+    "Program JSX hash-equal이면 Program Files write/Illustrator restart 0; saved active readiness 뒤에만 지정 20개 AI의 actual Illustrator/shortcut/hotkey/performance 회귀",
+    "승인된 failure trigger에서 expected-post hash가 맞는 실제 변경 대상만 fresh backup bytes 또는 recorded absence로 rollback"
+  ],
+  "warning": "conversation-process는 signed platform event가 없어 agent self-entry를 기술적으로 방지하지 못합니다.",
+  "lifecycle_scope_id": "windows-illustrator-cutover-recovery-v02",
+  "scope_manifest_sha256": "148bc7e1db271b2cad0614b5708e89df0347309aaad37202b5b8ce9bcae13b09"
+}

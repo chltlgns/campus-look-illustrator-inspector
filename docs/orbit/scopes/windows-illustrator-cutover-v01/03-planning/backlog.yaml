@@ -1,0 +1,66 @@
+schema_version: orbit-backlog/v1
+status: complete
+items:
+  - id: CUT-T01
+    requirement_ids: [CR-001, CR-011, CNR-002, CNR-003, CNR-008, CNR-010]
+    title: "sanitized preflight와 Gate base 고정"
+    owner: codex
+    depends_on: []
+    risk: high
+    done_when: "base d93a015..., remote 0, target/parent/legacy digest, installed Windows hashes, shortcut/JSX, process/document saved-state가 고객 파일명 없이 기록되고 user-designated test AI prerequisite가 명시된다."
+  - id: CUT-T02
+    requirement_ids: [CR-003, CR-004, CR-006, CNR-001, CNR-004, CNR-006]
+    title: "external runtime root와 sidecar schema 2"
+    owner: codex
+    depends_on: [CUT-T01]
+    risk: high
+    done_when: "isolated candidate에서 resolver/launcher/installer가 source+runtime root precedence와 canonical validation을 구현하고 repository-inside runtime을 inspector_root_invalid로 거부하며 outputs가 external runtime 하위로만 계산된다."
+  - id: CUT-T03
+    requirement_ids: [CR-002, CR-010, CNR-004, CNR-005, CNR-008]
+    title: "Windows preflight backup과 hash-guarded rollback 도구"
+    owner: codex
+    depends_on: [CUT-T01]
+    risk: critical
+    done_when: "candidate의 cutover helper가 read-only preflight, exact backup manifest, temp-fixture rollback을 지원하고 missing/present·expected-post drift를 구분하며 default invocation은 Windows write를 하지 않는다."
+  - id: CUT-T04
+    requirement_ids: [CR-003, CR-004, CR-006, CR-010, CR-011, CNR-001, CNR-004, CNR-005, CNR-006, CNR-009]
+    title: "12개 locked local validation과 candidate Quality"
+    owner: codex
+    depends_on: [CUT-T02, CUT-T03]
+    risk: high
+    done_when: "CW-P01~P06, CW-N01~N05, CW-R01이 candidate OID에서 각각 실행 증거를 남기고 existing lint/check/test/migration, PowerShell parser, parent/legacy invariance가 PASS한다."
+  - id: CUT-T05
+    requirement_ids: [CR-011, CNR-009, CNR-010]
+    title: "clean independent Trust와 main ff-only 통합"
+    owner: codex
+    depends_on: [CUT-T04]
+    risk: high
+    done_when: "다른 verifier가 clean detached checkout에서 같은 Quality와 12 locked ID를 replay해 PASS하고 기존 ORBIT dirt/worktree를 reset/clean/delete하지 않은 채 exact candidate를 main에 ff-only integrate/post-Quality한다."
+  - id: CUT-T06
+    requirement_ids: [CR-001, CR-002, CR-004, CR-005, CR-010, CNR-003, CNR-005, CNR-010]
+    title: "Windows byte backup과 installer cutover"
+    owner: codex
+    depends_on: [CUT-T05]
+    risk: critical
+    done_when: "Gate 승인 뒤 Git 밖 timestamped backup과 manifest가 검증되고, program JSX pre-hash가 candidate와 같을 때 process restart 없이 새 installer를 실행해 installed source/sidecar/shortcut post-hash가 승인 candidate와 일치한다."
+  - id: CUT-T07
+    requirement_ids: [CR-003, CR-004, CR-005, CR-006, CR-010, CNR-004]
+    title: "installed positive/negative root와 rollback readiness"
+    owner: codex
+    depends_on: [CUT-T06]
+    risk: high
+    done_when: "installed resolver가 새 source/runtime를 선택하고 temp fixture의 missing/malformed/wrong/incomplete/repo-inside cases를 spawn 0의 inspector_root_invalid로 거부하며 backup 복원 precondition이 PASS한다."
+  - id: CUT-T08
+    requirement_ids: [CR-007, CR-008, CR-009, CNR-001, CNR-003, CNR-007, CNR-008]
+    title: "지정 실제 AI 계약·active·multi·hotkey·성능 회귀"
+    owner: shared
+    depends_on: [CUT-T07]
+    risk: critical
+    done_when: "사용자 지정 test AI가 준비된 경우 external runtime에서 explicit Quiet, cold/warm, saved active, multi-design, Start Menu, Ctrl+Shift+Q가 계약을 보존하고 pre-existing document state가 불변이다. 입력 또는 active readiness가 없으면 임의 파일 없이 exact BLOCKED를 남긴다."
+  - id: CUT-T09
+    requirement_ids: [CR-010, CR-011, CNR-001, CNR-002, CNR-003, CNR-005, CNR-009]
+    title: "post-state, final Trust, release/blocked 판정"
+    owner: codex
+    depends_on: [CUT-T08]
+    risk: high
+    done_when: "parent/legacy/source/remote/document post-state, actual output digest/timing, rollback readiness와 final Quality/Trust evidence를 기록하고 모든 기준 PASS 또는 정확한 BLOCKED를 판정한다."

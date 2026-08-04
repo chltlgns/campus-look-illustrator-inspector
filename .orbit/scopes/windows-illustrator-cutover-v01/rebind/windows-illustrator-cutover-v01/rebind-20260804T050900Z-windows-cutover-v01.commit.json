@@ -1,0 +1,9 @@
+{
+  "schema_version": "orbit-change-rebind-approval-commit/v1",
+  "request_id": "rebind-20260804T050900Z-windows-cutover-v01",
+  "request_digest": "b3609d1ad76d30b981895450928d6f2aca74802e57394c68c516c83913cfc6df",
+  "change_identity_digest": "95b2c23d6b94010fce18a8f8e6452a39510dab58bd62b24abd533fd607edb4cd",
+  "approval_path": ".orbit/scopes/windows-illustrator-cutover-v01/rebind/windows-illustrator-cutover-v01/rebind-20260804T050900Z-windows-cutover-v01.approval.json",
+  "approval_sha256": "73f60068a192866a52c357105a31c31d22d99cb5b9fca24eb157be2c44354c75",
+  "committed_at": "2026-08-04T05:01:36+00:00"
+}

@@ -1,0 +1,48 @@
+{
+  "schema_version": "orbit-change/v2",
+  "change_id": "windows-illustrator-drive-path-recovery-v03",
+  "state": "integrated",
+  "created_at": "2026-08-04T06:18:40+00:00",
+  "created_by": "codex",
+  "repository_root": "/home/doggabiya/campus-look-illustrator-inspector",
+  "common_git_dir": "/home/doggabiya/campus-look-illustrator-inspector/.git",
+  "target_root": "/home/doggabiya/campus-look-illustrator-inspector",
+  "target_branch": "main",
+  "target_head": "756e554ea8239fdbb3f32935875707b6a41d392c",
+  "target_status_before": {
+    "dirty": true,
+    "entry_count": 91,
+    "sha256": "16423d7e8c9ca2608e19372365ebda2931abf38d29bd7c6d4881cd0a5b369bdf"
+  },
+  "target_status_after_create": {
+    "dirty": true,
+    "entry_count": 91,
+    "sha256": "16423d7e8c9ca2608e19372365ebda2931abf38d29bd7c6d4881cd0a5b369bdf"
+  },
+  "base_oid": "756e554ea8239fdbb3f32935875707b6a41d392c",
+  "candidate_branch": "orbit/windows-illustrator-drive-path-recovery-v03",
+  "candidate_worktree": "/home/doggabiya/worktrees/campus-look-illustrator-inspector-windows-illustrator-drive-path-recovery-v03",
+  "candidate_oid": "98d40da5bf7ea9ea00305e4027b1fa7aa499e83a",
+  "approval_request_digest": "810415913799e55b05aae20dc9374093345e1745e522155475a69020b87dc451",
+  "trust_receipt": ".orbit/scopes/windows-illustrator-drive-path-recovery-v03/trust/windows-illustrator-drive-path-recovery-v03-98d40da5bf7e.json",
+  "trust_receipt_sha256": "700c8ea1fb8ce4f8f1b30e562eb22728fb4c46e9fa56b7d2dd75a5f85ca0ff13",
+  "lifecycle_scope_id": "windows-illustrator-drive-path-recovery-v03",
+  "scope_manifest_sha256": "a5f9d87ebac6967fcf379a72bba50fc4e1213f55c21e138ce81976661c140329",
+  "identity_digest": "a1eb293d4fc2b99506d073a0230831f3ba3bcce2e35b3f9db9068f4fe9cb5134",
+  "active_rebind": {
+    "request_id": "rebind-20260804T063000Z-drive-path-v03",
+    "path": ".orbit/scopes/windows-illustrator-drive-path-recovery-v03/rebind/windows-illustrator-drive-path-recovery-v03/rebind-20260804T063000Z-drive-path-v03.request.json",
+    "request_digest": "345a95c604d4e9a9f4b31d4922ac97566b2f0b37ccfa4ad3017b09981669b1e1",
+    "state": "approved",
+    "approval_path": ".orbit/scopes/windows-illustrator-drive-path-recovery-v03/rebind/windows-illustrator-drive-path-recovery-v03/rebind-20260804T063000Z-drive-path-v03.approval.json",
+    "approval_digest": "9b4e5a7ea6943790590a190dbedb6ade1f7d7ae95bb5607dc59ba0dc22a69367",
+    "commit_path": ".orbit/scopes/windows-illustrator-drive-path-recovery-v03/rebind/windows-illustrator-drive-path-recovery-v03/rebind-20260804T063000Z-drive-path-v03.commit.json",
+    "commit_digest": "b2b405d3b8bd342f1e6c3feebec0b5e78d2ecfcaf2aa03f1e2721dce4285a799"
+  },
+  "integrated_at": "2026-08-04T06:31:33+00:00",
+  "integrated_oid": "98d40da5bf7ea9ea00305e4027b1fa7aa499e83a",
+  "post_quality_receipt": ".orbit/scopes/windows-illustrator-drive-path-recovery-v03/quality/post-integration-windows-illustrator-drive-path-recovery-v03-98d40da5bf7e.json",
+  "post_quality_receipt_sha256": "cda9fa1fcd0689b5c93fe94a4f4494c755e5122b3c9fe3fd45702d556142845d",
+  "cleanup": "removed",
+  "integrated_rebind_request_id": "rebind-20260804T063000Z-drive-path-v03"
+}

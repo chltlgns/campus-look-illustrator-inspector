@@ -1,0 +1,9 @@
+{
+  "schema_version": "orbit-change-rebind-approval-commit/v1",
+  "request_id": "rebind-20260804T063000Z-drive-path-v03",
+  "request_digest": "345a95c604d4e9a9f4b31d4922ac97566b2f0b37ccfa4ad3017b09981669b1e1",
+  "change_identity_digest": "a1eb293d4fc2b99506d073a0230831f3ba3bcce2e35b3f9db9068f4fe9cb5134",
+  "approval_path": ".orbit/scopes/windows-illustrator-drive-path-recovery-v03/rebind/windows-illustrator-drive-path-recovery-v03/rebind-20260804T063000Z-drive-path-v03.approval.json",
+  "approval_sha256": "9b4e5a7ea6943790590a190dbedb6ade1f7d7ae95bb5607dc59ba0dc22a69367",
+  "committed_at": "2026-08-04T06:30:21+00:00"
+}
