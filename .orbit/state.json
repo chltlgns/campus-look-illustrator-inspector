@@ -1,0 +1,67 @@
+{
+  "schema_version": "orbit-project-state/v1",
+  "project": {
+    "name": "Campuslook Illustrator Inspector"
+  },
+  "profile": "strict",
+  "core_version": "0.4.2",
+  "created_at": "2026-08-04T02:08:43+00:00",
+  "updated_at": "2026-08-04T02:16:30+00:00",
+  "stages": {
+    "objective": {
+      "status": "completed",
+      "started_at": "2026-08-04T02:08:54+00:00",
+      "completed_at": "2026-08-04T02:10:17+00:00",
+      "evidence": {
+        "docs/orbit/00-objective/intent.yaml": "bf222a890890def8c0d74322e2a53ff4e210890c7091494b46851258527c6277",
+        "docs/orbit/00-objective/assumptions.yaml": "08f7ff9b77f523614ef6d87017f414b034327c64aa7d7a9ee189cdc8db91c6ae"
+      }
+    },
+    "research": {
+      "status": "completed",
+      "started_at": "2026-08-04T02:10:24+00:00",
+      "completed_at": "2026-08-04T02:12:08+00:00",
+      "evidence": {
+        "docs/orbit/01-research/evidence-ledger.md": "7da1b6ea58e36ff423039a05079d07a2f9ddfa4c66dd9e772242cd6a7a04708d",
+        "docs/orbit/01-research/research-report.md": "9423ef362109fc0981ec1e5f30fc57ce5cd665184a9ab716c1578da48f265096"
+      }
+    },
+    "blueprint": {
+      "status": "completed",
+      "started_at": "2026-08-04T02:12:14+00:00",
+      "completed_at": "2026-08-04T02:14:48+00:00",
+      "evidence": {
+        "docs/orbit/02-blueprint/requirements.md": "a2c494c2e9fbfe9b12091644a8ec2508be0dfb00ab17f4c5e95a822ff4dd66ff",
+        "docs/orbit/02-blueprint/architecture.md": "b03bc4a3186752f00ca0081d93c5cc2ddb0572f5f8c729112953fb080ef18360",
+        "docs/orbit/02-blueprint/decisions.md": "7938ec459542a37963d51cfaa8e4a1b139608bd3ac1e57f141726b906c02af4a"
+      }
+    },
+    "planning": {
+      "status": "completed",
+      "started_at": "2026-08-04T02:14:54+00:00",
+      "completed_at": "2026-08-04T02:16:30+00:00",
+      "evidence": {
+        "docs/orbit/03-planning/backlog.yaml": "27412ed342b26e6b6d8366db91e4765459c260ccb431a0b91948db06cc21dd72",
+        "docs/orbit/03-planning/validation-plan.md": "71fe81c77a3e32892b5806878cbd5bcd7a3aa5e9382b7891428d0fee4c958ca8"
+      }
+    },
+    "gate": {
+      "status": "ready",
+      "started_at": null,
+      "completed_at": null,
+      "evidence": {}
+    },
+    "implementation": {
+      "status": "blocked",
+      "started_at": null,
+      "completed_at": null,
+      "evidence": {}
+    },
+    "trust": {
+      "status": "blocked",
+      "started_at": null,
+      "completed_at": null,
+      "evidence": {}
+    }
+  }
+}

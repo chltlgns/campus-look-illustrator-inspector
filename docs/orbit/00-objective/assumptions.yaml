@@ -1,0 +1,39 @@
+schema_version: orbit-assumptions/v1
+status: active
+assumptions:
+  - id: A-001
+    statement: "독립 프로젝트는 상위 저장소 내부의 nested Git이 아니라 형제 경로 /home/doggabiya/campus-look-illustrator-inspector에 둔다."
+    risk: low
+    state: verified
+    owner: codex
+    verification: "대상 경로가 비어 있었고 사용자가 검사기의 독립 프로젝트 분리를 명시적으로 요청했다. 형제 저장소는 상위 Git·ORBIT 경계를 공유하지 않는다."
+  - id: A-002
+    statement: "기존 폴더의 현재 소스 파일이 마이그레이션 기준이며 reports·downloads·samples·cache는 제품 소스가 아니다."
+    risk: medium
+    state: verified
+    owner: codex
+    verification: "2026-08-04 파일·용량·import 감사를 수행하고 README, VALIDATION, 실행기 소스와 175MB 생성·고객 데이터 디렉터리를 분리했다."
+  - id: A-003
+    statement: "검사기 핵심 분석기는 외부 npm 패키지 없이 Node 내장 모듈로 실행할 수 있다."
+    risk: low
+    state: verified
+    owner: codex
+    verification: "analyze-proof.mjs와 보고서 생성기의 import가 node:fs, node:path, node:zlib 등 내장 모듈뿐임을 rg로 확인했다."
+  - id: A-004
+    statement: "메일 첨부 다운로드 도구는 검사기 실행 계약이 아니며 상위 네이버 자격증명·IMAP 모듈에 의존하므로 초기 독립 저장소에서 제외한다."
+    risk: medium
+    state: verified
+    owner: codex
+    verification: "download-recent-ai-attachments.mjs가 ../lib/naver-credentials.mjs와 ../lib/naver-imap.mjs를 import함을 확인했다."
+  - id: A-005
+    statement: "기존 설치된 Windows 런처가 당분간 옛 경로를 참조할 수 있으므로 기존 폴더를 보존해야 현재 운영이 중단되지 않는다."
+    risk: high
+    state: verified
+    owner: shared
+    verification: "run-proof-check.ps1에 기존 절대경로가 있고 사용자가 campus-look-ops 통합 작업이 진행 중이라고 밝혔다. 이 분리 범위에서는 기존 폴더와 설치 상태를 변경하지 않는다."
+  - id: A-006
+    statement: "새 저장소에서 검사기 소스가 안정된 뒤 parent 웹앱은 별도의 campus-look-ops ORBIT 범위에서 명시적 경로 또는 CLI 계약으로 연결한다."
+    risk: medium
+    state: accepted
+    owner: shared
+    verification: "현재 분리 범위의 out-of-scope로 고정하고 새 저장소 README와 integration contract에 후속 경계를 기록한다."

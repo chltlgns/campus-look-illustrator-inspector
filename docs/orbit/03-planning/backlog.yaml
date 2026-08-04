@@ -1,0 +1,45 @@
+schema_version: orbit-backlog/v1
+status: complete
+items:
+  - id: TASK-001
+    requirement_ids: [FR-002, FR-007, NFR-001, NFR-002]
+    title: "원본 source-only inventory와 parent 불변 snapshot 고정"
+    owner: codex
+    depends_on: []
+    risk: high
+    done_when: "승인 allowlist의 경로·크기·SHA-256과 제외 사유, parent Git typed status digest를 기록하며 고객/생성 데이터 bytes를 새 저장소에 복사하지 않는다."
+  - id: TASK-002
+    requirement_ids: [FR-001, FR-002, FR-004, FR-007, NFR-001, NFR-002, NFR-006]
+    title: "격리 candidate에 검사기 source-only 복제"
+    owner: codex
+    depends_on: [TASK-001]
+    risk: high
+    done_when: "허용된 Node/Bash/PowerShell/JSX 소스만 candidate에 존재하고 Git ignore·tracked deny 검사에서 금지 경로·확장자·1MB 초과 파일이 0이며 기존 폴더는 불변이다."
+  - id: TASK-003
+    requirement_ids: [FR-003, FR-004, NFR-003, NFR-005, NFR-006]
+    title: "portable root config와 fail-closed launcher"
+    owner: codex
+    depends_on: [TASK-002]
+    risk: high
+    done_when: "기존 parent 절대경로가 0건이고 launcher가 env/sidecar root를 검증하며 missing/malformed/root-drift에서 외부 실행 전 stable nonzero 오류를 반환한다."
+  - id: TASK-004
+    requirement_ids: [FR-004, FR-005, FR-006, NFR-004, NFR-005, NFR-007, NFR-008]
+    title: "CLI·JSON integration contract와 정제 문서·검증 harness"
+    owner: codex
+    depends_on: [TASK-002, TASK-003]
+    risk: medium
+    done_when: "README, integration contract, result schema, migration verifier, package scripts가 실제 동작과 일치하고 historical 성능과 not-run current 성능을 구분한다."
+  - id: TASK-005
+    requirement_ids: [FR-001, FR-002, FR-003, FR-004, FR-005, FR-006, FR-007, NFR-001, NFR-002, NFR-003, NFR-004, NFR-005, NFR-006, NFR-007, NFR-008]
+    title: "잠긴 8개 validation과 clean candidate Quality"
+    owner: codex
+    depends_on: [TASK-004]
+    risk: high
+    done_when: "CI-P01~CI-P04, CI-N01~CI-N03, CI-R01이 candidate OID에서 각각 실행 증거를 남기고 npm test/check, ORBIT Quality가 외부 호출 0으로 PASS한다."
+  - id: TASK-006
+    requirement_ids: [FR-001, FR-007, NFR-002, NFR-004, NFR-008]
+    title: "독립 Trust와 새 저장소 main ff-only 통합"
+    owner: codex
+    depends_on: [TASK-005]
+    risk: high
+    done_when: "다른 verifier가 clean detached checkout에서 동일 validation을 replay해 PASS하고 새 저장소 main에만 ff-only 통합한다. parent와 기존 검사기 폴더 변경·commit·push는 0이다."

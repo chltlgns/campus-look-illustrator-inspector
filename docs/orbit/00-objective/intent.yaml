@@ -1,0 +1,46 @@
+schema_version: orbit-intent/v1
+status: approved
+created_at: "2026-08-04"
+profile: "strict"
+project:
+  name: "Campuslook Illustrator Inspector"
+  mission: "Campuslook 야구점퍼 Illustrator 시안 검사기를 campus-look-ops와 독립된 로컬 저장소로 분리해, 상위 웹앱 작업과 충돌하지 않고 개발·검증·배포할 수 있게 한다."
+users:
+  - "Campuslook 작업자: Windows Adobe Illustrator에서 현재 AI 시안의 표와 그림을 빠르게 대조한다."
+  - "Campuslook Operations 개발자: 안정된 CLI 결과 계약을 통해 검사기를 웹앱에 연결한다."
+scope:
+  in:
+    - "형제 경로 /home/doggabiya/campus-look-illustrator-inspector에 독립 Git 저장소와 ORBIT strict 프로젝트를 유지한다."
+    - "기존 검사기의 핵심 Node.js, Bash, PowerShell, Illustrator JSX 소스와 정제된 사용·검증 문서를 source-only로 복제한다."
+    - "기존 campus-look-ops 절대경로를 제거하고 저장소 위치에서 실행 루트를 결정하는 이동 가능한 실행 경로로 바꾼다."
+    - "검사 CLI의 입력·출력·PASS/REVIEW/FAIL 결과 계약과 향후 campus-look-ops 연결 경계를 문서화한다."
+    - "소스 문법, 금지 데이터 부재, 하드코딩 경로 부재, 기존 오프라인 회귀 결과와의 호환성을 로컬에서 검증한다."
+    - "원본 파일별 SHA-256과 포함·제외 사유를 담은 정제된 마이그레이션 명세를 남긴다."
+  out:
+    - "campus-look-ops의 app.js, server.mjs, styles.css, tests 또는 ORBIT 상태 변경"
+    - "기존 /home/doggabiya/campus-look-ops/일러스트 확인용 스크립트 폴더의 이동·삭제·수정"
+    - "메일에서 받은 AI 원본, 고객명 파일, JPG/PNG 렌더, reports, downloads, samples, .cache, Memory Bank 상태, NUL 파일의 복제·커밋"
+    - "상위 저장소에 의존하는 download-recent-ai-attachments.mjs와 네이버 메일 수집 기능"
+    - "Illustrator 설치 상태 변경, Windows 시작 메뉴 변경, 운영 웹앱 연결 또는 실제 고객 시안 재검사"
+    - "원격 저장소 생성, push, PR, 배포, 외부 메시지·메일·광고·Google·유료 API 호출"
+hard_boundaries:
+  - "사용자 승인 없이 외부 시스템의 실데이터를 변경하지 않는다."
+  - "현재 대화의 구체적 승인 없이 과금 가능 API를 호출하지 않는다."
+  - "실제 구현은 digest-bound ORBIT Gate 승인 뒤 승인된 base의 격리 worktree에서만 수행한다."
+  - "현재 실행 중인 campus-look-ops 통합 세션과 광고관리자 세션의 파일·프로세스·Git 상태를 변경하지 않는다."
+  - "개인·고객·메일 첨부 데이터와 생성 산출물은 새 Git 객체에 넣지 않는다."
+  - "기존 검사기 폴더는 상위 웹앱 전환이 별도 승인·검증될 때까지 그대로 보존한다."
+success_criteria:
+  - id: SC-001
+    criterion: "새 경로가 자체 .git과 .orbit을 가진 독립 프로젝트이며 git rev-parse --show-toplevel이 새 경로를 반환한다."
+  - id: SC-002
+    criterion: "허용된 source-only 파일만 추적되고 reports/downloads/samples/.cache/.memory-bank/NUL 및 AI·PDF·EPS·고객 이미지 추적 수가 0이다."
+  - id: SC-003
+    criterion: "소스와 문서에서 기존 campus-look-ops/일러스트 확인용 스크립트 절대경로가 0건이고 실행기가 자신의 설치·저장소 경로를 안전하게 결정한다."
+  - id: SC-004
+    criterion: "Node, Bash, PowerShell, JSX 정적 검사와 로컬 오프라인 smoke/회귀 계약 검사가 모두 exit 0이다."
+  - id: SC-005
+    criterion: "기존 검사기 폴더의 사전·사후 source-only digest가 같고 상위 저장소 tracked/dirty 상태에 새 변경이 0건이다."
+  - id: SC-006
+    criterion: "새 저장소에 CLI 입출력 계약, Windows/WSL 실행 전제, parent integration 방법과 독립 프로젝트 경계가 문서화된다."
+open_questions: []
