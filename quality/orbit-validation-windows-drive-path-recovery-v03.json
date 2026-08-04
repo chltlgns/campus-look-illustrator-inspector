@@ -1,0 +1,52 @@
+{
+  "schema_version": "orbit-validation-profile/v1",
+  "profile_id": "campuslook-illustrator-inspector-windows-drive-path-recovery-v03",
+  "locked_id_count": 4,
+  "locked_id_sha256": "eb44a9d181bd59c08ecdf387e65ff2e067dc602bb4349a91dd75af16abc6c0bc",
+  "rows": [
+    {
+      "id": "DP-P01",
+      "selector": "tests.test_windows_drive_path_recovery_validation.WindowsDrivePathRecoveryValidation.test_no_space_drive_path_is_normalized_before_wslpath",
+      "scenario": "No-space LocalAppData drive path normalization",
+      "expected_exit": "0",
+      "expected_code": "C-drive runtime converts exactly to /mnt/c without backslash loss",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_windows_drive_path_recovery_validation.py::WindowsDrivePathRecoveryValidation.test_no_space_drive_path_is_normalized_before_wslpath",
+      "requirement_ids": ["REQ-DP-001", "NFR-DP-001"],
+      "timeout_seconds": 90
+    },
+    {
+      "id": "DP-P02",
+      "selector": "tests.test_windows_drive_path_recovery_validation.WindowsDrivePathRecoveryValidation.test_space_and_unicode_drive_path_is_preserved",
+      "scenario": "Space and Unicode drive path preservation",
+      "expected_exit": "0",
+      "expected_code": "wslpath output retains space and Unicode path segments",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_windows_drive_path_recovery_validation.py::WindowsDrivePathRecoveryValidation.test_space_and_unicode_drive_path_is_preserved",
+      "requirement_ids": ["REQ-DP-002", "NFR-DP-001"],
+      "timeout_seconds": 90
+    },
+    {
+      "id": "DP-N01",
+      "selector": "tests.test_windows_drive_path_recovery_validation.WindowsDrivePathRecoveryValidation.test_drive_relative_path_is_fail_closed",
+      "scenario": "Drive-relative path rejection",
+      "expected_exit": "0",
+      "expected_code": "inner conversion exits nonzero with inspector_root_invalid before external writes",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_windows_drive_path_recovery_validation.py::WindowsDrivePathRecoveryValidation.test_drive_relative_path_is_fail_closed",
+      "requirement_ids": ["REQ-DP-002", "NFR-DP-002"],
+      "timeout_seconds": 90
+    },
+    {
+      "id": "DP-R01",
+      "selector": "tests.test_windows_drive_path_recovery_validation.WindowsDrivePathRecoveryValidation.test_unc_and_non_drive_regressions_remain_locked",
+      "scenario": "UNC direct parser launcher delegation and rollback regression",
+      "expected_exit": "0",
+      "expected_code": "both UNC forms pass, mismatch fails closed, shared resolver and rollback contract remain present",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_windows_drive_path_recovery_validation.py::WindowsDrivePathRecoveryValidation.test_unc_and_non_drive_regressions_remain_locked",
+      "requirement_ids": ["REQ-DP-003", "REQ-DP-005", "NFR-DP-003"],
+      "timeout_seconds": 120
+    }
+  ]
+}

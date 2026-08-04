@@ -40,6 +40,8 @@ Windows 전환 candidate는 `quality/orbit-validation-windows-cutover-v01.json`�
 
 실제 활성화 복구 candidate는 `quality/orbit-validation-windows-cutover-recovery-v02.json`의 `RC-P01`~`RC-P03`, `RC-N01`~`RC-N02`, `RC-R01` 6개를 더 실행합니다. 두 WSL UNC 형식, distribution/path negative, 보호 파일 no-op rollback과 실제 변경 복원을 각각 고정합니다. 전체 locked validation 수는 8 + 12 + 6 = 26개입니다.
 
+drive-path 실제 활성화 복구 candidate는 `quality/orbit-validation-windows-drive-path-recovery-v03.json`의 `DP-P01`, `DP-P02`, `DP-N01`, `DP-R01` 4개를 추가합니다. 공백 없는 LocalAppData drive path, 공백·Unicode drive path, drive-relative fail-closed, 기존 UNC·resolver·rollback 회귀를 고정합니다. 전체 locked validation 수는 8 + 12 + 6 + 4 = 30개입니다.
+
 ## 수행하지 않은 검증
 
 - 실제 지정 AI/컬러판 검사: Windows external validation에서 별도 수행

@@ -36,9 +36,17 @@ function Convert-InspectorWindowsPathToWsl {
         throw 'inspector_root_invalid: WSL UNC root 형식이 올바르지 않습니다.'
     }
 
-    $converted = & wsl.exe -d $WslDistribution -- wslpath -a -u $WindowsPath 2>&1
-    if ($LASTEXITCODE -ne 0) {
-        throw "Windows 경로를 WSL 경로로 변환하지 못했습니다: $converted"
+    $wslpathInput = $WindowsPath
+    if ($WindowsPath -match '^[a-zA-Z]:') {
+        if ($WindowsPath -notmatch '^[a-zA-Z]:[\\/]') {
+            throw 'inspector_root_invalid: Windows drive 경로는 rooted absolute path여야 합니다.'
+        }
+        $wslpathInput = $WindowsPath -replace '\\', '/'
+    }
+
+    $converted = & wsl.exe -d $WslDistribution -- wslpath -a -u $wslpathInput 2>&1
+    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace(($converted | Out-String).Trim())) {
+        throw "inspector_root_invalid: Windows 경로를 WSL 경로로 변환하지 못했습니다: $converted"
     }
     return (($converted | Out-String).Trim())
 }

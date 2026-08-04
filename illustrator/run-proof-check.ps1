@@ -61,6 +61,7 @@ function Show-Dialog {
 function Convert-ToWslPath {
     param([Parameter(Mandatory = $true)][string]$WindowsPath)
 
+    # Keep UNC and drive-letter normalization in the shared fail-closed resolver.
     return Convert-InspectorWindowsPathToWsl `
         -WindowsPath $WindowsPath `
         -WslDistribution $distribution
