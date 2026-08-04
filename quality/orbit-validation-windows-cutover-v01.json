@@ -1,0 +1,140 @@
+{
+  "schema_version": "orbit-validation-profile/v1",
+  "profile_id": "campuslook-illustrator-inspector-windows-cutover-v01",
+  "locked_id_count": 12,
+  "locked_id_sha256": "d341301549b05a6f6f95a8919cfc189d675745456f568d88a61a55e98e3d5b2b",
+  "rows": [
+    {
+      "id": "CW-P01",
+      "selector": "tests.test_windows_cutover_validation.WindowsCutoverValidation.test_sidecar_schema2_external_runtime_resolution",
+      "scenario": "Schema-2 sidecar resolves new source and external runtime roots",
+      "expected_exit": "0",
+      "expected_code": "source and runtime resolve from sidecar with Ubuntu and distinct canonical roots",
+      "expected_writes": "temporary sidecar and runtime fixture only",
+      "evidence_locator": "tests/test_windows_cutover_validation.py::WindowsCutoverValidation.test_sidecar_schema2_external_runtime_resolution",
+      "requirement_ids": ["CR-003", "CR-004"],
+      "timeout_seconds": 90
+    },
+    {
+      "id": "CW-P02",
+      "selector": "tests.test_windows_cutover_validation.WindowsCutoverValidation.test_parameter_environment_sidecar_precedence",
+      "scenario": "Parameter environment and sidecar precedence",
+      "expected_exit": "0",
+      "expected_code": "explicit source and runtime override environment and sidecar values",
+      "expected_writes": "temporary runtime fixture only",
+      "evidence_locator": "tests/test_windows_cutover_validation.py::WindowsCutoverValidation.test_parameter_environment_sidecar_precedence",
+      "requirement_ids": ["CR-003", "CR-004"],
+      "timeout_seconds": 90
+    },
+    {
+      "id": "CW-P03",
+      "selector": "tests.test_windows_cutover_validation.WindowsCutoverValidation.test_backup_manifest_fixture",
+      "scenario": "Windows cutover byte backup manifest",
+      "expected_exit": "0",
+      "expected_code": "nine exact target records preserve present and absent state with verified hashes",
+      "expected_writes": "temporary backup fixture only",
+      "evidence_locator": "tests/test_windows_cutover_validation.py::WindowsCutoverValidation.test_backup_manifest_fixture",
+      "requirement_ids": ["CR-002"],
+      "timeout_seconds": 120
+    },
+    {
+      "id": "CW-P04",
+      "selector": "tests.test_windows_cutover_validation.WindowsCutoverValidation.test_hash_guarded_rollback_fixture",
+      "scenario": "Hash-guarded rollback restores bytes and absence",
+      "expected_exit": "0",
+      "expected_code": "legacy bytes return and newly installed resolver is removed only in temp fixture",
+      "expected_writes": "temporary install and backup fixture only",
+      "evidence_locator": "tests/test_windows_cutover_validation.py::WindowsCutoverValidation.test_hash_guarded_rollback_fixture",
+      "requirement_ids": ["CR-010", "CNR-005"],
+      "timeout_seconds": 120
+    },
+    {
+      "id": "CW-P05",
+      "selector": "tests.test_windows_cutover_validation.WindowsCutoverValidation.test_launcher_uses_external_runtime_paths",
+      "scenario": "Launcher cache and reports use Git-external runtime root",
+      "expected_exit": "0",
+      "expected_code": "repository cache and report paths are absent and schema-2 runtime paths are present",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_windows_cutover_validation.py::WindowsCutoverValidation.test_launcher_uses_external_runtime_paths",
+      "requirement_ids": ["CR-003", "CR-007", "CNR-001"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "CW-P06",
+      "selector": "tests.test_windows_cutover_validation.WindowsCutoverValidation.test_cli_quiet_schema_and_performance_contract",
+      "scenario": "Quiet JSON report schema status and timing contract",
+      "expected_exit": "0",
+      "expected_code": "node regression passes and launcher preserves phase timings and schema-3 status contract",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_windows_cutover_validation.py::WindowsCutoverValidation.test_cli_quiet_schema_and_performance_contract",
+      "requirement_ids": ["CR-007", "CR-008", "CR-009"],
+      "timeout_seconds": 120
+    },
+    {
+      "id": "CW-N01",
+      "selector": "tests.test_windows_cutover_validation.WindowsCutoverValidation.test_source_root_failure_matrix",
+      "scenario": "Missing malformed legacy and incomplete source roots",
+      "expected_exit": "0",
+      "expected_code": "all source cases fail with inspector_root_invalid before external spawn",
+      "expected_writes": "temporary malformed sidecar fixture only",
+      "evidence_locator": "tests/test_windows_cutover_validation.py::WindowsCutoverValidation.test_source_root_failure_matrix",
+      "requirement_ids": ["CR-006", "CNR-004"],
+      "timeout_seconds": 120
+    },
+    {
+      "id": "CW-N02",
+      "selector": "tests.test_windows_cutover_validation.WindowsCutoverValidation.test_runtime_root_failure_matrix",
+      "scenario": "Missing file repository-equal and repository-child runtime roots",
+      "expected_exit": "0",
+      "expected_code": "all runtime cases fail with inspector_root_invalid and repository writes remain zero",
+      "expected_writes": "temporary file fixture only",
+      "evidence_locator": "tests/test_windows_cutover_validation.py::WindowsCutoverValidation.test_runtime_root_failure_matrix",
+      "requirement_ids": ["CR-003", "CR-006", "CNR-001"],
+      "timeout_seconds": 120
+    },
+    {
+      "id": "CW-N03",
+      "selector": "tests.test_windows_cutover_validation.WindowsCutoverValidation.test_rollback_rejects_current_drift",
+      "scenario": "Rollback refuses unrelated current hash drift",
+      "expected_exit": "0",
+      "expected_code": "rollback command returns stable blocked error and preserves unrelated bytes",
+      "expected_writes": "temporary install and backup fixture only",
+      "evidence_locator": "tests/test_windows_cutover_validation.py::WindowsCutoverValidation.test_rollback_rejects_current_drift",
+      "requirement_ids": ["CR-010", "CNR-005"],
+      "timeout_seconds": 120
+    },
+    {
+      "id": "CW-N04",
+      "selector": "tests.test_windows_cutover_validation.WindowsCutoverValidation.test_preflight_mode_has_zero_writes",
+      "scenario": "Default preflight mode is read-only",
+      "expected_exit": "0",
+      "expected_code": "preflight reports writeCount zero and fixture tree digest is unchanged",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_windows_cutover_validation.py::WindowsCutoverValidation.test_preflight_mode_has_zero_writes",
+      "requirement_ids": ["CR-001", "CR-002", "CNR-010"],
+      "timeout_seconds": 90
+    },
+    {
+      "id": "CW-N05",
+      "selector": "tests.test_windows_cutover_validation.WindowsCutoverValidation.test_data_parent_remote_boundaries",
+      "scenario": "Tracked data parent and remote boundaries",
+      "expected_exit": "0",
+      "expected_code": "forbidden tracked artifacts and remotes remain zero and parent status matches sanitized baseline",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_windows_cutover_validation.py::WindowsCutoverValidation.test_data_parent_remote_boundaries",
+      "requirement_ids": ["CR-011", "CNR-001", "CNR-002", "CNR-008", "CNR-009"],
+      "timeout_seconds": 90
+    },
+    {
+      "id": "CW-R01",
+      "selector": "tests.test_windows_cutover_validation.WindowsCutoverValidation.test_legacy_and_new_local_regression",
+      "scenario": "Legacy eight selectors and new local regression contract",
+      "expected_exit": "0",
+      "expected_code": "source check node tests migration verifier legacy Python suite and diff check all pass",
+      "expected_writes": "temporary fixtures only",
+      "evidence_locator": "tests/test_windows_cutover_validation.py::WindowsCutoverValidation.test_legacy_and_new_local_regression",
+      "requirement_ids": ["CR-003", "CR-004", "CR-006", "CR-007", "CR-008", "CR-009", "CR-010", "CR-011"],
+      "timeout_seconds": 300
+    }
+  ]
+}

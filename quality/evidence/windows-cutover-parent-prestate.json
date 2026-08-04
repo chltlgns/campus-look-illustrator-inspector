@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "campuslook-windows-cutover-parent-prestate/v1",
+  "observedAt": "2026-08-04T04:44:42Z",
+  "parentHead": "094f192be8fb4289ee549ede92bff19ff715bc06",
+  "parentPorcelainV2Sha256": "8f37502a1660d8ffda7bf90bf3fb13d39b134530411143be91425e2a327aa5e3",
+  "parentPorcelainV2LineCount": 20,
+  "sourceInventorySha256": "aecd418ecff40e9dc387fffe20fce5299943a81ef5f55f4bf88717fbafa23d2b",
+  "sourceEntryCount": 12,
+  "parentWritesPerformed": 0,
+  "rawPathsStored": false
+}

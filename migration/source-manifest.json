@@ -68,14 +68,14 @@
     {
       "path": "illustrator/install-illustrator-script.ps1",
       "sourceSha256": "756381fbe7300bbaa90eee6d6dfe56e01fdf8e6cdc4d673ef5870d9d63ac36ab",
-      "targetSha256": "b92bdb0eb101271ab9f7eba66964912850426a2fe783758cdfb9e99c351132ca",
-      "transformation": "installer now writes validated repository-root sidecar"
+      "targetSha256": "2a29d73f9672647999381597b1a6085609c4b4b96c4751c7c55070977542e9ff",
+      "transformation": "installer writes validated source/runtime schema-2 sidecar outside Git"
     },
     {
       "path": "illustrator/run-proof-check.ps1",
       "sourceSha256": "20292592a33a2f26ae8ccde8cd4e04fb72b8fa4a5991f150eb176d4e930e1e53",
-      "targetSha256": "4bf52f2fb34f217964cba363724ed87449ac9684104b92c4c2f500b959112fa1",
-      "transformation": "legacy parent absolute root replaced by environment/sidecar fail-closed resolution"
+      "targetSha256": "aec3cb2b9fcc836b5fc0b19de0a2eaf63ad2d419194fc7771b608edd8c69c745",
+      "transformation": "legacy parent absolute root replaced by fail-closed source/runtime resolution and Git-external outputs"
     }
   ],
   "excluded": [

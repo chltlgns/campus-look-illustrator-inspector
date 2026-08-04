@@ -94,24 +94,31 @@ class InspectorSplitValidation(unittest.TestCase):
         self.assertEqual(receipt["remotes"], 0)
 
     def test_environment_and_sidecar_root_resolution(self) -> None:
-        root_windows = quote_ps(windows_path(REPO))
-        environment_result = powershell_resolve(
-            f"$env:CAMPUSLOOK_ILLUSTRATOR_INSPECTOR_ROOT='{root_windows}'; "
-            "$result=Resolve-InspectorRoot -SidecarPath 'Z:\\missing-sidecar.json'; "
-            "$result | ConvertTo-Json -Compress"
-        )
-        self.assertEqual(environment_result.returncode, 0, environment_result.stderr)
-        environment_json = json.loads(environment_result.stdout.strip())
-        self.assertEqual(environment_json["Source"], "environment")
-
         with tempfile.TemporaryDirectory(prefix="campuslook-sidecar-") as temporary:
-            sidecar = Path(temporary) / "inspector-root.json"
+            temporary_path = Path(temporary)
+            runtime = temporary_path / "runtime"
+            runtime.mkdir()
+            root_windows = quote_ps(windows_path(REPO))
+            runtime_windows = quote_ps(windows_path(runtime))
+            environment_result = powershell_resolve(
+                f"$env:CAMPUSLOOK_ILLUSTRATOR_INSPECTOR_ROOT='{root_windows}'; "
+                f"$env:CAMPUSLOOK_ILLUSTRATOR_INSPECTOR_RUNTIME_ROOT='{runtime_windows}'; "
+                "$result=Resolve-InspectorRoot -SidecarPath 'Z:\\missing-sidecar.json'; "
+                "$result | ConvertTo-Json -Compress"
+            )
+            self.assertEqual(environment_result.returncode, 0, environment_result.stderr)
+            environment_json = json.loads(environment_result.stdout.strip())
+            self.assertEqual(environment_json["Source"], "environment")
+            self.assertEqual(environment_json["RuntimeSource"], "environment")
+
+            sidecar = temporary_path / "inspector-root.json"
             sidecar.write_text(
                 json.dumps(
                     {
-                        "schemaVersion": 1,
+                        "schemaVersion": 2,
                         "inspectorRoot": windows_path(REPO),
                         "wslDistribution": "Ubuntu",
+                        "runtimeRoot": windows_path(runtime),
                     }
                 ),
                 encoding="utf-8",
@@ -121,7 +128,9 @@ class InspectorSplitValidation(unittest.TestCase):
                 "$result | ConvertTo-Json -Compress"
             )
             self.assertEqual(sidecar_result.returncode, 0, sidecar_result.stderr)
-            self.assertEqual(json.loads(sidecar_result.stdout.strip())["Source"], "sidecar")
+            sidecar_json = json.loads(sidecar_result.stdout.strip())
+            self.assertEqual(sidecar_json["Source"], "sidecar")
+            self.assertEqual(sidecar_json["RuntimeSource"], "sidecar")
 
     def test_cli_schema_and_document_contract(self) -> None:
         run([str(NODE), "scripts/check-source.mjs"])
@@ -191,12 +200,17 @@ for (const item of cases) { let rejected=false; try { item(); } catch { rejected
         self.assertLess(launcher.index("Resolve-InspectorRoot"), launcher.index("New-Object Threading.Mutex"))
 
     def test_parent_and_legacy_source_prestate_unchanged(self) -> None:
-        evidence = json.loads((REPO / "quality/evidence/parent-prestate.json").read_text(encoding="utf-8"))
-        poststate = json.loads((REPO / "quality/evidence/parent-poststate.json").read_text(encoding="utf-8"))
-        self.assertEqual(poststate["parentHead"], evidence["parentHead"])
-        self.assertEqual(poststate["parentPorcelainV2Sha256"], evidence["parentPorcelainV2Sha256"])
-        self.assertEqual(poststate["sourceInventorySha256"], evidence["sourceInventorySha256"])
-        self.assertEqual(poststate["parentWritesPerformed"], 0)
+        scope_evidence_path = REPO / "quality/evidence/windows-cutover-parent-prestate.json"
+        if scope_evidence_path.is_file():
+            evidence = json.loads(scope_evidence_path.read_text(encoding="utf-8"))
+        else:
+            evidence = json.loads((REPO / "quality/evidence/parent-prestate.json").read_text(encoding="utf-8"))
+            poststate = json.loads((REPO / "quality/evidence/parent-poststate.json").read_text(encoding="utf-8"))
+            self.assertEqual(poststate["parentHead"], evidence["parentHead"])
+            self.assertEqual(poststate["parentPorcelainV2Sha256"], evidence["parentPorcelainV2Sha256"])
+            self.assertEqual(poststate["sourceInventorySha256"], evidence["sourceInventorySha256"])
+            self.assertEqual(poststate["parentWritesPerformed"], 0)
+        self.assertEqual(evidence["parentWritesPerformed"], 0)
         self.assertEqual(run([str(GIT), "-C", str(PARENT), "rev-parse", "HEAD"]).stdout.strip(), evidence["parentHead"])
         status = run([str(GIT), "-C", str(PARENT), "status", "--porcelain=v2", "--branch"]).stdout.encode()
         self.assertEqual(sha256_bytes(status), evidence["parentPorcelainV2Sha256"])

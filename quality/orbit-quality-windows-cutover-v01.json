@@ -1,0 +1,79 @@
+{
+  "schema_version": "orbit-quality-profile/v2",
+  "checks": [
+    {
+      "id": "eslint",
+      "globs": ["eslint.config.js", "eslint.config.mjs"],
+      "command": ["{eslint}", "."],
+      "version_command": ["{eslint}", "--version"],
+      "timeout_seconds": 120,
+      "requirement": "when_applicable"
+    },
+    {
+      "id": "source-lint",
+      "globs": ["*.mjs", "**/*.mjs", "*.ps1", "**/*.ps1", "*.sh", "**/*.sh"],
+      "command": ["{npm}", "run", "lint"],
+      "version_command": ["{node}", "--version"],
+      "timeout_seconds": 120,
+      "requirement": "always"
+    },
+    {
+      "id": "node-bash-powershell-syntax",
+      "globs": ["*.mjs", "**/*.mjs", "*.ps1", "**/*.ps1", "*.sh", "**/*.sh"],
+      "command": ["{npm}", "run", "check"],
+      "version_command": ["{node}", "--version"],
+      "timeout_seconds": 180,
+      "requirement": "always"
+    },
+    {
+      "id": "node-regression",
+      "globs": ["tests/*.test.mjs", "tests/**/*.test.mjs"],
+      "command": ["{npm}", "test"],
+      "version_command": ["{node}", "--version"],
+      "timeout_seconds": 180,
+      "requirement": "always"
+    },
+    {
+      "id": "migration-verifier",
+      "globs": ["migration/source-manifest.json"],
+      "command": ["{node}", "scripts/verify-migration.mjs", "--source-root", "/home/doggabiya/campus-look-ops/일러스트 확인용 스크립트"],
+      "version_command": ["{node}", "--version"],
+      "timeout_seconds": 120,
+      "requirement": "always"
+    },
+    {
+      "id": "legacy-locked-validation-matrix",
+      "globs": ["quality/orbit-validation-inspector-split-v01.json"],
+      "command": ["{python}", "/mnt/d/AI-Workflow/cli/orbit.py", "validation", "run", "--repo", ".", "--profile", "quality/orbit-validation-inspector-split-v01.json", "--json"],
+      "version_command": ["{python}", "--version"],
+      "timeout_seconds": 900,
+      "requirement": "always",
+      "evidence": "orbit-validation-receipt/v1"
+    },
+    {
+      "id": "cutover-locked-validation-matrix",
+      "globs": ["quality/orbit-validation-windows-cutover-v01.json"],
+      "command": ["{python}", "/mnt/d/AI-Workflow/cli/orbit.py", "validation", "run", "--repo", ".", "--profile", "quality/orbit-validation-windows-cutover-v01.json", "--json"],
+      "version_command": ["{python}", "--version"],
+      "timeout_seconds": 1200,
+      "requirement": "always",
+      "evidence": "orbit-validation-receipt/v1"
+    },
+    {
+      "id": "approved-base-ancestry",
+      "globs": ["*", "**/*"],
+      "command": ["{git}", "merge-base", "--is-ancestor", "d93a0157d8e7d757ed99f0cf7ba74a9af1c35300", "HEAD"],
+      "version_command": ["{git}", "--version"],
+      "timeout_seconds": 60,
+      "requirement": "always"
+    },
+    {
+      "id": "patch-hygiene",
+      "globs": ["*", "**/*"],
+      "command": ["{git}", "diff", "--check", "d93a0157d8e7d757ed99f0cf7ba74a9af1c35300", "HEAD"],
+      "version_command": ["{git}", "--version"],
+      "timeout_seconds": 60,
+      "requirement": "always"
+    }
+  ]
+}

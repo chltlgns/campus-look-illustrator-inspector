@@ -77,10 +77,14 @@ test('portable root and integration documentation are fail-closed', () => {
   const installer = fs.readFileSync(path.join(root, 'illustrator/install-illustrator-script.ps1'), 'utf8');
   const integration = fs.readFileSync(path.join(root, 'docs/integration.md'), 'utf8');
   assert.match(resolver, /CAMPUSLOOK_ILLUSTRATOR_INSPECTOR_ROOT/);
+  assert.match(resolver, /CAMPUSLOOK_ILLUSTRATOR_INSPECTOR_RUNTIME_ROOT/);
   assert.match(resolver, /\$source = 'sidecar'/);
   assert.match(resolver, /inspector_root_invalid/);
   assert.doesNotMatch(launcher, /\/home\/doggabiya\/campus-look-ops/);
+  assert.doesNotMatch(launcher, /\$workspaceRoot\/(?:reports|\.cache)/);
+  assert.match(launcher, /\$runtimeRoot\/reports/);
   assert.match(installer, /inspector-root\.json/);
+  assert.match(installer, /schemaVersion = 2/);
   assert.match(integration, /campuslook-inspector-integration\/v1/);
   assert.match(integration, /PASS.*REVIEW.*FAIL/s);
   assert.match(integration, /180초/);

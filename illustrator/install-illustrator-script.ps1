@@ -2,6 +2,7 @@
 param(
     [switch]$NoElevation,
     [string]$InspectorRoot = '',
+    [string]$RuntimeRoot = '',
     [string]$WslDistribution = 'Ubuntu'
 )
 
@@ -20,6 +21,15 @@ function Copy-WithUtf8Bom {
     [IO.File]::WriteAllText($Destination, $text, [Text.UTF8Encoding]::new($true))
 }
 
+$localRoot = Join-Path $env:LOCALAPPDATA 'Campuslook\IllustratorProofCheck'
+$runtimeCandidate = if ([string]::IsNullOrWhiteSpace($RuntimeRoot)) {
+    Join-Path $localRoot 'runtime'
+}
+else {
+    $RuntimeRoot
+}
+[IO.Directory]::CreateDirectory($runtimeCandidate) | Out-Null
+
 $rootResolverSource = Join-Path $PSScriptRoot 'inspector-root.ps1'
 if (-not (Test-Path -LiteralPath $rootResolverSource -PathType Leaf)) {
     throw 'inspector_root_invalid: root resolver를 찾을 수 없습니다.'
@@ -33,9 +43,9 @@ else {
 }
 $rootSettings = Resolve-InspectorRoot `
     -ExplicitRoot $repositoryCandidate `
+    -ExplicitRuntimeRoot $runtimeCandidate `
     -ExplicitWslDistribution $WslDistribution
 
-$localRoot = Join-Path $env:LOCALAPPDATA 'Campuslook\IllustratorProofCheck'
 [IO.Directory]::CreateDirectory($localRoot) | Out-Null
 
 $launcherSource = Join-Path $PSScriptRoot 'run-proof-check.ps1'
@@ -58,9 +68,10 @@ Copy-WithUtf8Bom -Source $batchCheckerSource -Destination $batchCheckerInstalled
 Copy-WithUtf8Bom -Source $jsxSource -Destination $jsxStaged
 Copy-WithUtf8Bom -Source $rootResolverSource -Destination $rootResolverInstalled
 $rootSidecar = [ordered]@{
-    schemaVersion = 1
+    schemaVersion = 2
     inspectorRoot = [string]$rootSettings.WindowsRoot
     wslDistribution = [string]$rootSettings.WslDistribution
+    runtimeRoot = [string]$rootSettings.RuntimeWindowsRoot
 } | ConvertTo-Json -Depth 3
 [IO.File]::WriteAllText($rootSidecarInstalled, "$rootSidecar`n", [Text.UTF8Encoding]::new($false))
 
@@ -142,6 +153,7 @@ Copy-Item -LiteralPath '$sourceEscaped' -Destination '$destinationEscaped' -Forc
     batchChecker = $batchCheckerInstalled
     rootResolver = $rootResolverInstalled
     rootSidecar = $rootSidecarInstalled
+    runtimeRoot = [string]$rootSettings.RuntimeWindowsRoot
     jsx = $jsxDestination
     shortcut = $shortcutPath
     hotkey = $shortcut.Hotkey

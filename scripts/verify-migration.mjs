@@ -108,7 +108,11 @@ export function verifyMigration({
     const absolutePath = path.join(repoRoot, relativePath);
     validateRelativePath(relativePath, fs.statSync(absolutePath).size);
   }
-  const productPaths = [...SOURCE_INVENTORY.map(([entry]) => entry), 'illustrator/inspector-root.ps1'];
+  const productPaths = [
+    ...SOURCE_INVENTORY.map(([entry]) => entry),
+    'illustrator/inspector-root.ps1',
+    'illustrator/windows-cutover.ps1',
+  ];
   for (const relativePath of productPaths) {
     validateProductContent(relativePath, fs.readFileSync(path.join(repoRoot, relativePath), 'utf8'));
   }

@@ -8,6 +8,7 @@ param(
     [ValidateRange(100, 300)][int]$RenderScale = 100,
     [ValidateSet('analysis-crop', 'full-artboard')][string]$CaptureMode = 'analysis-crop',
     [string]$InspectorRoot = '',
+    [string]$RuntimeRoot = '',
     [string]$PaletteFile = '',
     [string]$WslDistribution = ''
 )
@@ -20,6 +21,8 @@ chcp 65001 | Out-Null
 $title = '캠퍼스룩 야구점퍼 시안 검사'
 $workspaceRoot = ''
 $workspaceWindowsRoot = ''
+$runtimeRoot = ''
+$runtimeWindowsRoot = ''
 $checkerPath = ''
 $palettePath = ''
 $paletteWindowsPath = ''
@@ -95,7 +98,7 @@ function Get-PaletteCachePath {
     }
 
     $paletteFile = Get-Item -LiteralPath $paletteWindowsPath
-    $identityPath = "$workspaceRoot/.cache/palette/identity.json"
+    $identityPath = "$runtimeRoot/cache/palette/identity.json"
     $identityWindowsPath = Convert-ToWindowsPath -LinuxPath $identityPath
     $paletteHash = ''
     if (Test-Path -LiteralPath $identityWindowsPath -PathType Leaf) {
@@ -122,7 +125,7 @@ function Get-PaletteCachePath {
         } | ConvertTo-Json -Compress
         [IO.File]::WriteAllText($identityWindowsPath, $identityData, [Text.UTF8Encoding]::new($false))
     }
-    $cacheDirectory = "$workspaceRoot/.cache/palette/$paletteHash"
+    $cacheDirectory = "$runtimeRoot/cache/palette/$paletteHash"
     $cachePng = "$cacheDirectory/full-artwork.png"
     $cachePngWindows = Convert-ToWindowsPath -LinuxPath $cachePng
     $cacheDirectoryWindows = Convert-ToWindowsPath -LinuxPath $cacheDirectory
@@ -164,11 +167,14 @@ try {
     . $rootResolver
     $rootSettings = Resolve-InspectorRoot `
         -ExplicitRoot $InspectorRoot `
+        -ExplicitRuntimeRoot $RuntimeRoot `
         -ExplicitWslDistribution $WslDistribution `
         -SidecarPath (Join-Path $PSScriptRoot 'inspector-root.json')
     $workspaceWindowsRoot = [string]$rootSettings.WindowsRoot
+    $runtimeWindowsRoot = [string]$rootSettings.RuntimeWindowsRoot
     $distribution = [string]$rootSettings.WslDistribution
     $workspaceRoot = Convert-ToWslPath -WindowsPath $workspaceWindowsRoot
+    $runtimeRoot = Convert-ToWslPath -WindowsPath $runtimeWindowsRoot
     $checkerPath = "$workspaceRoot/check-proof.sh"
 
     if (-not [string]::IsNullOrWhiteSpace($PaletteFile)) {
@@ -218,11 +224,11 @@ try {
 
     if ($UseActiveDocument) {
         if ([string]::IsNullOrWhiteSpace($InputPath)) {
-            $proofOutputPath = "$workspaceRoot/.cache/active-proof"
+            $proofOutputPath = "$runtimeRoot/cache/active-proof"
         }
         else {
             $stem = [IO.Path]::GetFileNameWithoutExtension($InputPath) -replace '[/\\:\x00-\x1F]', '_'
-            $outputPath = "$workspaceRoot/reports/illustrator/$stem"
+            $outputPath = "$runtimeRoot/reports/illustrator/$stem"
             $proofOutputPath = "$outputPath/proof"
         }
         $proofOutputWindows = Convert-ToWindowsPath -LinuxPath $proofOutputPath
@@ -258,7 +264,7 @@ try {
                 throw '현재 Illustrator 문서를 AI 파일로 먼저 저장한 다음 검사해주세요.'
             }
             $stem = [IO.Path]::GetFileNameWithoutExtension($documentName) -replace '[/\\:\x00-\x1F]', '_'
-            $outputPath = "$workspaceRoot/reports/illustrator/$stem"
+            $outputPath = "$runtimeRoot/reports/illustrator/$stem"
         }
 
         $analyzerStopwatch = [Diagnostics.Stopwatch]::StartNew()
@@ -274,7 +280,7 @@ try {
     }
     else {
         $stem = [IO.Path]::GetFileNameWithoutExtension($InputPath) -replace '[/\\:\x00-\x1F]', '_'
-        $outputPath = "$workspaceRoot/reports/illustrator/$stem"
+        $outputPath = "$runtimeRoot/reports/illustrator/$stem"
         $wslInputPath = Convert-ToWslPath -WindowsPath $InputPath
         $checkerOutput = & wsl.exe -d $distribution -- $checkerPath $wslInputPath $palettePath $outputPath 2>&1
         $checkerExitCode = $LASTEXITCODE

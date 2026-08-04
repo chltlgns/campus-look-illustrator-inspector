@@ -5,12 +5,44 @@ function Resolve-InspectorRoot {
     param(
         [string]$ExplicitRoot = '',
         [string]$SidecarPath = '',
-        [string]$ExplicitWslDistribution = ''
+        [string]$ExplicitWslDistribution = '',
+        [string]$ExplicitRuntimeRoot = ''
     )
 
     $candidateRoot = ''
+    $candidateRuntimeRoot = ''
     $distribution = ''
     $source = ''
+    $runtimeSource = ''
+    $sidecar = $null
+
+    $sourceNeedsSidecar = (
+        [string]::IsNullOrWhiteSpace($ExplicitRoot) `
+        -and [string]::IsNullOrWhiteSpace($env:CAMPUSLOOK_ILLUSTRATOR_INSPECTOR_ROOT)
+    )
+    $runtimeNeedsSidecar = (
+        [string]::IsNullOrWhiteSpace($ExplicitRuntimeRoot) `
+        -and [string]::IsNullOrWhiteSpace($env:CAMPUSLOOK_ILLUSTRATOR_INSPECTOR_RUNTIME_ROOT)
+    )
+    if ($sourceNeedsSidecar -or $runtimeNeedsSidecar) {
+        if ([string]::IsNullOrWhiteSpace($SidecarPath) -or -not (Test-Path -LiteralPath $SidecarPath -PathType Leaf)) {
+            throw "inspector_root_invalid: CAMPUSLOOK_ILLUSTRATOR_INSPECTOR_ROOT, CAMPUSLOOK_ILLUSTRATOR_INSPECTOR_RUNTIME_ROOT 또는 installer sidecar가 필요합니다."
+        }
+        try {
+            $sidecar = [IO.File]::ReadAllText($SidecarPath, [Text.UTF8Encoding]::new($false)) | ConvertFrom-Json
+        }
+        catch {
+            throw "inspector_root_invalid: sidecar JSON을 읽을 수 없습니다."
+        }
+        if (
+            -not ($sidecar.PSObject.Properties.Name -contains 'schemaVersion') `
+            -or [int]$sidecar.schemaVersion -ne 2 `
+            -or -not ($sidecar.PSObject.Properties.Name -contains 'inspectorRoot') `
+            -or -not ($sidecar.PSObject.Properties.Name -contains 'runtimeRoot')
+        ) {
+            throw "inspector_root_invalid: sidecar 형식이 올바르지 않습니다."
+        }
+    }
 
     if (-not [string]::IsNullOrWhiteSpace($ExplicitRoot)) {
         $candidateRoot = $ExplicitRoot
@@ -22,32 +54,32 @@ function Resolve-InspectorRoot {
         $distribution = $env:CAMPUSLOOK_ILLUSTRATOR_INSPECTOR_WSL_DISTRIBUTION
         $source = 'environment'
     }
-    elseif (-not [string]::IsNullOrWhiteSpace($SidecarPath) -and (Test-Path -LiteralPath $SidecarPath -PathType Leaf)) {
-        try {
-            $sidecar = [IO.File]::ReadAllText($SidecarPath, [Text.UTF8Encoding]::new($false)) | ConvertFrom-Json
-        }
-        catch {
-            throw "inspector_root_invalid: sidecar JSON을 읽을 수 없습니다."
-        }
-        if (
-            -not ($sidecar.PSObject.Properties.Name -contains 'schemaVersion') `
-            -or [int]$sidecar.schemaVersion -ne 1 `
-            -or -not ($sidecar.PSObject.Properties.Name -contains 'inspectorRoot')
-        ) {
-            throw "inspector_root_invalid: sidecar 형식이 올바르지 않습니다."
-        }
+    else {
         $candidateRoot = [string]$sidecar.inspectorRoot
         if ($sidecar.PSObject.Properties.Name -contains 'wslDistribution') {
             $distribution = [string]$sidecar.wslDistribution
         }
         $source = 'sidecar'
     }
+
+    if (-not [string]::IsNullOrWhiteSpace($ExplicitRuntimeRoot)) {
+        $candidateRuntimeRoot = $ExplicitRuntimeRoot
+        $runtimeSource = 'parameter'
+    }
+    elseif (-not [string]::IsNullOrWhiteSpace($env:CAMPUSLOOK_ILLUSTRATOR_INSPECTOR_RUNTIME_ROOT)) {
+        $candidateRuntimeRoot = $env:CAMPUSLOOK_ILLUSTRATOR_INSPECTOR_RUNTIME_ROOT
+        $runtimeSource = 'environment'
+    }
     else {
-        throw "inspector_root_invalid: CAMPUSLOOK_ILLUSTRATOR_INSPECTOR_ROOT 또는 installer sidecar가 필요합니다."
+        $candidateRuntimeRoot = [string]$sidecar.runtimeRoot
+        $runtimeSource = 'sidecar'
     }
 
     if ([string]::IsNullOrWhiteSpace($candidateRoot)) {
         throw "inspector_root_invalid: root가 비어 있습니다."
+    }
+    if ([string]::IsNullOrWhiteSpace($candidateRuntimeRoot)) {
+        throw "inspector_root_invalid: runtime root가 비어 있습니다."
     }
     if ([string]::IsNullOrWhiteSpace($distribution)) {
         $distribution = 'Ubuntu'
@@ -89,9 +121,29 @@ function Resolve-InspectorRoot {
         throw "inspector_root_invalid: 저장소 identity가 일치하지 않습니다."
     }
 
+    try {
+        $runtimeItem = Get-Item -LiteralPath $candidateRuntimeRoot -ErrorAction Stop
+    }
+    catch {
+        throw "inspector_root_invalid: runtime root 폴더를 찾을 수 없습니다."
+    }
+    if (-not $runtimeItem.PSIsContainer) {
+        throw "inspector_root_invalid: runtime root가 폴더가 아닙니다."
+    }
+    $runtimeRoot = $runtimeItem.FullName.TrimEnd([char[]]@('\', '/'))
+    $rootPrefix = "$root$([IO.Path]::DirectorySeparatorChar)"
+    if (
+        $runtimeRoot.Equals($root, [StringComparison]::OrdinalIgnoreCase) `
+        -or $runtimeRoot.StartsWith($rootPrefix, [StringComparison]::OrdinalIgnoreCase)
+    ) {
+        throw "inspector_root_invalid: runtime root는 source repository 밖에 있어야 합니다."
+    }
+
     [PSCustomObject][ordered]@{
         WindowsRoot = $root
+        RuntimeWindowsRoot = $runtimeRoot
         WslDistribution = $distribution
         Source = $source
+        RuntimeSource = $runtimeSource
     }
 }

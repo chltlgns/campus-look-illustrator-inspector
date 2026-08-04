@@ -21,6 +21,7 @@ const productSources = [
   'illustrator/inspector-root.ps1',
   'illustrator/install-illustrator-script.ps1',
   'illustrator/run-proof-check.ps1',
+  'illustrator/windows-cutover.ps1',
 ];
 
 function fail(message) {
