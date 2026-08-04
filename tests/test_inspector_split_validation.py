@@ -17,7 +17,6 @@ USER_HOME = Path(os.path.expanduser("~"))
 PARENT = USER_HOME / "campus-look-ops"
 LEGACY_SOURCE = PARENT / "일러스트 확인용 스크립트"
 NODE = Path("/usr/local/bin/node")
-NPM = Path("/usr/local/bin/npm")
 GIT = Path("/usr/bin/git")
 BASH = Path("/usr/bin/bash")
 WSLPATH = Path("/usr/bin/wslpath")
@@ -208,8 +207,8 @@ for (const item of cases) { let rejected=false; try { item(); } catch { rejected
             self.assertEqual(sha256_bytes(source_bytes), entry["sourceSha256"])
 
     def test_clean_local_regression_contract(self) -> None:
-        run([str(NPM), "run", "check"])
-        run([str(NPM), "test"])
+        run([str(NODE), "scripts/check-source.mjs"])
+        run([str(NODE), "--test", "tests/inspector-split-validation.test.mjs"])
         run([str(NODE), "scripts/verify-migration.mjs"])
         run([str(GIT), "diff", "--check", "d68d1fc65606fe9ae62c3655ea643f90d8c3ee3a", "HEAD"])
         self.assertEqual(run([str(GIT), "remote"]).stdout.strip(), "")

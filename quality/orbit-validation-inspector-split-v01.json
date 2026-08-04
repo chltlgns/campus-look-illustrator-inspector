@@ -86,7 +86,7 @@
       "selector": "tests.test_inspector_split_validation.InspectorSplitValidation.test_clean_local_regression_contract",
       "scenario": "Clean local source test migration and patch regression",
       "expected_exit": "0",
-      "expected_code": "npm check, npm test, migration verifier and diff check all pass",
+      "expected_code": "source check, node test, migration verifier and diff check all pass",
       "expected_writes": "zero",
       "evidence_locator": "tests/test_inspector_split_validation.py::InspectorSplitValidation.test_clean_local_regression_contract",
       "requirement_ids": ["FR-001", "FR-002", "FR-003", "FR-004", "FR-005", "FR-006", "FR-007", "NFR-001", "NFR-002", "NFR-003", "NFR-004", "NFR-005", "NFR-006", "NFR-007", "NFR-008"],
