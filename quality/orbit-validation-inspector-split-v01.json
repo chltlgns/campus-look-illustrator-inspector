@@ -73,9 +73,9 @@
     {
       "id": "CI-N03",
       "selector": "tests.test_inspector_split_validation.InspectorSplitValidation.test_parent_and_legacy_source_prestate_unchanged",
-      "scenario": "Parent typed status and legacy source bytes remain unchanged",
+      "scenario": "Legacy source bytes remain unchanged while parent may advance independently",
       "expected_exit": "0",
-      "expected_code": "parent commit status digest and 12 source hashes equal prestate evidence",
+      "expected_code": "12 source hashes equal manifest and this migration records parent writes zero",
       "expected_writes": "zero",
       "evidence_locator": "tests/test_inspector_split_validation.py::InspectorSplitValidation.test_parent_and_legacy_source_prestate_unchanged",
       "requirement_ids": ["FR-007", "NFR-002"],

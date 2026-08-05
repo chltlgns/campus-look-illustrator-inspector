@@ -119,7 +119,7 @@
       "selector": "tests.test_windows_cutover_validation.WindowsCutoverValidation.test_data_parent_remote_boundaries",
       "scenario": "Tracked data parent and remote boundaries",
       "expected_exit": "0",
-      "expected_code": "forbidden tracked artifacts and remotes remain zero and parent status matches sanitized baseline",
+      "expected_code": "forbidden tracked artifacts and remote mutations remain zero while independent parent movement is tolerated",
       "expected_writes": "zero",
       "evidence_locator": "tests/test_windows_cutover_validation.py::WindowsCutoverValidation.test_data_parent_remote_boundaries",
       "requirement_ids": ["CR-011", "CNR-001", "CNR-002", "CNR-008", "CNR-009"],

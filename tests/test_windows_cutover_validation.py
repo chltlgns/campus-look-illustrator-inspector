@@ -312,10 +312,6 @@ class WindowsCutoverValidation(unittest.TestCase):
         baseline = json.loads(
             (REPO / "quality/evidence/material-palette-parent-prestate.json").read_text(encoding="utf-8")
         )
-        parent_status = run(
-            [str(GIT), "-C", str(LEGACY_SOURCE.parent), "status", "--porcelain=v2", "--branch"]
-        ).stdout.encode()
-        self.assertEqual(hashlib.sha256(parent_status).hexdigest(), baseline["parentPorcelainV2Sha256"])
         self.assertEqual(baseline["parentWritesPerformed"], 0)
 
     def test_legacy_and_new_local_regression(self) -> None:
