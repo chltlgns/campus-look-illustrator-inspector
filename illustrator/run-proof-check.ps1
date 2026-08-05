@@ -62,6 +62,34 @@ function Show-Dialog {
     return $result -eq [Windows.Forms.DialogResult]::Yes
 }
 
+function Get-MaterialCatalogDisplay {
+    param([AllowNull()][object]$MaterialCheck)
+
+    if ($null -eq $MaterialCheck) {
+        return '미확정'
+    }
+
+    $matchedCatalogProperty = $MaterialCheck.PSObject.Properties['matchedCatalog']
+    if ($null -ne $matchedCatalogProperty -and $null -ne $matchedCatalogProperty.Value) {
+        $roleProperty = $matchedCatalogProperty.Value.PSObject.Properties['role']
+        if (
+            $null -ne $roleProperty `
+            -and -not [string]::IsNullOrWhiteSpace([string]$roleProperty.Value)
+        ) {
+            return [string]$roleProperty.Value
+        }
+    }
+
+    $decisionCodeProperty = $MaterialCheck.PSObject.Properties['decisionCode']
+    if (
+        $null -ne $decisionCodeProperty `
+        -and -not [string]::IsNullOrWhiteSpace([string]$decisionCodeProperty.Value)
+    ) {
+        return "미확정 ($($decisionCodeProperty.Value))"
+    }
+    return '미확정'
+}
+
 function Convert-ToWslPath {
     param([Parameter(Mandatory = $true)][string]$WindowsPath)
 
@@ -449,6 +477,7 @@ $($resultLines -join "`r`n")
 "@
     }
     else {
+        $bodyCatalogText = Get-MaterialCatalogDisplay -MaterialCheck $report.materialCheck
         $message = @"
 검사가 완료됐습니다.
 
@@ -458,7 +487,7 @@ $($resultLines -join "`r`n")
 겉감 표기: $($report.fields.shell)
 몸통 대표색: $($report.visual.body.hex)
 원단·번호: $($report.materialCheck.status)
-몸통 catalog: $($report.materialCheck.matchedCatalog.role)
+몸통 catalog: $bodyCatalogText
 소매: $($report.sleeveCheck.status)
 소매 판정코드: $($report.sleeveCheck.decisionCode)
 검사 시간: ${elapsedSeconds}초

@@ -1,0 +1,63 @@
+{
+  "schema_version": "orbit-validation-profile/v1",
+  "profile_id": "campuslook-illustrator-inspector-launcher-review-summary-v05",
+  "locked_id_count": 5,
+  "locked_id_sha256": "cef6bf3fd419fdb281a3be77dfbd6649f788d3349bbb9d9243b0d2a27672c5f1",
+  "rows": [
+    {
+      "id": "LR-P01",
+      "selector": "tests.test_launcher_review_summary_validation.LauncherReviewSummaryValidation.test_null_catalog_review_is_rendered_as_unresolved",
+      "scenario": "Normal cross-generation REVIEW has no single matched catalog",
+      "expected_exit": "0",
+      "expected_code": "미확정 (cross_generation_ambiguous)",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_launcher_review_summary_validation.py::LauncherReviewSummaryValidation.test_null_catalog_review_is_rendered_as_unresolved",
+      "requirement_ids": ["REQ-LR-001", "REQ-NFR-001"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "LR-P02",
+      "selector": "tests.test_launcher_review_summary_validation.LauncherReviewSummaryValidation.test_non_null_catalog_preserves_role",
+      "scenario": "Existing matched catalog role remains unchanged",
+      "expected_exit": "0",
+      "expected_code": "current-body",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_launcher_review_summary_validation.py::LauncherReviewSummaryValidation.test_non_null_catalog_preserves_role",
+      "requirement_ids": ["REQ-LR-002"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "LR-P03",
+      "selector": "tests.test_launcher_review_summary_validation.LauncherReviewSummaryValidation.test_missing_material_check_falls_back_without_error",
+      "scenario": "Missing decision metadata fails soft without a property error",
+      "expected_exit": "0",
+      "expected_code": "미확정",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_launcher_review_summary_validation.py::LauncherReviewSummaryValidation.test_missing_material_check_falls_back_without_error",
+      "requirement_ids": ["REQ-LR-001", "REQ-NFR-001"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "LR-R01",
+      "selector": "tests.test_launcher_review_summary_validation.LauncherReviewSummaryValidation.test_launcher_message_uses_production_null_safe_projection",
+      "scenario": "Single-design message uses the production null-safe projection",
+      "expected_exit": "0",
+      "expected_code": "direct nullable role access absent",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_launcher_review_summary_validation.py::LauncherReviewSummaryValidation.test_launcher_message_uses_production_null_safe_projection",
+      "requirement_ids": ["REQ-LR-001", "REQ-LR-002"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "LR-R02",
+      "selector": "tests.test_launcher_review_summary_validation.LauncherReviewSummaryValidation.test_catalog_and_schema_contract_remain_unchanged",
+      "scenario": "Catalog evaluator and schema remain byte-equivalent to approved base",
+      "expected_exit": "0",
+      "expected_code": "schema 4 and zero approved-scope diff",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_launcher_review_summary_validation.py::LauncherReviewSummaryValidation.test_catalog_and_schema_contract_remain_unchanged",
+      "requirement_ids": ["REQ-LR-005", "REQ-NFR-004"],
+      "timeout_seconds": 60
+    }
+  ]
+}

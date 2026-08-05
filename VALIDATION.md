@@ -22,6 +22,7 @@ npm run check && npm test && npm run migration:verify
 - 현행·구형 body generation 분리, cross-generation·duplicate reference 모호성
 - sleeve supplier/family/finish/number/color exact·generic·미등록 판정
 - role+source SHA-256 cache, full-mode role 누락·hash drift fail-closed
+- 단일 시안 REVIEW의 null `matchedCatalog`가 `미확정 (decisionCode)`로 표시되고 기존 role이 보존되는 launcher projection
 - 독립 Git/ORBIT 경계와 기존 parent/source pre-state 불변성
 
 PowerShell 문법 검사는 WSL에서 `/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe` 또는 `POWERSHELL_EXE`를 사용합니다. 실제 Illustrator COM, 설치기, 단축키, 네트워크는 실행하지 않습니다.
@@ -46,6 +47,8 @@ Windows 전환 candidate는 `quality/orbit-validation-windows-cutover-v01.json`�
 drive-path 실제 활성화 복구 candidate는 `quality/orbit-validation-windows-drive-path-recovery-v03.json`의 `DP-P01`, `DP-P02`, `DP-N01`, `DP-R01` 4개를 추가합니다. 공백 없는 LocalAppData drive path, 공백·Unicode drive path, drive-relative fail-closed, 기존 UNC·resolver·rollback 회귀를 고정합니다. 전체 locked validation 수는 8 + 12 + 6 + 4 = 30개입니다.
 
 현행·구형 원단과 소매 catalog candidate는 `quality/orbit-validation-legacy-material-palette-v04.json`의 `MP-P01`~`MP-P03`, `SL-P01`~`SL-P02`, `MP-N01`~`MP-N02`, `SL-N01`, `MP-R01`~`MP-R02` 10개를 추가합니다. 전체 locked validation 수는 8 + 12 + 6 + 4 + 10 = 40개입니다. fixture는 임시 synthetic JSON만 만들며 실제 palette AI/PNG나 고객 파일을 사용하지 않습니다.
+
+REVIEW launcher hardening candidate는 `quality/orbit-validation-launcher-review-summary-v05.json`의 `LR-P01`~`LR-P03`, `LR-R01`~`LR-R02` 5개를 추가합니다. `orbit-test-execution-receipt/v1`이 전체 Python suite를 정확히 한 번 실행하고 다섯 validation row는 그 공유 execution digest를 참조합니다. 실제 Illustrator COM·AI·LocalAppData는 candidate Quality에서 변경하지 않습니다.
 
 ## 수행하지 않은 검증
 
