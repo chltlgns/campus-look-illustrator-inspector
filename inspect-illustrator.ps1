@@ -154,6 +154,7 @@ try {
     }
 
     $document = $illustrator.ActiveDocument
+    $fullArtworkBounds = Get-FullArtworkBounds -Document $document
 
     $artboards = @()
     for ($index = 1; $index -le $document.Artboards.Count; $index += 1) {
@@ -207,6 +208,34 @@ try {
         }
     }
 
+    # 구형 TR·소매 원단판은 고정 grid가 아니므로 label 중심을 포함하는
+    # 가장 작은 filled vector path를 catalog swatch로 연결할 수 있게 관찰한다.
+    $paths = @()
+    for ($index = 1; $index -le $document.PathItems.Count; $index += 1) {
+        try {
+            $pathItem = $document.PathItems.Item($index)
+            if ($pathItem.Hidden) {
+                continue
+            }
+            $bounds = [double[]](Get-NumericBounds -Item $pathItem)
+            $paths += [ordered]@{
+                index = $index - 1
+                name = [string]$pathItem.Name
+                bounds = $bounds
+                filled = [bool]$pathItem.Filled
+                clipping = [bool]$pathItem.Clipping
+                opacity = [double]$pathItem.Opacity
+                layer = [string]$pathItem.Layer.Name
+            }
+        }
+        catch {
+            $paths += [ordered]@{
+                index = $index - 1
+                error = $_.Exception.Message
+            }
+        }
+    }
+
     $documentDisplayName = if ([string]::IsNullOrWhiteSpace($SourceDisplayName)) {
         [string]$document.Name
     }
@@ -233,6 +262,8 @@ try {
         artboards = $artboards
         layers = $layers
         texts = $texts
+        paths = $paths
+        fullArtworkBounds = $fullArtworkBounds
     }
 
     $json = $inspection | ConvertTo-Json -Depth 8
@@ -253,10 +284,9 @@ try {
     }
 
     if ($ExportFullArtwork) {
-        $fullBounds = Get-FullArtworkBounds -Document $document
-        if ($null -ne $fullBounds) {
+        if ($null -ne $fullArtworkBounds) {
             $originalFirstArtboardRect = @($document.Artboards.Item(1).ArtboardRect)
-            $document.Artboards.Item(1).ArtboardRect = $fullBounds
+            $document.Artboards.Item(1).ArtboardRect = $fullArtworkBounds
             $document.Artboards.SetActiveArtboardIndex(0)
             $outputBase = Join-Path $OutputDirectory 'full-artwork'
             $document.Export($outputBase, 5, $pngOptions)

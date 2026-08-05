@@ -8,7 +8,7 @@
     {
       "path": "analyze-proof.mjs",
       "sourceSha256": "e77df8e7213a6a255e51d50d071aab9a1b6429192fabebcf79445a49c902877d",
-      "targetSha256": "e77df8e7213a6a255e51d50d071aab9a1b6429192fabebcf79445a49c902877d",
+      "targetSha256": "371d86165d86472afb31caf18b9e9d2af645e13d3f572c6f95b007daa47ff188",
       "transformation": "byte-identical source copy"
     },
     {
@@ -32,13 +32,13 @@
     {
       "path": "check-proof.sh",
       "sourceSha256": "bbac801d323bb9806fcda20ce549d35a9daeee92898f033910390baeab197692",
-      "targetSha256": "1487a997d728caf971ad8268a312a61cd5b71a37aa4d1f4b4676935624c39ddc",
+      "targetSha256": "d0303fa986df5837de942aa77dcb9230e2da8166658e22afadae873260c36c60",
       "transformation": "replaced machine-specific palette default with explicit argument or environment"
     },
     {
       "path": "inspect-illustrator.ps1",
       "sourceSha256": "43d77c786164e60fbcc45737a3c2a151d3c3323f5a14ce356c3a5ccd2a3c5afe",
-      "targetSha256": "43d77c786164e60fbcc45737a3c2a151d3c3323f5a14ce356c3a5ccd2a3c5afe",
+      "targetSha256": "0a281c170bf07fff52405c4393c8cdefcc11073935908dcabe98318fe0636ca4",
       "transformation": "byte-identical source copy"
     },
     {
@@ -68,13 +68,13 @@
     {
       "path": "illustrator/install-illustrator-script.ps1",
       "sourceSha256": "756381fbe7300bbaa90eee6d6dfe56e01fdf8e6cdc4d673ef5870d9d63ac36ab",
-      "targetSha256": "2a29d73f9672647999381597b1a6085609c4b4b96c4751c7c55070977542e9ff",
-      "transformation": "installer writes validated source/runtime schema-2 sidecar outside Git"
+      "targetSha256": "984afc49b8ace36eeecc6beba8d5686c9ae352ffb04532217e8edf8ae7c74ff3",
+      "transformation": "installer now writes validated repository-root sidecar"
     },
     {
       "path": "illustrator/run-proof-check.ps1",
       "sourceSha256": "20292592a33a2f26ae8ccde8cd4e04fb72b8fa4a5991f150eb176d4e930e1e53",
-      "targetSha256": "3af9f12735630db34f0c76707b6aca19761024a369c871587e0aa28cb8e13e8e",
+      "targetSha256": "56ff2620f4a4bab7b596dcaf6cb495f158078913e1eba3a946309e68ee0325d5",
       "transformation": "legacy parent absolute root replaced by shared fail-closed source/runtime resolution, validated WSL UNC and drive conversion, and Git-external outputs"
     }
   ],

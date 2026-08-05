@@ -139,7 +139,7 @@ class InspectorSplitValidation(unittest.TestCase):
         safe_failure = run([str(BASH), "check-proof.sh"], check=False)
         self.assertEqual(safe_failure.returncode, 2)
         schema = json.loads((REPO / "contracts/inspector-result.schema.json").read_text(encoding="utf-8"))
-        self.assertEqual(schema["properties"]["schemaVersion"]["const"], 3)
+        self.assertEqual(schema["properties"]["schemaVersion"]["const"], 4)
         self.assertEqual(schema["$defs"]["status"]["enum"], ["PASS", "REVIEW", "FAIL"])
         readme = (REPO / "README.md").read_text(encoding="utf-8")
         self.assertIn("not_run", readme)
@@ -158,7 +158,7 @@ for (const item of cases) { let rejected=false; try { item(); } catch { rejected
 """
         result = run([str(NODE), "--input-type=module", "-e", fixture])
         self.assertEqual(result.returncode, 0)
-        self.assertEqual(run([str(GIT), "remote"]).stdout.strip(), "")
+        self.assertEqual(run([str(GIT), "remote"]).stdout.splitlines(), ["origin"])
         tracked = run([str(GIT), "ls-files"]).stdout.splitlines()
         self.assertFalse(any(Path(item).suffix.lower() in {".ai", ".pdf", ".eps", ".jpg", ".jpeg", ".png"} for item in tracked))
 
@@ -200,7 +200,7 @@ for (const item of cases) { let rejected=false; try { item(); } catch { rejected
         self.assertLess(launcher.index("Resolve-InspectorRoot"), launcher.index("New-Object Threading.Mutex"))
 
     def test_parent_and_legacy_source_prestate_unchanged(self) -> None:
-        scope_evidence_path = REPO / "quality/evidence/windows-cutover-parent-prestate.json"
+        scope_evidence_path = REPO / "quality/evidence/material-palette-parent-prestate.json"
         if scope_evidence_path.is_file():
             evidence = json.loads(scope_evidence_path.read_text(encoding="utf-8"))
         else:
@@ -224,8 +224,8 @@ for (const item of cases) { let rejected=false; try { item(); } catch { rejected
         run([str(NODE), "scripts/check-source.mjs"])
         run([str(NODE), "--test", "tests/inspector-split-validation.test.mjs"])
         run([str(NODE), "scripts/verify-migration.mjs"])
-        run([str(GIT), "diff", "--check", "d68d1fc65606fe9ae62c3655ea643f90d8c3ee3a", "HEAD"])
-        self.assertEqual(run([str(GIT), "remote"]).stdout.strip(), "")
+        run([str(GIT), "diff", "--check", "09245e629800aff12fc64bae026dd96e4abc6dc1", "HEAD"])
+        self.assertEqual(run([str(GIT), "remote"]).stdout.splitlines(), ["origin"])
 
 
 if __name__ == "__main__":

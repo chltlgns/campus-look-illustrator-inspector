@@ -1,0 +1,118 @@
+{
+  "schema_version": "orbit-validation-profile/v1",
+  "profile_id": "campuslook-illustrator-inspector-legacy-material-palette-v04",
+  "locked_id_count": 10,
+  "locked_id_sha256": "08045755a036d47c961fb771e1f5590453c99768ca9ebae43be4c17cb3562549",
+  "rows": [
+    {
+      "id": "MP-P01",
+      "selector": "tests.test_material_palette_validation.MaterialPaletteValidation.test_current_body_match_reports_current_catalog",
+      "scenario": "Current body match preserves current catalog provenance",
+      "expected_exit": "0",
+      "expected_code": "PASS with matchedCatalog current-body and legacy kept separate",
+      "expected_writes": "temporary synthetic fixture only",
+      "evidence_locator": "tests/test_material_palette_validation.py::MaterialPaletteValidation.test_current_body_match_reports_current_catalog",
+      "requirement_ids": ["REQ-MP-001", "REQ-MP-006"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "MP-P02",
+      "selector": "tests.test_material_palette_validation.MaterialPaletteValidation.test_legacy_body_match_is_not_failed_by_current_palette",
+      "scenario": "Legacy reorder body is accepted by legacy provenance",
+      "expected_exit": "0",
+      "expected_code": "PASS with matchedCatalog legacy-body and explicit HEX evidence",
+      "expected_writes": "temporary synthetic fixture only",
+      "evidence_locator": "tests/test_material_palette_validation.py::MaterialPaletteValidation.test_legacy_body_match_is_not_failed_by_current_palette",
+      "requirement_ids": ["REQ-MP-002", "REQ-MP-003", "REQ-MP-006"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "MP-P03",
+      "selector": "tests.test_material_palette_validation.MaterialPaletteValidation.test_explicit_generation_mismatch_fails",
+      "scenario": "Explicit current generation rejects legacy-only visual match",
+      "expected_exit": "0",
+      "expected_code": "FAIL generation_mismatch inside successful test process",
+      "expected_writes": "temporary synthetic fixture only",
+      "evidence_locator": "tests/test_material_palette_validation.py::MaterialPaletteValidation.test_explicit_generation_mismatch_fails",
+      "requirement_ids": ["REQ-MP-007"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "SL-P01",
+      "selector": "tests.test_material_palette_validation.MaterialPaletteValidation.test_exact_supplier_finish_sleeve_match",
+      "scenario": "Exact Dongin plain gray 34 sleeve lookup",
+      "expected_exit": "0",
+      "expected_code": "PASS sleeve_exact_key_match with design-only limitation",
+      "expected_writes": "temporary synthetic fixture only",
+      "evidence_locator": "tests/test_material_palette_validation.py::MaterialPaletteValidation.test_exact_supplier_finish_sleeve_match",
+      "requirement_ids": ["REQ-SL-001", "REQ-SL-002", "REQ-SL-004"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "SL-P02",
+      "selector": "tests.test_material_palette_validation.MaterialPaletteValidation.test_generic_nippleather_black_white_remains_compatible",
+      "scenario": "Generic nippleather white and black compatibility",
+      "expected_exit": "0",
+      "expected_code": "both aliases resolve registered family candidates as PASS",
+      "expected_writes": "temporary synthetic fixture only",
+      "evidence_locator": "tests/test_material_palette_validation.py::MaterialPaletteValidation.test_generic_nippleather_black_white_remains_compatible",
+      "requirement_ids": ["REQ-SL-001", "REQ-SL-002"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "MP-N01",
+      "selector": "tests.test_material_palette_validation.MaterialPaletteValidation.test_cross_generation_close_match_is_review",
+      "scenario": "Cross-generation same-key ambiguity",
+      "expected_exit": "0",
+      "expected_code": "REVIEW cross_generation_ambiguous and never PASS",
+      "expected_writes": "temporary synthetic fixture only",
+      "evidence_locator": "tests/test_material_palette_validation.py::MaterialPaletteValidation.test_cross_generation_close_match_is_review",
+      "requirement_ids": ["REQ-MP-006"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "MP-N02",
+      "selector": "tests.test_material_palette_validation.MaterialPaletteValidation.test_duplicate_legacy_reference_is_review",
+      "scenario": "Conflicting duplicate legacy swatches",
+      "expected_exit": "0",
+      "expected_code": "REVIEW body_reference_ambiguous preserving both candidates",
+      "expected_writes": "temporary synthetic fixture only",
+      "evidence_locator": "tests/test_material_palette_validation.py::MaterialPaletteValidation.test_duplicate_legacy_reference_is_review",
+      "requirement_ids": ["REQ-MP-004", "REQ-MP-006"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "SL-N01",
+      "selector": "tests.test_material_palette_validation.MaterialPaletteValidation.test_unregistered_or_conflicting_sleeve_is_not_pass",
+      "scenario": "Unregistered and conflicting sleeve reference",
+      "expected_exit": "0",
+      "expected_code": "missing is REVIEW and different registered strong match is FAIL",
+      "expected_writes": "temporary synthetic fixture only",
+      "evidence_locator": "tests/test_material_palette_validation.py::MaterialPaletteValidation.test_unregistered_or_conflicting_sleeve_is_not_pass",
+      "requirement_ids": ["REQ-SL-003"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "MP-R01",
+      "selector": "tests.test_material_palette_validation.MaterialPaletteValidation.test_catalog_cache_role_hash_retry_and_source_boundaries",
+      "scenario": "Three-role hash cache retry and source boundary contract",
+      "expected_exit": "0",
+      "expected_code": "full roles warm reuse and missing/hash drift fail closed",
+      "expected_writes": "temporary registry fixture only",
+      "evidence_locator": "tests/test_material_palette_validation.py::MaterialPaletteValidation.test_catalog_cache_role_hash_retry_and_source_boundaries",
+      "requirement_ids": ["REQ-MP-001", "REQ-MP-002", "REQ-MP-005", "REQ-NFR-002", "REQ-NFR-003"],
+      "timeout_seconds": 90
+    },
+    {
+      "id": "MP-R02",
+      "selector": "tests.test_material_palette_validation.MaterialPaletteValidation.test_schema_cli_and_prior_locked_regression_contract",
+      "scenario": "Schema CLI and prior validation compatibility",
+      "expected_exit": "0",
+      "expected_code": "schema 4 additive fields with schema 3 core status and CLI contracts",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_material_palette_validation.py::MaterialPaletteValidation.test_schema_cli_and_prior_locked_regression_contract",
+      "requirement_ids": ["REQ-RP-001", "REQ-RP-002", "REQ-NFR-001", "REQ-NFR-004"],
+      "timeout_seconds": 90
+    }
+  ]
+}

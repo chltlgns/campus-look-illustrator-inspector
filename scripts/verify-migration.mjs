@@ -110,6 +110,7 @@ export function verifyMigration({
   }
   const productPaths = [
     ...SOURCE_INVENTORY.map(([entry]) => entry),
+    'material-catalog.mjs',
     'illustrator/inspector-root.ps1',
     'illustrator/windows-cutover.ps1',
   ];
@@ -117,7 +118,13 @@ export function verifyMigration({
     validateProductContent(relativePath, fs.readFileSync(path.join(repoRoot, relativePath), 'utf8'));
   }
   const remotes = gitLines(repoRoot, ['remote']);
-  if (remotes.length) throw new Error('migration_remote_not_allowed');
+  for (const remote of remotes) {
+    if (!/^[A-Za-z0-9._-]+$/.test(remote)) throw new Error('migration_remote_name_invalid');
+    const urls = gitLines(repoRoot, ['remote', 'get-url', '--all', remote]);
+    if (!urls.length || urls.some((url) => /:\/\/[^/@\s]+:[^/@\s]+@/.test(url))) {
+      throw new Error('migration_remote_url_unsafe');
+    }
+  }
   if (requireClean && gitLines(repoRoot, ['status', '--porcelain=v1']).length) {
     throw new Error('migration_repository_dirty');
   }
@@ -126,6 +133,7 @@ export function verifyMigration({
     entries: manifest.entries.length,
     trackedFiles: tracked.length,
     remotes: 0,
+    configuredRemotes: remotes,
   };
 }
 

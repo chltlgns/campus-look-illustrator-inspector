@@ -48,15 +48,24 @@ source root가 `\\wsl.localhost\<distribution>\...` 또는 `\\wsl$\<distribution
 
 runtime root에는 palette cache와 `reports/illustrator`, proof PNG, report JSON/Markdown이 생성됩니다. source repository와 같거나 그 하위인 runtime은 외부 process 실행 전에 `inspector_root_invalid`로 거부합니다. 설치 기본값은 `%LOCALAPPDATA%\Campuslook\IllustratorProofCheck\runtime`이며 Git이 소유하지 않습니다.
 
+installed `material-palettes.json`은 schema `campuslook-material-palettes/v1`이며 `currentBody`, `legacyBody`, `sleeveMaterial` Windows 경로를 가집니다. launcher는 매 실행 원본 SHA-256을 계산하고 `cache/material-catalog/<role>/<sha256>/catalog.json`만 재사용합니다. cache의 schema/role/catalogId/source hash가 registry와 다르거나 installed full mode의 role이 빠지면 `palette_registry_invalid`로 proof 분석 전에 중단합니다. 실제 경로와 raw catalog cache는 runtime 소유이며 Git에 포함하지 않습니다.
+
 ## report.json
 
-- `schemaVersion`: 현재 `3`; consumer는 지원하지 않는 major 값을 거부합니다.
+- `schemaVersion`: 현재 `4`; consumer는 지원하지 않는 major 값을 거부합니다.
 - `document`: 원본 표시 파일명
 - `designCount`: `designs.length`와 같은 시안 수
 - `overallStatus`: `PASS`, `REVIEW`, `FAIL` 중 하나
 - `designs[]`: 시안별 `proofArtboard`, `fields`, `visual`, `materialCheck`, `sleeveCheck`, `tableCheck`, `overallStatus`
 - `performance`: Illustrator collector가 제공한 선택적 진단 데이터 또는 `null`
+- `catalogProvenance`: coverage와 role/generation/source SHA-256/extractor/reference 상태
 - `limitations`: 자동 판정 한계 설명
+
+각 design의 `materialCheck`와 `sleeveCheck`는 기존 `status`, `reason`을 유지하며 `decisionCode`, `matchedCatalog`, `candidates`, `nearest`를 additive하게 제공합니다. `sleeveSpecification`은 supplier/family/finish/number/color 파싱값입니다. schema 3 소비자가 사용하던 `document`, `designs`, `fields`, `visual`, `materialCheck`, `sleeveCheck`, `overallStatus` 의미와 정상 처리 exit 0은 유지됩니다.
+
+몸통 세대가 표나 caller에서 명시되지 않으면 current/legacy 같은 key를 함께 비교합니다. 단일 catalog의 강한 일치만 `PASS`, cross-generation 또는 reference 충돌은 `REVIEW`, 어느 승인 후보에도 맞지 않거나 다른 번호가 명확히 우세하면 `FAIL`입니다. 세대가 명시됐는데 다른 세대만 강하게 맞으면 `generation_mismatch` `FAIL`입니다. 이 결과로 주문 이력이나 재주문 여부를 증명하지 않습니다.
+
+소매는 구체 supplier/family/finish/number가 있으면 exact key를, 일반 니플레자 흰색·검정이면 family 후보를 사용합니다. 흰색·검정 외 등록색도 검사하지만 실제 봉제품 원단 인증을 의미하지 않습니다.
 
 정식 JSON Schema는 `contracts/inspector-result.schema.json`입니다. 단일 시안 보고서는 하위 호환을 위해 첫 design의 일부 필드를 root에도 복제합니다.
 

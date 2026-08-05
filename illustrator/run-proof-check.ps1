@@ -10,6 +10,9 @@ param(
     [string]$InspectorRoot = '',
     [string]$RuntimeRoot = '',
     [string]$PaletteFile = '',
+    [string]$LegacyPaletteFile = '',
+    [string]$SleevePaletteFile = '',
+    [string]$MaterialPalettesSidecar = '',
     [string]$WslDistribution = ''
 )
 
@@ -26,6 +29,7 @@ $runtimeWindowsRoot = ''
 $checkerPath = ''
 $palettePath = ''
 $paletteWindowsPath = ''
+$catalogRegistryPath = ''
 $distribution = ''
 $mutex = $null
 $mutexAcquired = $false
@@ -91,71 +95,195 @@ function Convert-ToWindowsPath {
     return (($converted | Out-String).Trim())
 }
 
-function Get-PaletteCachePath {
-    if (-not (Test-Path -LiteralPath $paletteWindowsPath -PathType Leaf)) {
-        throw "컬러판 파일을 찾을 수 없습니다: $paletteWindowsPath"
+function Resolve-MaterialPaletteSources {
+    $sidecarPath = if ([string]::IsNullOrWhiteSpace($MaterialPalettesSidecar)) {
+        Join-Path $PSScriptRoot 'material-palettes.json'
+    }
+    else {
+        $MaterialPalettesSidecar
+    }
+    $sidecar = $null
+    if (Test-Path -LiteralPath $sidecarPath -PathType Leaf) {
+        try {
+            $sidecar = [IO.File]::ReadAllText($sidecarPath, [Text.UTF8Encoding]::new($false)) | ConvertFrom-Json
+        }
+        catch {
+            throw 'palette_registry_invalid: material-palettes sidecar JSON을 읽을 수 없습니다.'
+        }
+        if ([string]$sidecar.schemaVersion -ne 'campuslook-material-palettes/v1') {
+            throw 'palette_registry_invalid: material-palettes sidecar schema가 올바르지 않습니다.'
+        }
     }
 
-    $paletteFile = Get-Item -LiteralPath $paletteWindowsPath
-    $identityPath = "$runtimeRoot/cache/palette/identity.json"
-    $identityWindowsPath = Convert-ToWindowsPath -LinuxPath $identityPath
-    $paletteHash = ''
-    if (Test-Path -LiteralPath $identityWindowsPath -PathType Leaf) {
-        try {
-            $identity = [IO.File]::ReadAllText($identityWindowsPath, [Text.UTF8Encoding]::new($false)) | ConvertFrom-Json
-            if (
-                [long]$identity.length -eq [long]$paletteFile.Length `
-                -and [long]$identity.lastWriteTimeUtcTicks -eq [long]$paletteFile.LastWriteTimeUtc.Ticks `
-                -and [string]$identity.sha256 -match '^[0-9a-f]{64}$'
-            ) {
-                $paletteHash = [string]$identity.sha256
-            }
-        }
-        catch { $paletteHash = '' }
+    $current = if (-not [string]::IsNullOrWhiteSpace($PaletteFile)) {
+        $PaletteFile
     }
-    if ([string]::IsNullOrWhiteSpace($paletteHash)) {
-        $paletteHash = (Get-FileHash -LiteralPath $paletteWindowsPath -Algorithm SHA256).Hash.ToLowerInvariant()
-        $identityDirectory = Split-Path $identityWindowsPath -Parent
-        [IO.Directory]::CreateDirectory($identityDirectory) | Out-Null
-        $identityData = [ordered]@{
-            length = [long]$paletteFile.Length
-            lastWriteTimeUtcTicks = [long]$paletteFile.LastWriteTimeUtc.Ticks
-            sha256 = $paletteHash
-        } | ConvertTo-Json -Compress
-        [IO.File]::WriteAllText($identityWindowsPath, $identityData, [Text.UTF8Encoding]::new($false))
+    elseif (-not [string]::IsNullOrWhiteSpace($env:CAMPUSLOOK_MATERIAL_PALETTE)) {
+        $env:CAMPUSLOOK_MATERIAL_PALETTE
     }
-    $cacheDirectory = "$runtimeRoot/cache/palette/$paletteHash"
+    elseif ($null -ne $sidecar) {
+        [string]$sidecar.currentBody
+    }
+    else {
+        Join-Path $env:USERPROFILE 'Desktop\컬러참고용 판때기.ai'
+    }
+    $legacy = if (-not [string]::IsNullOrWhiteSpace($LegacyPaletteFile)) {
+        $LegacyPaletteFile
+    }
+    elseif (-not [string]::IsNullOrWhiteSpace($env:CAMPUSLOOK_LEGACY_MATERIAL_PALETTE)) {
+        $env:CAMPUSLOOK_LEGACY_MATERIAL_PALETTE
+    }
+    elseif ($null -ne $sidecar) {
+        [string]$sidecar.legacyBody
+    }
+    else { '' }
+    $sleeve = if (-not [string]::IsNullOrWhiteSpace($SleevePaletteFile)) {
+        $SleevePaletteFile
+    }
+    elseif (-not [string]::IsNullOrWhiteSpace($env:CAMPUSLOOK_SLEEVE_MATERIAL_PALETTE)) {
+        $env:CAMPUSLOOK_SLEEVE_MATERIAL_PALETTE
+    }
+    elseif ($null -ne $sidecar) {
+        [string]$sidecar.sleeveMaterial
+    }
+    else { '' }
+
+    if ([string]::IsNullOrWhiteSpace($current)) {
+        throw 'palette_registry_invalid: current-body source가 없습니다.'
+    }
+    $fullRequested = $null -ne $sidecar `
+        -or -not [string]::IsNullOrWhiteSpace($legacy) `
+        -or -not [string]::IsNullOrWhiteSpace($sleeve)
+    if ($fullRequested -and ([string]::IsNullOrWhiteSpace($legacy) -or [string]::IsNullOrWhiteSpace($sleeve))) {
+        throw 'palette_registry_invalid: installed/full mode에는 current-body, legacy-body, sleeve-material 세 source가 모두 필요합니다.'
+    }
+    return [ordered]@{
+        requireFull = $fullRequested
+        currentBody = $current
+        legacyBody = $legacy
+        sleeveMaterial = $sleeve
+    }
+}
+
+function Get-CatalogCachePath {
+    param(
+        [Parameter(Mandatory = $true)][string]$Role,
+        [Parameter(Mandatory = $true)][string]$Generation,
+        [Parameter(Mandatory = $true)][string]$CatalogId,
+        [Parameter(Mandatory = $true)][string]$SourceWindowsPath
+    )
+
+    if (-not (Test-Path -LiteralPath $SourceWindowsPath -PathType Leaf)) {
+        throw "palette_registry_invalid: $Role 컬러판 파일을 찾을 수 없습니다: $SourceWindowsPath"
+    }
+    # Cache identity is the exact source digest and role. Path/mtime are never trusted as identity.
+    $paletteHash = (Get-FileHash -LiteralPath $SourceWindowsPath -Algorithm SHA256).Hash.ToLowerInvariant()
+    $cacheDirectory = "$runtimeRoot/cache/material-catalog/$Role/$paletteHash"
     $cachePng = "$cacheDirectory/full-artwork.png"
     $cachePngWindows = Convert-ToWindowsPath -LinuxPath $cachePng
     $cacheDirectoryWindows = Convert-ToWindowsPath -LinuxPath $cacheDirectory
+    $cacheJson = "$cacheDirectory/catalog.json"
+    $cacheJsonWindows = Convert-ToWindowsPath -LinuxPath $cacheJson
     [IO.Directory]::CreateDirectory($cacheDirectoryWindows) | Out-Null
-    if (-not (Test-Path -LiteralPath $cachePngWindows -PathType Leaf)) {
+    if (-not (Test-Path -LiteralPath $cacheJsonWindows -PathType Leaf)) {
         $stagedPalette = Join-Path $cacheDirectoryWindows 'source.ai'
-        Copy-Item -LiteralPath $paletteWindowsPath -Destination $stagedPalette -Force
+        Copy-Item -LiteralPath $SourceWindowsPath -Destination $stagedPalette -Force
 
         $inspectorWindows = Convert-ToWindowsPath -LinuxPath "$workspaceRoot/inspect-illustrator.ps1"
-        $paletteOutput = & powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File $inspectorWindows `
-            -InputPath $stagedPalette `
-            -OutputDirectory $cacheDirectoryWindows `
-            -SourceDisplayName ([IO.Path]::GetFileName($paletteWindowsPath)) `
-            -RenderScale 100 `
-            -ExportFullArtwork 2>&1
-        if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $cachePngWindows -PathType Leaf)) {
-            throw "컬러판 캐시를 만들지 못했습니다.`r`n`r`n$(($paletteOutput | Out-String).Trim())"
+        $inspectionWindows = Join-Path $cacheDirectoryWindows 'document.json'
+        $marker = Join-Path $cacheDirectoryWindows 'collector.marker'
+        [IO.File]::WriteAllText($marker, [DateTimeOffset]::UtcNow.ToString('o'), [Text.UTF8Encoding]::new($false))
+        $collectorSucceeded = $false
+        $paletteOutput = @()
+        for ($attempt = 1; $attempt -le 2; $attempt += 1) {
+            $paletteOutput = & powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File $inspectorWindows `
+                -InputPath $stagedPalette `
+                -OutputDirectory $cacheDirectoryWindows `
+                -SourceDisplayName ([IO.Path]::GetFileName($SourceWindowsPath)) `
+                -RenderScale 100 `
+                -ExportFullArtwork 2>&1
+            if (
+                $LASTEXITCODE -eq 0 `
+                -and (Test-Path -LiteralPath $cachePngWindows -PathType Leaf) `
+                -and (Test-Path -LiteralPath $inspectionWindows -PathType Leaf) `
+                -and (Get-Item -LiteralPath $cachePngWindows).LastWriteTimeUtc -gt (Get-Item -LiteralPath $marker).LastWriteTimeUtc
+            ) {
+                $collectorSucceeded = $true
+                break
+            }
+        }
+        Remove-Item -LiteralPath $marker -Force -ErrorAction SilentlyContinue
+        if (-not $collectorSucceeded) {
+            throw "$Role 컬러판 캐시를 만들지 못했습니다.`r`n`r`n$(($paletteOutput | Out-String).Trim())"
+        }
+
+        $builderArguments = @(
+            "$workspaceRoot/analyze-proof.mjs",
+            '--palette', $cachePng,
+            '--palette-output', $cacheJson,
+            '--catalog-role', $Role,
+            '--catalog-generation', $Generation,
+            '--catalog-id', $CatalogId,
+            '--source-sha256', $paletteHash,
+            '--source-display-name', ([IO.Path]::GetFileName($SourceWindowsPath))
+        )
+        if ($Role -ne 'current-body') {
+            $builderArguments += @('--observation', "$cacheDirectory/document.json")
+        }
+        $paletteDataOutput = & wsl.exe -d $distribution -- node @builderArguments 2>&1
+        if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $cacheJsonWindows -PathType Leaf)) {
+            throw "$Role catalog 데이터 캐시를 만들지 못했습니다.`r`n`r`n$(($paletteDataOutput | Out-String).Trim())"
         }
     }
 
-    $cacheJson = "$cacheDirectory/material-color-reference.json"
-    $cacheJsonWindows = Convert-ToWindowsPath -LinuxPath $cacheJson
-    if (-not (Test-Path -LiteralPath $cacheJsonWindows -PathType Leaf)) {
-        $paletteDataOutput = & wsl.exe -d $distribution -- node "$workspaceRoot/analyze-proof.mjs" `
-            --palette $cachePng `
-            --palette-output $cacheJson 2>&1
-        if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $cacheJsonWindows -PathType Leaf)) {
-            throw "컬러판 데이터 캐시를 만들지 못했습니다.`r`n`r`n$(($paletteDataOutput | Out-String).Trim())"
-        }
+    try {
+        $catalog = [IO.File]::ReadAllText($cacheJsonWindows, [Text.UTF8Encoding]::new($false)) | ConvertFrom-Json
     }
-    return $cacheJson
+    catch {
+        throw "palette_registry_invalid: $Role catalog JSON을 읽을 수 없습니다."
+    }
+    if (
+        [int]$catalog.schemaVersion -ne 2 `
+        -or [string]$catalog.role -ne $Role `
+        -or [string]$catalog.catalogId -ne $CatalogId `
+        -or [string]$catalog.source.sha256 -ne $paletteHash `
+        -or @($catalog.entries).Count -lt 1
+    ) {
+        throw "palette_registry_invalid: $Role cache의 role/hash/schema/catalogId가 일치하지 않습니다."
+    }
+    return [ordered]@{
+        role = $Role
+        catalogId = $CatalogId
+        sourceSha256 = $paletteHash
+        path = $cacheJson
+    }
+}
+
+function Get-MaterialCatalogRegistryPath {
+    param([Parameter(Mandatory = $true)]$Sources)
+
+    $references = @()
+    $references += Get-CatalogCachePath `
+        -Role 'current-body' -Generation 'current' -CatalogId 'current-body-tr' `
+        -SourceWindowsPath ([string]$Sources.currentBody)
+    if ([bool]$Sources.requireFull) {
+        $references += Get-CatalogCachePath `
+            -Role 'legacy-body' -Generation 'legacy' -CatalogId 'legacy-body-tr' `
+            -SourceWindowsPath ([string]$Sources.legacyBody)
+        $references += Get-CatalogCachePath `
+            -Role 'sleeve-material' -Generation 'reference' -CatalogId 'sleeve-leather-reference' `
+            -SourceWindowsPath ([string]$Sources.sleeveMaterial)
+    }
+    $registryPath = "$runtimeRoot/cache/material-catalog/registry.json"
+    $registryWindowsPath = Convert-ToWindowsPath -LinuxPath $registryPath
+    [IO.Directory]::CreateDirectory((Split-Path $registryWindowsPath -Parent)) | Out-Null
+    $registry = [ordered]@{
+        schemaVersion = 'campuslook-material-catalog-registry/v1'
+        requireFull = [bool]$Sources.requireFull
+        catalogs = @($references)
+    } | ConvertTo-Json -Depth 6
+    [IO.File]::WriteAllText($registryWindowsPath, "$registry`n", [Text.UTF8Encoding]::new($false))
+    return $registryPath
 }
 
 try {
@@ -176,15 +304,8 @@ try {
     $runtimeRoot = Convert-ToWslPath -WindowsPath $runtimeWindowsRoot
     $checkerPath = "$workspaceRoot/check-proof.sh"
 
-    if (-not [string]::IsNullOrWhiteSpace($PaletteFile)) {
-        $paletteWindowsPath = $PaletteFile
-    }
-    elseif (-not [string]::IsNullOrWhiteSpace($env:CAMPUSLOOK_MATERIAL_PALETTE)) {
-        $paletteWindowsPath = $env:CAMPUSLOOK_MATERIAL_PALETTE
-    }
-    else {
-        $paletteWindowsPath = 'C:\Users\GOLD\Desktop\컬러참고용 판때기.ai'
-    }
+    $paletteSources = Resolve-MaterialPaletteSources
+    $paletteWindowsPath = [string]$paletteSources.currentBody
     $palettePath = Convert-ToWslPath -WindowsPath $paletteWindowsPath
 
     $totalStopwatch = [Diagnostics.Stopwatch]::StartNew()
@@ -217,9 +338,10 @@ try {
     }
 
     $cacheStopwatch = [Diagnostics.Stopwatch]::StartNew()
-    $paletteCachePath = Get-PaletteCachePath
+    $catalogRegistryPath = Get-MaterialCatalogRegistryPath -Sources $paletteSources
     $cacheStopwatch.Stop()
     $phaseTimings.paletteCacheMilliseconds = [Math]::Round($cacheStopwatch.Elapsed.TotalMilliseconds, 1)
+    $phaseTimings.catalogCacheMilliseconds = $phaseTimings.paletteCacheMilliseconds
 
     if ($UseActiveDocument) {
         if ([string]::IsNullOrWhiteSpace($InputPath)) {
@@ -269,7 +391,7 @@ try {
         $analyzerStopwatch = [Diagnostics.Stopwatch]::StartNew()
         $analyzerOutput = & wsl.exe -d $distribution -- node "$workspaceRoot/analyze-proof.mjs" `
             --inspection $inspectionPath `
-            --palette $paletteCachePath `
+            --catalog-registry $catalogRegistryPath `
             --output "$outputPath/result" 2>&1
         $analyzerStopwatch.Stop()
         $phaseTimings.analyzerMilliseconds = [Math]::Round($analyzerStopwatch.Elapsed.TotalMilliseconds, 1)
@@ -281,7 +403,9 @@ try {
         $stem = [IO.Path]::GetFileNameWithoutExtension($InputPath) -replace '[/\\:\x00-\x1F]', '_'
         $outputPath = "$runtimeRoot/reports/illustrator/$stem"
         $wslInputPath = Convert-ToWslPath -WindowsPath $InputPath
-        $checkerOutput = & wsl.exe -d $distribution -- $checkerPath $wslInputPath $palettePath $outputPath 2>&1
+        $checkerOutput = & wsl.exe -d $distribution -- env `
+            "CAMPUSLOOK_CATALOG_REGISTRY=$catalogRegistryPath" `
+            $checkerPath $wslInputPath $palettePath $outputPath 2>&1
         $checkerExitCode = $LASTEXITCODE
         if ($checkerExitCode -ne 0) {
             $details = ($checkerOutput | Out-String).Trim()
@@ -334,7 +458,9 @@ $($resultLines -join "`r`n")
 겉감 표기: $($report.fields.shell)
 몸통 대표색: $($report.visual.body.hex)
 원단·번호: $($report.materialCheck.status)
+몸통 catalog: $($report.materialCheck.matchedCatalog.role)
 소매: $($report.sleeveCheck.status)
+소매 판정코드: $($report.sleeveCheck.decisionCode)
 검사 시간: ${elapsedSeconds}초
 
 상세 보고서를 메모장으로 여시겠습니까?

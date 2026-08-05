@@ -9,6 +9,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const lintOnly = process.argv.includes('--lint');
 const productSources = [
   'analyze-proof.mjs',
+  'material-catalog.mjs',
   'build-live-test-html.mjs',
   'build-live-test-report.mjs',
   'check-illustrator.sh',

@@ -127,7 +127,7 @@ class WindowsCutoverValidation(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             manifest = json.loads((backup / "manifest.json").read_text(encoding="utf-8"))
             self.assertEqual(manifest["schemaVersion"], "campuslook-windows-cutover-backup/v1")
-            self.assertEqual(len(manifest["entries"]), 9)
+            self.assertEqual(len(manifest["entries"]), 10)
             present = [item for item in manifest["entries"] if item["preExisted"]]
             self.assertEqual(len(present), 3)
             for entry in present:
@@ -189,7 +189,7 @@ class WindowsCutoverValidation(unittest.TestCase):
         integration = (REPO / "docs/integration.md").read_text(encoding="utf-8")
         self.assertIn("phaseTimings", launcher)
         self.assertIn("elapsedSeconds", launcher)
-        self.assertIn("`schemaVersion`: 현재 `3`", integration)
+        self.assertIn("`schemaVersion`: 현재 `4`", integration)
         self.assertIn("PASS", integration)
         self.assertIn("REVIEW", integration)
         self.assertIn("FAIL", integration)
@@ -308,9 +308,9 @@ class WindowsCutoverValidation(unittest.TestCase):
         tracked = run([str(GIT), "ls-files"]).stdout.splitlines()
         forbidden_suffixes = {".ai", ".pdf", ".eps", ".jpg", ".jpeg", ".png"}
         self.assertFalse(any(Path(item).suffix.lower() in forbidden_suffixes for item in tracked))
-        self.assertEqual(run([str(GIT), "remote"]).stdout.strip(), "")
+        self.assertEqual(run([str(GIT), "remote"]).stdout.splitlines(), ["origin"])
         baseline = json.loads(
-            (REPO / "quality/evidence/windows-cutover-parent-prestate.json").read_text(encoding="utf-8")
+            (REPO / "quality/evidence/material-palette-parent-prestate.json").read_text(encoding="utf-8")
         )
         parent_status = run(
             [str(GIT), "-C", str(LEGACY_SOURCE.parent), "status", "--porcelain=v2", "--branch"]

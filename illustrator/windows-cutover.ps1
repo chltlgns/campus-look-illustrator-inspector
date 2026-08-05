@@ -50,7 +50,8 @@ function Get-TargetEntries {
         'batch-check-ai.ps1',
         'CampuslookProofCheck.jsx',
         'inspector-root.ps1',
-        'inspector-root.json'
+        'inspector-root.json',
+        'material-palettes.json'
     )
     $entries = @()
     foreach ($name in $localFiles) {

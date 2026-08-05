@@ -1,6 +1,6 @@
 # Campuslook Illustrator Inspector
 
-캠퍼스룩 야구점퍼 시안의 표·원단 번호·대표색을 로컬에서 검사하는 독립 source-only 프로젝트입니다. 고객 AI, 컬러판, 렌더, 보고서, 메일 첨부와 자격증명은 저장소에 포함하지 않습니다. 분석은 Windows Illustrator 2025와 WSL의 Bash/Node를 사용하며 외부 API나 유료 서비스를 호출하지 않습니다.
+캠퍼스룩 야구점퍼 시안의 표·원단 번호·대표색을 로컬에서 검사하는 독립 source-only 프로젝트입니다. 현행 몸통 TR, 구형 몸통 TR, 소매 가죽 원단을 서로 다른 catalog provenance로 대조합니다. 고객 AI, 컬러판, 렌더, 보고서, 메일 첨부와 자격증명은 저장소에 포함하지 않습니다. 분석은 Windows Illustrator 2025와 WSL의 Bash/Node를 사용하며 외부 API나 유료 서비스를 호출하지 않습니다.
 
 ## 지원 환경
 
@@ -21,13 +21,24 @@ Node 패키지 의존성은 없습니다. 이 저장소의 검증에는 네트�
 
 주요 출력은 다음과 같습니다.
 
-- `result/report.json`: schema version 3 구조화 결과
+- `result/report.json`: schema version 4 구조화 결과
 - `result/report.md`: 사람이 읽는 검사 보고서
 - `result/material-color-reference.json`
 - `result/material-color-reference.csv`
 - `proof/artboard-*.png`와 `proof/document.json`
 
 `PASS`, `REVIEW`, `FAIL`은 검사 결과의 의미이며 프로세스 성공 여부와 구분됩니다. 정상적으로 보고서를 만든 실행은 결과 상태가 `FAIL`이어도 exit 0입니다. 상세 계약은 [docs/integration.md](docs/integration.md), JSON 구조는 [contracts/inspector-result.schema.json](contracts/inspector-result.schema.json)을 참고하세요.
+
+## 현행·구형 몸통과 소매 catalog
+
+설치 모드는 `material-palettes.json`에 current-body, legacy-body, sleeve-material 세 원본 경로를 기록하고 role+source SHA-256별 immutable runtime cache를 만듭니다. 현행판은 기존 fixed grid를 유지하며, 불규칙한 구형 TR·소매판은 label 중심을 포함하는 filled vector swatch와 Illustrator-rendered 중심색으로 추출합니다. 원본 AI와 열린 시안은 저장하지 않습니다.
+
+- 세대 미명시 몸통: 현행/구형 같은 원단·번호 후보 중 한 catalog만 강하게 맞으면 그 provenance로 `PASS`
+- 현행·구형이 함께 가까움 또는 구형 같은 번호 reference 충돌: `REVIEW`
+- 명시 세대와 다른 세대만 맞음, 어느 승인 후보에도 맞지 않음, 다른 번호가 명확히 우세함: `FAIL`
+- 소매: 공급처/family/가공/번호/색명을 파싱해 exact 또는 일반 니플레자 흰색·검정 후보와 대조
+
+이 검사는 디자인의 사양표와 렌더색을 확인합니다. 실제 봉제품의 원단 조성, 촉감, 무늬, 공급처 진품을 인증하지 않습니다.
 
 기본 형식만 빠르게 확인하려면 다음 명령을 사용합니다.
 
@@ -55,6 +66,17 @@ cache와 보고서·PNG는 source repository에 쓰지 않습니다. runtime roo
 
 기본 설치 runtime은 `%LOCALAPPDATA%\Campuslook\IllustratorProofCheck\runtime`입니다.
 
+설치기는 다음 세 인자를 함께 받으면 설치 폴더에 schema 1 `material-palettes.json`을 생성합니다. 하나라도 빠지면 full mode를 만들지 않습니다.
+
+```powershell
+.\illustrator\install-illustrator-script.ps1 `
+  -CurrentPaletteFile '<현행 TR.ai>' `
+  -LegacyPaletteFile '<구형 TR.ai>' `
+  -SleevePaletteFile '<소매 가죽.ai>'
+```
+
+launcher 인자 `-PaletteFile`은 current-body alias로 유지됩니다. portable CLI는 legacy/sleeve가 없을 때 기존 current-only 모드로 동작하고 보고서에 `catalogCoverage=current-only`를 남깁니다. 설치 sidecar가 존재하는 full mode는 세 role 중 하나라도 없으면 `palette_registry_invalid`로 분석 전에 중단합니다.
+
 설치기는 source tree의 `illustrator/install-illustrator-script.ps1`입니다. `illustrator/windows-cutover.ps1`은 기본 `Preflight` 모드에서 쓰기 없이 설치 대상을 조사하고, 명시적 `Backup`, `RecordPostState`, `Rollback` 모드에서 Git 밖 backup과 hash-guarded 복구를 수행합니다. rollback은 먼저 모든 current hash가 recorded post-state인지 확인하고, 이미 pre-state와 같은 보호 파일은 쓰지 않으며 나머지 실제 변경만 복원합니다. Windows write 전에는 별도 ORBIT Gate와 byte backup이 필요합니다.
 
 ## 로컬 검증
@@ -73,6 +95,6 @@ npm run migration:verify
 - `reports`, `downloads`, `samples`, `.cache`, `.memory-bank`, `NUL`은 추적하지 않습니다.
 - AI/PDF/EPS/JPG/PNG와 1MB 초과 artifact는 migration verifier가 거부합니다.
 - 메일 다운로드, IMAP, 자격증명 코드는 이 프로젝트에 없습니다.
-- Git remote 생성, push, PR, 배포는 source-only 분리 범위가 아닙니다.
+- 기존 공개 `origin`은 보존합니다. Git remote 생성·변경, push, PR, 배포는 이 작업 범위가 아닙니다.
 
 기존 0.82초 평균은 과거 운영 측정치일 뿐입니다. 새 운영 환경 성능은 Git 밖 fresh runtime의 cold 1회와 warm 반복을 별도로 기록해야 하며 실제 전환 증거 전 상태는 `not_run`입니다.

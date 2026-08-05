@@ -60,7 +60,7 @@ test('migration policy rejects forbidden paths, size and secret-like content', (
 
 test('report schema and status semantics remain explicit', () => {
   const schema = JSON.parse(fs.readFileSync(path.join(root, 'contracts/inspector-result.schema.json'), 'utf8'));
-  assert.equal(schema.properties.schemaVersion.const, 3);
+  assert.equal(schema.properties.schemaVersion.const, 4);
   assert.deepEqual(schema.$defs.status.enum, ['PASS', 'REVIEW', 'FAIL']);
   for (const field of ['document', 'designCount', 'overallStatus', 'designs', 'performance', 'limitations']) {
     assert.ok(schema.required.includes(field));
@@ -68,7 +68,7 @@ test('report schema and status semantics remain explicit', () => {
   const analyzer = fs.readFileSync(path.join(root, 'analyze-proof.mjs'), 'utf8');
   assert.match(analyzer, /if \(statuses\.includes\('FAIL'\)\) return 'FAIL'/);
   assert.match(analyzer, /if \(statuses\.includes\('REVIEW'\)\) return 'REVIEW'/);
-  assert.match(analyzer, /schemaVersion: 3/);
+  assert.match(analyzer, /schemaVersion: 4/);
 });
 
 test('portable root and integration documentation are fail-closed', () => {

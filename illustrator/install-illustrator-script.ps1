@@ -3,6 +3,9 @@ param(
     [switch]$NoElevation,
     [string]$InspectorRoot = '',
     [string]$RuntimeRoot = '',
+    [string]$CurrentPaletteFile = '',
+    [string]$LegacyPaletteFile = '',
+    [string]$SleevePaletteFile = '',
     [string]$WslDistribution = 'Ubuntu'
 )
 
@@ -55,6 +58,7 @@ $batchCheckerSource = Join-Path $PSScriptRoot 'batch-check-ai.ps1'
 $jsxSource = Join-Path $PSScriptRoot 'CampuslookProofCheck.jsx'
 $rootResolverInstalled = Join-Path $localRoot 'inspector-root.ps1'
 $rootSidecarInstalled = Join-Path $localRoot 'inspector-root.json'
+$materialPalettesInstalled = Join-Path $localRoot 'material-palettes.json'
 $launcherInstalled = Join-Path $localRoot 'run-proof-check.ps1'
 $activeCheckerInstalled = Join-Path $localRoot 'check-active-illustrator.ps1'
 $fastInspectorInstalled = Join-Path $localRoot 'FastProofInspector.jsx'
@@ -74,6 +78,35 @@ $rootSidecar = [ordered]@{
     runtimeRoot = [string]$rootSettings.RuntimeWindowsRoot
 } | ConvertTo-Json -Depth 3
 [IO.File]::WriteAllText($rootSidecarInstalled, "$rootSidecar`n", [Text.UTF8Encoding]::new($false))
+
+$paletteArgumentsPresent = -not [string]::IsNullOrWhiteSpace($CurrentPaletteFile) `
+    -or -not [string]::IsNullOrWhiteSpace($LegacyPaletteFile) `
+    -or -not [string]::IsNullOrWhiteSpace($SleevePaletteFile)
+if ($paletteArgumentsPresent) {
+    if (
+        [string]::IsNullOrWhiteSpace($CurrentPaletteFile) `
+        -or [string]::IsNullOrWhiteSpace($LegacyPaletteFile) `
+        -or [string]::IsNullOrWhiteSpace($SleevePaletteFile)
+    ) {
+        throw 'palette_registry_invalid: 설치 시 세 material palette 경로가 모두 필요합니다.'
+    }
+    foreach ($paletteSource in @($CurrentPaletteFile, $LegacyPaletteFile, $SleevePaletteFile)) {
+        if (-not (Test-Path -LiteralPath $paletteSource -PathType Leaf)) {
+            throw "palette_registry_invalid: material palette를 찾을 수 없습니다: $paletteSource"
+        }
+    }
+    $materialPalettes = [ordered]@{
+        schemaVersion = 'campuslook-material-palettes/v1'
+        currentBody = [IO.Path]::GetFullPath($CurrentPaletteFile)
+        legacyBody = [IO.Path]::GetFullPath($LegacyPaletteFile)
+        sleeveMaterial = [IO.Path]::GetFullPath($SleevePaletteFile)
+    } | ConvertTo-Json -Depth 3
+    [IO.File]::WriteAllText(
+        $materialPalettesInstalled,
+        "$materialPalettes`n",
+        [Text.UTF8Encoding]::new($false)
+    )
+}
 
 $startMenuDirectory = Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\Campuslook'
 [IO.Directory]::CreateDirectory($startMenuDirectory) | Out-Null
@@ -153,6 +186,10 @@ Copy-Item -LiteralPath '$sourceEscaped' -Destination '$destinationEscaped' -Forc
     batchChecker = $batchCheckerInstalled
     rootResolver = $rootResolverInstalled
     rootSidecar = $rootSidecarInstalled
+    materialPalettes = if (Test-Path -LiteralPath $materialPalettesInstalled -PathType Leaf) {
+        $materialPalettesInstalled
+    }
+    else { $null }
     runtimeRoot = [string]$rootSettings.RuntimeWindowsRoot
     jsx = $jsxDestination
     shortcut = $shortcutPath

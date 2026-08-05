@@ -3,9 +3,21 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import zlib from 'node:zlib';
+import crypto from 'node:crypto';
+import {
+  buildIrregularCatalog,
+  catalogProvenance,
+  createCatalog,
+  evaluateBodyMaterial,
+  evaluateSleeveMaterial,
+  loadCatalogRegistry,
+  parseBodySpecification,
+  parseSleeveSpecification,
+  registryFromCatalogs,
+} from './material-catalog.mjs';
 
 function usage() {
-  console.error('사용법: node analyze-proof.mjs --inspection <document.json> --palette <full-artwork.png> --output <폴더>');
+  console.error('사용법: node analyze-proof.mjs --inspection <document.json> (--catalog-registry <registry.json> | --palette <current.png|json>) --output <폴더>');
 }
 
 function parseArgs(argv) {
@@ -19,13 +31,17 @@ function parseArgs(argv) {
     }
     args[key.slice(2)] = value;
   }
-  for (const required of ['palette']) {
-    if (!args[required]) {
+  if (args['palette-output']) {
+    if (!args.palette) {
       usage();
       process.exit(2);
     }
+    return args;
   }
-  if (args['palette-output']) return args;
+  if (!args.palette && !args['catalog-registry']) {
+    usage();
+    process.exit(2);
+  }
   for (const required of ['inspection', 'output']) {
     if (!args[required]) {
       usage();
@@ -235,6 +251,50 @@ function loadPalette(filePath) {
   return { palette, reference: buildPaletteReference(palette, image) };
 }
 
+function sha256File(filePath) {
+  return crypto.createHash('sha256').update(fs.readFileSync(filePath)).digest('hex');
+}
+
+function currentCatalogFromPalette(palette, sourceSha256, sourceDisplayName = '') {
+  return createCatalog({
+    catalogId: 'current-body-tr',
+    role: 'current-body',
+    generation: 'current',
+    sourceSha256,
+    sourceDisplayName,
+    entries: palette.map((entry) => ({
+      material: entry.material,
+      number: entry.number,
+      candidates: [{
+        label: `${entry.material} ${entry.number}번`,
+        rgb: entry.rgb,
+        hex: entry.hex,
+        evidence: { rule: 'current-fixed-grid/right-flat-center' },
+      }],
+    })),
+  });
+}
+
+function paletteFromRegistry(registry) {
+  return registry.catalogs
+    .filter((catalog) => ['current-body', 'legacy-body'].includes(catalog.role))
+    .flatMap((catalog) => catalog.entries.flatMap((entry) => entry.candidates.map((candidate) => ({
+      material: entry.material,
+      number: entry.number,
+      rgb: candidate.rgb,
+      hex: candidate.hex,
+      catalogId: catalog.catalogId,
+      role: catalog.role,
+    }))));
+}
+
+function referenceFromRegistry(registry) {
+  return {
+    schemaVersion: 2,
+    ...catalogProvenance(registry),
+  };
+}
+
 function normalizeText(value) {
   return String(value ?? '')
     .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, ' ')
@@ -307,7 +367,7 @@ function extractFields(inspection, artboardIndex) {
     if (text.y <= shell.y + 0.008 || text.y - shell.y > 0.09) return Infinity;
     return (text.y - shell.y) + Math.abs(text.x - shell.x) * 0.2;
   });
-  let sleeve = nearest(byPattern(/니플레자|인조가죽|합성피혁|천연가죽|레자/), (text) => {
+  let sleeve = nearest(byPattern(/니플레자|인조가죽|합성피혁|천연가죽|레자|동인|화성|신라|세성/), (text) => {
     if (!lining) return text.y;
     if (text.y <= lining.y + 0.008 || text.y - lining.y > 0.09) return Infinity;
     return (text.y - lining.y) + Math.abs(text.x - lining.x) * 0.2;
@@ -384,30 +444,6 @@ function extractFields(inspection, artboardIndex) {
         pocket: Boolean(pocketAnchor),
       },
     },
-  };
-}
-
-function parseShellSpecification(text) {
-  const normalized = normalizeText(text);
-  let material = null;
-  if (/TR\s*하이미어/i.test(normalized)) material = 'TR하이미어';
-  else if (/(?:\(고급\)|고급)\s*하이미어/.test(normalized)) material = '(고급)하이미어';
-  else if (/하이미어/.test(normalized)) material = '(고급)하이미어';
-  const numberMatch = normalized.match(/\(?\s*(\d{1,2})\s*번\s*\)?/);
-  const slashParts = normalized.split('/').map((part) => part.trim());
-  const colorPart = slashParts.length > 1 ? slashParts[1] : normalized;
-  const colorName = colorPart.replace(/\(?\s*\d{1,2}\s*번\s*\)?/g, '').trim();
-  const inferredTrBlack = (
-    !numberMatch
-    && material === 'TR하이미어'
-    && /^(?:검정색?|블랙)$/i.test(colorName)
-  );
-  return {
-    raw: normalized,
-    material,
-    number: numberMatch ? Number(numberMatch[1]) : inferredTrBlack ? 34 : null,
-    numberSource: numberMatch ? 'explicit' : inferredTrBlack ? 'inferred-tr-black' : null,
-    colorName,
   };
 }
 
@@ -502,96 +538,12 @@ function dominantSleeveColor(image, renderBounds) {
   };
 }
 
-function checkSleeveSpecification(text, visual) {
-  let expected = null;
-  if (/흰색|백색|화이트/.test(text)) expected = { name: '흰색', rgb: [255, 255, 255] };
-  else if (/검정색?|블랙/.test(text)) expected = { name: '검정', rgb: [0, 0, 0] };
-  if (!expected) {
-    return { status: 'REVIEW', reason: '현재 버전은 흰색·검정 소매 표기를 자동 판정합니다.' };
-  }
-  const distance = deltaE(visual.rgb, expected.rgb);
-  return {
-    status: distance <= 8 ? 'PASS' : distance <= 18 ? 'REVIEW' : 'FAIL',
-    deltaE: Number(distance.toFixed(2)),
-    reason: `시안 소매 대표색 ${visual.hex}, ${expected.name}과의 ΔE ${distance.toFixed(2)}`,
-  };
-}
-
 function checkTableExtraction(fields) {
   const required = ['customer', 'product', 'shell', 'lining', 'sleeve', 'rib', 'button', 'pocket'];
   const missing = required.filter((key) => !normalizeText(fields[key]));
   return missing.length
     ? { status: 'REVIEW', missing, reason: `표 항목 ${missing.join(', ')}을(를) 읽지 못했습니다.` }
     : { status: 'PASS', missing: [], reason: '표의 8개 필수 항목을 모두 읽었습니다.' };
-}
-
-function buildMaterialCheck(body, palette, shellSpecification) {
-  const ranked = palette
-    .map((entry) => ({ ...entry, deltaE: deltaE(body.rgb, entry.rgb) }))
-    .sort((a, b) => a.deltaE - b.deltaE);
-  const nearest = ranked.slice(0, 5).map((entry) => ({
-    material: entry.material,
-    number: entry.number,
-    rgb: entry.rgb,
-    hex: entry.hex,
-    deltaE: Number(entry.deltaE.toFixed(2)),
-  }));
-  const expectedEntry = palette.find((entry) => (
-    entry.material === shellSpecification.material && entry.number === shellSpecification.number
-  ));
-
-  if (!shellSpecification.material || !shellSpecification.number) {
-    return {
-      status: 'REVIEW',
-      reason: '표에서 원단 종류 또는 색상번호를 추출하지 못했습니다.',
-      expected: null,
-      nearest,
-    };
-  }
-  if (!expectedEntry) {
-    return {
-      status: 'REVIEW',
-      reason: '컬러판에서 표에 적힌 원단·색상번호를 찾지 못했습니다.',
-      expected: null,
-      nearest,
-    };
-  }
-
-  const expectedDelta = deltaE(body.rgb, expectedEntry.rgb);
-  const nearestEntry = ranked[0];
-  const nearestGap = expectedDelta - nearestEntry.deltaE;
-  const nearestIsDifferent = (
-    nearestEntry.material !== expectedEntry.material || nearestEntry.number !== expectedEntry.number
-  );
-  let status;
-  let reason;
-  if (nearestIsDifferent && nearestEntry.deltaE <= 5 && nearestGap >= 5) {
-    status = 'FAIL';
-    reason = `시안 몸통색이 표의 ${expectedEntry.material} ${expectedEntry.number}번보다 ${nearestEntry.material} ${nearestEntry.number}번과 명확히 일치합니다.`;
-  } else if (expectedDelta <= 12 && nearestGap <= 3) {
-    status = 'PASS';
-    reason = shellSpecification.numberSource === 'inferred-tr-black'
-      ? '표의 TR하이미어 검정 표기를 34번으로 해석했으며 시안 몸통색이 허용 범위 안에서 일치합니다.'
-      : '시안 몸통색이 표에 적힌 원단·색상번호와 허용 범위 안에서 일치합니다.';
-  } else if (expectedDelta <= 18) {
-    status = 'REVIEW';
-    reason = '기대 색상과 가깝지만 다른 색상칩도 비슷하거나 렌더링 색차가 있어 사람 확인이 필요합니다.';
-  } else {
-    status = 'FAIL';
-    reason = `시안 몸통색이 표기된 색상칩보다 ${nearestEntry.material} ${nearestEntry.number}번에 더 가깝습니다.`;
-  }
-  return {
-    status,
-    reason,
-    expected: {
-      material: expectedEntry.material,
-      number: expectedEntry.number,
-      rgb: expectedEntry.rgb,
-      hex: expectedEntry.hex,
-      deltaE: Number(expectedDelta.toFixed(2)),
-    },
-    nearest,
-  };
 }
 
 function combineStatuses(statuses) {
@@ -682,8 +634,14 @@ function buildMarkdown(report) {
       lines.push(`- 컬러판 기대값: ${design.materialCheck.expected.material} ${String(design.materialCheck.expected.number).padStart(2, '0')}번 ${design.materialCheck.expected.hex}`);
       lines.push(`- 기대값과 색차: ΔE ${design.materialCheck.expected.deltaE}`);
     }
-    lines.push(`- 원단·색상번호 판정: **${design.materialCheck.status}** — ${design.materialCheck.reason}`);
-    lines.push(`- 소매 판정: **${design.sleeveCheck.status}** — ${design.sleeveCheck.reason}`);
+    if (design.materialCheck.matchedCatalog) {
+      lines.push(`- 몸통 일치 catalog: ${design.materialCheck.matchedCatalog.role} / ${design.materialCheck.matchedCatalog.catalogId} / ${design.materialCheck.matchedCatalog.sourceSha256}`);
+    }
+    lines.push(`- 원단·색상번호 판정: **${design.materialCheck.status}** (${design.materialCheck.decisionCode}) — ${design.materialCheck.reason}`);
+    if (design.sleeveCheck.matchedCatalog) {
+      lines.push(`- 소매 일치 catalog: ${design.sleeveCheck.matchedCatalog.catalogId} / ${design.sleeveCheck.matchedCatalog.key}`);
+    }
+    lines.push(`- 소매 판정: **${design.sleeveCheck.status}** (${design.sleeveCheck.decisionCode}) — ${design.sleeveCheck.reason}`);
     lines.push('');
     lines.push(`${subsection} 색상 근접 후보`);
     lines.push('');
@@ -696,9 +654,10 @@ function buildMarkdown(report) {
   }
   lines.push('## 자동 판정 범위');
   lines.push('');
-  lines.push('- 겉감은 시안 몸통의 여러 고정 표본색과 컬러판의 원단·번호별 대표색을 대조합니다.');
-  lines.push('- 컬러판 색상은 각 칩의 왼쪽 원단사진이 아니라 오른쪽 평면색 영역에서 추출합니다.');
-  lines.push('- 소매는 흰색·검정 표기와 시안의 다중 표본 대표색을 대조합니다.');
+  lines.push(`- catalog 범위: ${report.catalogProvenance.coverage}. 현행·구형 번호를 합치지 않고 provenance가 다른 후보로 대조합니다.`);
+  lines.push('- 현행판은 고정 grid의 오른쪽 평면색, 구형 TR·소매판은 label을 포함하는 vector swatch의 Illustrator 렌더 중심색을 사용합니다.');
+  lines.push('- 소매는 공급처·family·가공·번호·색명과 시안의 다중 표본 대표색을 대조합니다.');
+  lines.push('- 이 결과는 디자인 검수이며 실제 봉제품의 원단 조성·촉감·무늬·공급처 진품 인증이 아닙니다.');
   lines.push('- 안감은 외관 시안에 보이지 않으므로 표기만 추출하며 시각 판정하지 않습니다.');
   lines.push('- 시보리 줄 수, 단추 수·색, 주머니 형태는 다음 단계의 객체/형상 검사 대상입니다.');
   lines.push('- 컬러판과 시안 렌더링의 색상 프로파일 차이 때문에 경계값은 자동 확정 대신 REVIEW로 남깁니다.');
@@ -734,7 +693,7 @@ function buildPaletteReference(palette, image) {
 }
 
 function buildPaletteCsv(palette) {
-  const rows = ['material,number,hex,red,green,blue'];
+  const rows = ['material,number,hex,red,green,blue,catalogId,role'];
   for (const entry of palette) {
     const escapedMaterial = `"${entry.material.replaceAll('"', '""')}"`;
     rows.push([
@@ -744,6 +703,8 @@ function buildPaletteCsv(palette) {
       entry.rgb[0],
       entry.rgb[1],
       entry.rgb[2],
+      entry.catalogId ?? '',
+      entry.role ?? '',
     ].join(','));
   }
   return `${rows.join('\n')}\n`;
@@ -753,16 +714,66 @@ const args = parseArgs(process.argv.slice(2));
 if (args['palette-output']) {
   const paletteImage = readPng(args.palette);
   const palette = buildPalette(paletteImage);
-  const paletteReference = buildPaletteReference(palette, paletteImage);
+  let paletteReference;
+  if (args['catalog-role']) {
+    const sourceSha256 = args['source-sha256'];
+    if (!/^[0-9a-f]{64}$/i.test(sourceSha256 ?? '')) {
+      throw new Error('palette_registry_invalid: --source-sha256가 필요합니다.');
+    }
+    if (args['catalog-role'] === 'current-body') {
+      paletteReference = currentCatalogFromPalette(
+        palette,
+        sourceSha256,
+        args['source-display-name'] ?? path.basename(args.palette),
+      );
+      paletteReference.catalogId = args['catalog-id'] ?? paletteReference.catalogId;
+    } else {
+      if (!args.observation) throw new Error('palette_registry_invalid: irregular catalog observation이 필요합니다.');
+      const observation = JSON.parse(fs.readFileSync(args.observation, 'utf8'));
+      paletteReference = buildIrregularCatalog({
+        observation,
+        image: paletteImage,
+        catalogId: args['catalog-id'] ?? args['catalog-role'],
+        role: args['catalog-role'],
+        generation: args['catalog-generation'] ?? (args['catalog-role'] === 'legacy-body' ? 'legacy' : 'reference'),
+        sourceSha256,
+        sourceDisplayName: args['source-display-name'] ?? path.basename(args.palette),
+        samplePatch,
+      });
+    }
+  } else {
+    paletteReference = buildPaletteReference(palette, paletteImage);
+  }
   const paletteOutput = path.resolve(args['palette-output']);
   fs.mkdirSync(path.dirname(paletteOutput), { recursive: true });
   fs.writeFileSync(paletteOutput, `${JSON.stringify(paletteReference, null, 2)}\n`, 'utf8');
-  console.log(JSON.stringify({ ok: true, colors: palette.length, output: paletteOutput }));
+  const candidateCount = paletteReference.entries
+    ? paletteReference.entries.reduce((sum, entry) => sum + entry.candidates.length, 0)
+    : palette.length;
+  console.log(JSON.stringify({
+    ok: true,
+    entries: paletteReference.entries?.length ?? palette.length,
+    candidates: candidateCount,
+    output: paletteOutput,
+  }));
   process.exit(0);
 }
 const inspection = JSON.parse(fs.readFileSync(args.inspection, 'utf8'));
 const proofScores = detectProofArtboards(inspection, 6);
-const { palette, reference: paletteReference } = loadPalette(args.palette);
+let catalogRegistry;
+let paletteReference;
+if (args['catalog-registry']) {
+  catalogRegistry = loadCatalogRegistry(args['catalog-registry']);
+  paletteReference = referenceFromRegistry(catalogRegistry);
+} else {
+  const { palette: currentPalette } = loadPalette(args.palette);
+  const sourceSha256 = sha256File(args.palette);
+  catalogRegistry = registryFromCatalogs([
+    currentCatalogFromPalette(currentPalette, sourceSha256, path.basename(args.palette)),
+  ], 'current-only');
+  paletteReference = referenceFromRegistry(catalogRegistry);
+}
+const palette = paletteFromRegistry(catalogRegistry);
 const designs = proofScores.map((proofScore, designIndex) => {
   const proofArtboard = inspection.artboards.find((artboard) => artboard.index === proofScore.index);
   if (!proofArtboard?.render) {
@@ -775,11 +786,12 @@ const designs = proofScores.map((proofScore, designIndex) => {
   const proofImage = readPng(proofImagePath);
   const renderBounds = normalizeRenderBounds(proofArtboard);
   const { fields, extraction } = extractFields(inspection, proofArtboard.index);
-  const shellSpecification = parseShellSpecification(fields.shell);
+  const shellSpecification = parseBodySpecification(fields.shell);
+  const sleeveSpecification = parseSleeveSpecification(fields.sleeve);
   const body = dominantBodyColor(proofImage, renderBounds);
   const sleeve = dominantSleeveColor(proofImage, renderBounds);
-  const materialCheck = buildMaterialCheck(body, palette, shellSpecification);
-  const sleeveCheck = checkSleeveSpecification(fields.sleeve, sleeve);
+  const materialCheck = evaluateBodyMaterial(body.rgb, shellSpecification, catalogRegistry);
+  const sleeveCheck = evaluateSleeveMaterial(sleeve.rgb, sleeveSpecification, catalogRegistry);
   const tableCheck = checkTableExtraction(fields);
   return {
     id: `design-${designIndex + 1}`,
@@ -793,6 +805,7 @@ const designs = proofScores.map((proofScore, designIndex) => {
     fields,
     extraction,
     shellSpecification,
+    sleeveSpecification,
     visual: { body, sleeve },
     materialCheck,
     sleeveCheck,
@@ -803,16 +816,18 @@ const designs = proofScores.map((proofScore, designIndex) => {
 assignDesignLabels(designs);
 const overallStatus = combineStatuses(designs.map((design) => design.overallStatus));
 const report = {
-  schemaVersion: 3,
+  schemaVersion: 4,
   document: inspection.document.name,
   designCount: designs.length,
   overallStatus,
   designs,
   performance: inspection.performance ?? null,
+  catalogProvenance: catalogProvenance(catalogRegistry),
   limitations: {
     lining: '외관 시안에서 보이지 않아 표기만 추출',
     shapeChecks: '시보리 줄 수, 단추, 주머니 형상 자동 검사는 후속 단계',
     colorProfiles: 'Illustrator 렌더링과 포함 이미지의 색상 프로파일 차이로 색차가 발생할 수 있음',
+    materialAuthentication: '디자인의 사양표와 렌더색만 검사하며 실제 봉제품 원단을 인증하지 않음',
   },
 };
 if (designs.length === 1) {
@@ -821,6 +836,7 @@ if (designs.length === 1) {
     proofArtboard: design.proofArtboard,
     fields: design.fields,
     shellSpecification: design.shellSpecification,
+    sleeveSpecification: design.sleeveSpecification,
     visual: design.visual,
     materialCheck: design.materialCheck,
     sleeveCheck: design.sleeveCheck,

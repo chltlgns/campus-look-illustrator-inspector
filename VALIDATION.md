@@ -18,7 +18,10 @@ npm run check && npm test && npm run migration:verify
 - pre-state와 이미 같은 보호 target의 rollback write 0과 changed target 복원
 - migration source/target SHA-256과 source-only allowlist
 - 금지 경로·확장자·1MB 초과 artifact·secret-like fixture 거부
-- `report.json` schema version 3, PASS/REVIEW/FAIL 의미와 integration 문서
+- `report.json` schema version 4 additive catalog provenance, schema 3 핵심 필드와 PASS/REVIEW/FAIL 의미
+- 현행·구형 body generation 분리, cross-generation·duplicate reference 모호성
+- sleeve supplier/family/finish/number/color exact·generic·미등록 판정
+- role+source SHA-256 cache, full-mode role 누락·hash drift fail-closed
 - 독립 Git/ORBIT 경계와 기존 parent/source pre-state 불변성
 
 PowerShell 문법 검사는 WSL에서 `/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe` 또는 `POWERSHELL_EXE`를 사용합니다. 실제 Illustrator COM, 설치기, 단축키, 네트워크는 실행하지 않습니다.
@@ -42,10 +45,12 @@ Windows 전환 candidate는 `quality/orbit-validation-windows-cutover-v01.json`�
 
 drive-path 실제 활성화 복구 candidate는 `quality/orbit-validation-windows-drive-path-recovery-v03.json`의 `DP-P01`, `DP-P02`, `DP-N01`, `DP-R01` 4개를 추가합니다. 공백 없는 LocalAppData drive path, 공백·Unicode drive path, drive-relative fail-closed, 기존 UNC·resolver·rollback 회귀를 고정합니다. 전체 locked validation 수는 8 + 12 + 6 + 4 = 30개입니다.
 
+현행·구형 원단과 소매 catalog candidate는 `quality/orbit-validation-legacy-material-palette-v04.json`의 `MP-P01`~`MP-P03`, `SL-P01`~`SL-P02`, `MP-N01`~`MP-N02`, `SL-N01`, `MP-R01`~`MP-R02` 10개를 추가합니다. 전체 locked validation 수는 8 + 12 + 6 + 4 + 10 = 40개입니다. fixture는 임시 synthetic JSON만 만들며 실제 palette AI/PNG나 고객 파일을 사용하지 않습니다.
+
 ## 수행하지 않은 검증
 
-- 실제 지정 AI/컬러판 검사: Windows external validation에서 별도 수행
+- 실제 지정 컬러판 세 장의 cache 생성과 installed synthetic proof 재생: Windows external validation에서 별도 수행
 - Illustrator 2025 설치·단축키 확인: Windows backup과 Gate 승인 뒤 별도 수행
 - 독립 환경 성능 재측정: Git 밖 runtime에서 cold/warm으로 별도 수행
 - parent 애플리케이션 연결: `out_of_scope`
-- remote/push/PR/deploy/API: `out_of_scope`, 0건
+- remote 변경/push/PR/deploy/API: `out_of_scope`, 0건 (기존 공개 `origin` 보존)

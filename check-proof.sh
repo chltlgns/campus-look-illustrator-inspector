@@ -7,6 +7,7 @@ usage() {
   ./check-proof.sh <야구점퍼 시안.ai> [컬러판.ai] [출력 폴더]
 
 컬러판 인자를 생략하려면 CAMPUSLOOK_MATERIAL_PALETTE를 설정하세요.
+역할별 catalog registry가 있으면 CAMPUSLOOK_CATALOG_REGISTRY로 주입할 수 있습니다.
 
 Illustrator 2025를 로컬 COM 자동화로 열어 원본을 저장하지 않고 검사합니다.
 외부 API나 유료 서비스를 호출하지 않습니다.
@@ -25,25 +26,35 @@ fi
 
 input_path="$1"
 palette_path="${2:-${CAMPUSLOOK_MATERIAL_PALETTE:-}}"
+catalog_registry="${CAMPUSLOOK_CATALOG_REGISTRY:-}"
 script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
 if [[ ! -f "$input_path" ]]; then
   printf '시안 파일을 찾을 수 없습니다: %s\n' "$input_path" >&2
   exit 2
 fi
-if [[ -z "$palette_path" ]]; then
+if [[ -z "$palette_path" && -z "$catalog_registry" ]]; then
   printf '컬러판 경로가 필요합니다: 두 번째 인자 또는 CAMPUSLOOK_MATERIAL_PALETTE\n' >&2
   exit 2
 fi
-if [[ ! -f "$palette_path" ]]; then
+if [[ -n "$palette_path" && ! -f "$palette_path" ]]; then
   printf '컬러판 파일을 찾을 수 없습니다: %s\n' "$palette_path" >&2
+  exit 2
+fi
+if [[ -n "$catalog_registry" && ! -f "$catalog_registry" ]]; then
+  printf 'catalog registry를 찾을 수 없습니다: %s\n' "$catalog_registry" >&2
   exit 2
 fi
 
 input_path="$(realpath -- "$input_path")"
-palette_path="$(realpath -- "$palette_path")"
+if [[ -n "$palette_path" ]]; then
+  palette_path="$(realpath -- "$palette_path")"
+fi
+if [[ -n "$catalog_registry" ]]; then
+  catalog_registry="$(realpath -- "$catalog_registry")"
+fi
 input_name="$(basename -- "$input_path")"
-palette_name="$(basename -- "$palette_path")"
+palette_name="$(basename -- "${palette_path:-current-catalog}")"
 
 if [[ $# -eq 3 ]]; then
   output_dir="$3"
@@ -61,11 +72,15 @@ output_dir="$(realpath -- "$output_dir")"
 proof_stage="$output_dir/proof/source.ai"
 palette_stage="$output_dir/palette/source.ai"
 cp -- "$input_path" "$proof_stage"
-cp -- "$palette_path" "$palette_stage"
+if [[ -z "$catalog_registry" ]]; then
+  cp -- "$palette_path" "$palette_stage"
+fi
 
 inspector_win="$(wslpath -w "$script_dir/inspect-illustrator.ps1")"
 input_win="$(wslpath -w "$proof_stage")"
-palette_win="$(wslpath -w "$palette_stage")"
+if [[ -z "$catalog_registry" ]]; then
+  palette_win="$(wslpath -w "$palette_stage")"
+fi
 proof_output_win="$(wslpath -w "$output_dir/proof")"
 palette_output_win="$(wslpath -w "$output_dir/palette")"
 
@@ -101,17 +116,24 @@ run_inspector proof "$output_dir/proof/document.json" \
   -SourceDisplayName "$input_name" \
   -RenderScale 200
 
-run_inspector palette "$output_dir/palette/full-artwork.png" \
-  -InputPath "$palette_win" \
-  -OutputDirectory "$palette_output_win" \
-  -SourceDisplayName "$palette_name" \
-  -RenderScale 100 \
-  -ExportFullArtwork
+if [[ -z "$catalog_registry" ]]; then
+  run_inspector palette "$output_dir/palette/full-artwork.png" \
+    -InputPath "$palette_win" \
+    -OutputDirectory "$palette_output_win" \
+    -SourceDisplayName "$palette_name" \
+    -RenderScale 100 \
+    -ExportFullArtwork
 
-node "$script_dir/analyze-proof.mjs" \
-  --inspection "$output_dir/proof/document.json" \
-  --palette "$output_dir/palette/full-artwork.png" \
-  --output "$output_dir/result"
+  node "$script_dir/analyze-proof.mjs" \
+    --inspection "$output_dir/proof/document.json" \
+    --palette "$output_dir/palette/full-artwork.png" \
+    --output "$output_dir/result"
+else
+  node "$script_dir/analyze-proof.mjs" \
+    --inspection "$output_dir/proof/document.json" \
+    --catalog-registry "$catalog_registry" \
+    --output "$output_dir/result"
+fi
 
 printf '\n검사 완료\n'
 printf '  보고서: %s\n' "$output_dir/result/report.md"

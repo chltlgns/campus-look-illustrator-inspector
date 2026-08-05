@@ -10,10 +10,11 @@
     "overallStatus",
     "designs",
     "performance",
+    "catalogProvenance",
     "limitations"
   ],
   "properties": {
-    "schemaVersion": { "const": 3 },
+    "schemaVersion": { "const": 4 },
     "document": { "type": "string", "minLength": 1 },
     "designCount": { "type": "integer", "minimum": 1 },
     "overallStatus": { "$ref": "#/$defs/status" },
@@ -23,13 +24,38 @@
       "items": { "$ref": "#/$defs/design" }
     },
     "performance": { "type": ["object", "null"] },
+    "catalogProvenance": {
+      "type": "object",
+      "required": ["coverage", "catalogs"],
+      "properties": {
+        "coverage": { "enum": ["current-only", "full"] },
+        "catalogs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["catalogId", "role", "generation", "sourceSha256", "extractorVersion", "entryCount"],
+            "properties": {
+              "catalogId": { "type": "string", "minLength": 1 },
+              "role": { "enum": ["current-body", "legacy-body", "sleeve-material"] },
+              "generation": { "type": "string", "minLength": 1 },
+              "sourceSha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+              "extractorVersion": { "type": "string", "minLength": 1 },
+              "entryCount": { "type": "integer", "minimum": 1 },
+              "referenceState": { "type": "object" }
+            }
+          }
+        }
+      }
+    },
     "limitations": {
       "type": "object",
-      "required": ["lining", "shapeChecks", "colorProfiles"],
+      "required": ["lining", "shapeChecks", "colorProfiles", "materialAuthentication"],
       "properties": {
         "lining": { "type": "string" },
         "shapeChecks": { "type": "string" },
-        "colorProfiles": { "type": "string" }
+        "colorProfiles": { "type": "string" },
+        "materialAuthentication": { "type": "string" }
       }
     }
   },
@@ -40,7 +66,11 @@
       "required": ["status"],
       "properties": {
         "status": { "$ref": "#/$defs/status" },
-        "reason": { "type": "string" }
+        "reason": { "type": "string" },
+        "decisionCode": { "type": "string" },
+        "matchedCatalog": { "type": ["object", "null"] },
+        "candidates": { "type": "array" },
+        "nearest": { "type": "array" }
       }
     },
     "design": {
@@ -50,6 +80,7 @@
         "label",
         "proofArtboard",
         "fields",
+        "sleeveSpecification",
         "visual",
         "materialCheck",
         "sleeveCheck",
@@ -69,6 +100,7 @@
           }
         },
         "fields": { "type": "object" },
+        "sleeveSpecification": { "type": "object" },
         "visual": { "type": "object" },
         "materialCheck": { "$ref": "#/$defs/check" },
         "sleeveCheck": { "$ref": "#/$defs/check" },
