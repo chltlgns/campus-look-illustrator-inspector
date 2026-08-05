@@ -1,0 +1,43 @@
+schema_version: orbit-intent/v1
+status: ready
+created_at: "2026-08-05"
+profile: "strict"
+project:
+  name: "현행·구형 원단 및 소매 원단 혼용 검사"
+  mission: "현행 컬러판과 과거 컬러판이 혼용되는 야구점퍼 시안에서 몸통 TR 원단과 소매 가죽 원단을 승인된 세대별 기준에 대조해 재주문 시안을 오판하지 않는다."
+users:
+  - "Campuslook 시안·재주문 검수 담당자"
+scope:
+  in:
+    - "사용자가 제공한 `옛날 TR.ai`와 `가죽원단.ai`를 원본 불변으로 구조·색상·표기 분석"
+    - "기존 현행 컬러판과 구형 TR 컬러판을 별도 provenance로 등록하고 하나의 검사에서 함께 대조"
+    - "시안 하단 표의 겉감·소매 표기와 렌더 대표색을 현행/구형 TR 및 소매 가죽 기준에 대조"
+    - "세대가 명시되지 않은 시안은 현행/구형 중 가장 가까운 승인 기준과 모호성을 함께 보고하고, 둘 중 하나와 일치한다는 이유만으로 실패시키지 않음"
+    - "현재 CLI·Windows launcher·palette cache·report schema를 후방 호환으로 확장하고 로컬 회귀 검증"
+    - "Quality, 독립 clean Trust, main ff-only 통합 뒤 installed launcher 재설치와 지정 fixture 실제 확인"
+  out:
+    - "원본 AI·현재 열린 Illustrator 문서·기존 보고서의 저장 또는 수정"
+    - "파일명·mtime·색상만으로 주문 시점이나 재주문 여부를 확정"
+    - "승인되지 않은 원단 종류·색상번호를 자동 생성하거나 서로 다른 번호를 임의 통합"
+    - "AI/PNG와 고객 파일명·원시 보고서를 Git에 추가"
+    - "remote 재구성, 외부 API, 유료 호출, network package install"
+hard_boundaries:
+  - "새 digest-bound Gate 승인 전 구현 파일·Windows 설치를 변경하지 않는다."
+  - "컬러판 원본은 해시로 식별하고 Git 밖에서 읽기만 하며, 파생 기준에는 원본 경로 대신 역할·해시·대표색 provenance만 남긴다."
+  - "현행과 구형 기준이 서로 가깝거나 표기가 불완전하면 PASS/FAIL을 추측하지 않고 REVIEW와 후보를 보고한다."
+  - "사용자 승인 없이 원본 AI와 기존 열린 Illustrator 문서를 저장·종료하지 않는다."
+  - "현재 대화의 구체적 승인 없이 과금 가능 API를 호출하지 않는다."
+success_criteria:
+  - id: SC-001
+    criterion: "두 제공 AI의 역할·해시·구조와 추출 가능한 색상/번호 체계를 기록하고 원본 SHA-256·mtime이 전후 동일하다."
+  - id: SC-002
+    criterion: "몸통은 현행과 구형 TR 기준을 모두 대조해 matched palette generation, material, number, delta와 모호성을 보고한다."
+  - id: SC-003
+    criterion: "소매는 `가죽원단.ai`의 승인 색상 기준과 표의 소매 원단·색상 표기를 대조하며 흰색·검정 외 색도 자동 판정한다."
+  - id: SC-004
+    criterion: "명시된 세대와 다른 기준만 강하게 일치하면 FAIL, 세대 미명시 상태에서 어느 승인 세대 하나와 일치하면 PASS 또는 REVIEW, 어느 기준에도 맞지 않으면 FAIL이라는 결정 규칙이 locked test로 고정된다."
+  - id: SC-005
+    criterion: "기존 30개 locked validation과 신규 다중 컬러판·소매 원단 validation, Quality, clean Trust, post-Quality가 PASS한다."
+  - id: SC-006
+    criterion: "설치된 검사기에서 현행/구형/모호/미등록 fixture를 재생하고 입력·열린 문서·원본 컬러판 drift가 0이다."
+open_questions: []

@@ -1,0 +1,52 @@
+schema_version: orbit-backlog/v1
+status: ready
+items:
+  - id: TASK-MP-001
+    requirement_ids: [REQ-MP-001, REQ-MP-002, REQ-MP-003, REQ-MP-004]
+    title: "role/hash-bound catalog schema와 vector-label/rendered-color builder"
+    owner: codex
+    depends_on: []
+    risk: critical
+    done_when: "current/legacy/sleeve fixture가 독립 catalog로 생성되고 irregular/missing/duplicate reference 상태가 MP-P01/MP-P02/MP-N02에서 재현"
+  - id: TASK-MP-002
+    requirement_ids: [REQ-MP-005, REQ-NFR-002, REQ-NFR-003, REQ-NFR-005]
+    title: "Windows three-role source resolution과 immutable catalog cache"
+    owner: codex
+    depends_on: [TASK-MP-001]
+    risk: critical
+    done_when: "params/env/installed sidecar, source SHA/role/schema guard, warm reuse, missing/drift fail-closed와 bounded retry가 MP-R01에서 PASS"
+  - id: TASK-MP-003
+    requirement_ids: [REQ-MP-006, REQ-MP-007]
+    title: "auto·explicit generation 몸통 판정과 ambiguity decision code"
+    owner: codex
+    depends_on: [TASK-MP-001]
+    risk: critical
+    done_when: "current/legacy/explicit mismatch/cross-generation ambiguity/duplicate reference/neither-match가 MP-P01~P03·MP-N01~N02 계약과 일치"
+  - id: TASK-SL-001
+    requirement_ids: [REQ-SL-001, REQ-SL-002, REQ-SL-003, REQ-SL-004]
+    title: "supplier·family·finish·number 소매 parser와 catalog 판정"
+    owner: codex
+    depends_on: [TASK-MP-001]
+    risk: high
+    done_when: "동인 회색 34 exact와 니플레자 흰/검정 호환, 미등록/충돌과 실물 인증 한계가 SL-P01/P02/N01에서 PASS"
+  - id: TASK-RP-001
+    requirement_ids: [REQ-RP-001, REQ-RP-002, REQ-NFR-001, REQ-NFR-004]
+    title: "schema 4 report·Markdown·dialog·문서와 신규 10개 locked validation"
+    owner: codex
+    depends_on: [TASK-MP-002, TASK-MP-003, TASK-SL-001]
+    risk: high
+    done_when: "기존 schema 3 필드와 status/exit가 유지되고 신규 provenance/ambiguity가 검증되며 raw palette/customer data tracked 0"
+  - id: TASK-MP-004
+    requirement_ids: [REQ-NFR-001, REQ-NFR-004]
+    title: "candidate Quality·다른 verifier clean Trust·ff-only integration·post-Quality"
+    owner: codex
+    depends_on: [TASK-RP-001]
+    risk: high
+    done_when: "기존 30+신규 10 locked, lint/check/test/migration, commit-bound Trust와 integrated post-Quality가 PASS"
+  - id: TASK-MP-005
+    requirement_ids: [REQ-MP-002, REQ-MP-005, REQ-NFR-002, REQ-NFR-003, REQ-NFR-006]
+    title: "fresh Windows backup·installed three-role config·cache build·synthetic actual replay"
+    owner: codex
+    depends_on: [TASK-MP-004]
+    risk: critical
+    done_when: "세 source exact hash, installed files/config/cache, current/legacy/ambiguity/sleeve synthetic 결과, 원본·Program JSX·열린 문서 drift 0 또는 guarded rollback"

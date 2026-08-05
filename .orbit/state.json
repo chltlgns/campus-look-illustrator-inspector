@@ -6,14 +6,15 @@
   "profile": "strict",
   "core_version": "0.4.4",
   "created_at": "2026-08-04T02:08:43+00:00",
-  "updated_at": "2026-08-04T23:42:12+00:00",
+  "updated_at": "2026-08-05T01:48:44+00:00",
   "scope_order": [
     "inspector-source-split-v01",
     "windows-illustrator-cutover-v01",
     "windows-illustrator-cutover-recovery-v02",
-    "windows-illustrator-drive-path-recovery-v03"
+    "windows-illustrator-drive-path-recovery-v03",
+    "legacy-material-palette-validation-v04"
   ],
-  "active_scope_id": null,
+  "active_scope_id": "legacy-material-palette-validation-v04",
   "scopes": {
     "inspector-source-split-v01": {
       "scope_id": "inspector-source-split-v01",
@@ -512,6 +513,78 @@
         "source_scope_id": "windows-illustrator-cutover-recovery-v02",
         "transition_prepare_path": ".orbit/recoveries/recover-drive-path-actual-20260804T0605Z.prepare.json"
       }
+    },
+    "legacy-material-palette-validation-v04": {
+      "scope_id": "legacy-material-palette-validation-v04",
+      "name": "현행·구형 원단 및 소매 원단 혼용 검사",
+      "profile": "strict",
+      "created_at": "2026-08-05T01:25:52+00:00",
+      "depends_on": [
+        "windows-illustrator-drive-path-recovery-v03"
+      ],
+      "artifact_root": "docs/orbit/scopes/legacy-material-palette-validation-v04",
+      "runtime_root": ".orbit/scopes/legacy-material-palette-validation-v04",
+      "lifecycle_status": "active",
+      "migration": null,
+      "stages": {
+        "objective": {
+          "status": "completed",
+          "started_at": "2026-08-05T01:26:17+00:00",
+          "completed_at": "2026-08-05T01:43:54+00:00",
+          "evidence": {
+            "docs/orbit/scopes/legacy-material-palette-validation-v04/00-objective/intent.yaml": "0c73685f376f9a5ea1d9b3faccb9e364f107e4ce6d98ae7f06e9891270ef955b",
+            "docs/orbit/scopes/legacy-material-palette-validation-v04/00-objective/assumptions.yaml": "5fe2cba6883d6d33dd807090205da62434315f3535da5d549bb2ec34693d7888"
+          }
+        },
+        "research": {
+          "status": "completed",
+          "started_at": "2026-08-05T01:31:07+00:00",
+          "completed_at": "2026-08-05T01:43:55+00:00",
+          "evidence": {
+            "docs/orbit/scopes/legacy-material-palette-validation-v04/01-research/evidence-ledger.md": "c9682f9f1c5c9132d730bdaf482883969043a47b03714c711f2199d334306534",
+            "docs/orbit/scopes/legacy-material-palette-validation-v04/01-research/research-report.md": "2d7cd3fd8ded6555ebb4f880709dd038e542fba610a8a138df170e2026bc43ed"
+          }
+        },
+        "blueprint": {
+          "status": "completed",
+          "started_at": "2026-08-05T01:45:18+00:00",
+          "completed_at": "2026-08-05T01:47:01+00:00",
+          "evidence": {
+            "docs/orbit/scopes/legacy-material-palette-validation-v04/02-blueprint/requirements.md": "1d70600475ee3d9c58042751b1afe208bada2bfa0af25945c236500729a1343d",
+            "docs/orbit/scopes/legacy-material-palette-validation-v04/02-blueprint/architecture.md": "3ec47eaddaf3b16f696df150870c10259f06d157fc8e9feda3a7fb57539ca88f",
+            "docs/orbit/scopes/legacy-material-palette-validation-v04/02-blueprint/decisions.md": "44d0e4794212f398e99c281f4a9a23c206f50aae9b005982de22d4b1fc40d9b4"
+          }
+        },
+        "planning": {
+          "status": "completed",
+          "started_at": "2026-08-05T01:47:14+00:00",
+          "completed_at": "2026-08-05T01:48:44+00:00",
+          "evidence": {
+            "docs/orbit/scopes/legacy-material-palette-validation-v04/03-planning/backlog.yaml": "cb5e3409c7a3c39bd91afb31af0d0c24f95a0ba21e4112a04d75693d00328712",
+            "docs/orbit/scopes/legacy-material-palette-validation-v04/03-planning/validation-plan.md": "01b34cbd3da89800533c1117d08fa6f8e3ecea3b2e1af538b85309c1df6396c8"
+          }
+        },
+        "gate": {
+          "status": "ready",
+          "started_at": null,
+          "completed_at": null,
+          "evidence": {}
+        },
+        "implementation": {
+          "status": "blocked",
+          "started_at": null,
+          "completed_at": null,
+          "evidence": {}
+        },
+        "trust": {
+          "status": "blocked",
+          "started_at": null,
+          "completed_at": null,
+          "evidence": {}
+        }
+      },
+      "terminal_disposition": null,
+      "recovers_from": null
     }
   }
 }

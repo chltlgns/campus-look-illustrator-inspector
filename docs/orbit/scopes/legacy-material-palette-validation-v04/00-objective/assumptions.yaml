@@ -1,0 +1,39 @@
+schema_version: orbit-assumptions/v1
+status: ready
+assumptions:
+  - id: A-001
+    statement: "`옛날 TR.ai`는 과거 몸통 TR 계열의 승인 컬러판이고 `가죽원단.ai`는 소매 가죽 원단의 승인 컬러판이다."
+    risk: critical
+    state: user_verified
+    owner: user
+    verification: "사용자가 2026-08-05 현재 두 파일의 용도를 직접 설명했다. 파일 내부 구조·표기는 research에서 별도 확인한다."
+  - id: A-002
+    statement: "현행 기본 컬러판은 installed launcher가 현재 기본값으로 사용하는 `컬러참고용 판때기.ai`다."
+    risk: high
+    state: verified
+    owner: codex
+    verification: "`illustrator/run-proof-check.ps1`의 default PaletteFile 경로와 기존 v03 실제 회귀 기록을 확인했다. 구현 직전 파일 hash를 다시 고정한다."
+  - id: A-003
+    statement: "기존 시안의 하단 사양표에 원단 종류와 색상번호 또는 색상명이 자동 대조에 충분히 남아 있다."
+    risk: critical
+    state: partially_verified
+    owner: shared
+    verification: "기존 20파일·22시안에서 TR 번호/색상명과 소매 family/색상 표기를 비식별 집계했다. generation 표기는 없으므로 auto dual-catalog와 명시적 override가 모두 필요하다."
+  - id: A-004
+    statement: "현행과 구형 컬러판에는 동일 번호·유사색이 있을 수 있어 시안 렌더 색상만으로 세대를 항상 단정할 수 없다."
+    risk: critical
+    state: verified
+    owner: codex
+    verification: "49개 동일 번호 비교의 최소 후보 중앙값은 ΔE 19.03이고, 구형 내부에도 15개 중복 번호가 있다. 양쪽 근접/충돌이면 단일 자동 확정을 금지한다."
+  - id: A-005
+    statement: "소매 표기의 원단명·번호/색상명과 렌더 대표색을 함께 쓰면 흰색·검정 외 가죽 색도 현재보다 정확하게 판정할 수 있다."
+    risk: high
+    state: verified
+    owner: codex
+    verification: "가죽 보드에서 supplier/finish/number가 있는 24개 swatch를 연결했고 실제 표본에서 `동인 민무늬 회색 34번`을 확인했다. positive/ambiguous/unregistered fixture는 Planning에 고정한다."
+  - id: A-006
+    statement: "Illustrator 렌더의 색상 프로파일·그림자·안티앨리어싱 때문에 단일 픽셀 또는 고정 ΔE만으로 원단 세대를 확정하면 오판이 생긴다."
+    risk: high
+    state: verified
+    owner: codex
+    verification: "현재 analyzer가 다중 표본·REVIEW 경계와 color profile limitation을 이미 사용한다. 신규 규칙도 후보 간 margin과 표기 provenance를 함께 요구한다."
