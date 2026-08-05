@@ -8,8 +8,8 @@
     {
       "path": "analyze-proof.mjs",
       "sourceSha256": "e77df8e7213a6a255e51d50d071aab9a1b6429192fabebcf79445a49c902877d",
-      "targetSha256": "371d86165d86472afb31caf18b9e9d2af645e13d3f572c6f95b007daa47ff188",
-      "transformation": "byte-identical source copy"
+      "targetSha256": "8b7f47ecd789d4edcc1444b1f3d90181b5dc82a3d44602b02e29aaa3c0da90e3",
+      "transformation": "bottom specification table is authoritative; color and catalog comparison retained as decision-neutral visual advisory"
     },
     {
       "path": "build-live-test-html.mjs",
@@ -74,8 +74,8 @@
     {
       "path": "illustrator/run-proof-check.ps1",
       "sourceSha256": "20292592a33a2f26ae8ccde8cd4e04fb72b8fa4a5991f150eb176d4e930e1e53",
-      "targetSha256": "898cfa91505b761b88729deb3912cf469a40b5fb9e6dedef80d27b5a53a2d313",
-      "transformation": "legacy parent absolute root replaced by shared fail-closed source/runtime resolution, validated WSL UNC and drive conversion, and Git-external outputs"
+      "targetSha256": "18507b0f083e5c25ef1ca04c810fbf6f0bdb1cbf721f724cc12260d6b4fdd801",
+      "transformation": "shared fail-closed source/runtime resolution plus bottom-table-first summary with decision-neutral color advisory"
     }
   ],
   "excluded": [

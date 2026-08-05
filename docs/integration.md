@@ -61,17 +61,17 @@ installed `material-palettes.json`은 schema `campuslook-material-palettes/v1`�
 - `catalogProvenance`: coverage와 role/generation/source SHA-256/extractor/reference 상태
 - `limitations`: 자동 판정 한계 설명
 
-각 design의 `materialCheck`와 `sleeveCheck`는 기존 `status`, `reason`을 유지하며 `decisionCode`, `matchedCatalog`, `candidates`, `nearest`를 additive하게 제공합니다. `sleeveSpecification`은 supplier/family/finish/number/color 파싱값입니다. schema 3 소비자가 사용하던 `document`, `designs`, `fields`, `visual`, `materialCheck`, `sleeveCheck`, `overallStatus` 의미와 정상 처리 exit 0은 유지됩니다.
+각 design의 `materialCheck`와 `sleeveCheck`는 `authority.source=bottom_specification_table`로 하단 사양표를 최종 기준으로 표시합니다. 표기가 있으면 `table_spec_authoritative` `PASS`, 없으면 `table_field_missing` `REVIEW`입니다. 기존 색상 evaluator의 `status`, `decisionCode`, `reason`, `expected`, `matchedCatalog`, `candidates`, `nearest`, Delta E 값은 `visualComparison` 아래에 그대로 보존되며 `affectsOverallStatus=false`입니다. `sleeveSpecification`은 supplier/family/finish/number/color 파싱값입니다. schema version은 4, 정상 처리 exit는 0으로 유지됩니다.
 
-몸통 세대가 표나 caller에서 명시되지 않으면 current/legacy 같은 key를 함께 비교합니다. 단일 catalog의 강한 일치만 `PASS`, cross-generation 또는 reference 충돌은 `REVIEW`, 어느 승인 후보에도 맞지 않거나 다른 번호가 명확히 우세하면 `FAIL`입니다. 세대가 명시됐는데 다른 세대만 강하게 맞으면 `generation_mismatch` `FAIL`입니다. 이 결과로 주문 이력이나 재주문 여부를 증명하지 않습니다.
+몸통 색상 evaluator는 세대가 명시되지 않으면 current/legacy 같은 key를 함께 비교하며 기존 `PASS`/`REVIEW`/`FAIL`과 decision code를 `visualComparison`에 기록합니다. 이 값은 채색 확인용 참고일 뿐 원단 종류·번호·세대나 종합 상태를 바꾸지 않습니다. 이 결과로 주문 이력이나 재주문 여부를 증명하지 않습니다.
 
-소매는 구체 supplier/family/finish/number가 있으면 exact key를, 일반 니플레자 흰색·검정이면 family 후보를 사용합니다. 흰색·검정 외 등록색도 검사하지만 실제 봉제품 원단 인증을 의미하지 않습니다.
+소매 색상 evaluator도 구체 supplier/family/finish/number 또는 일반 니플레자 후보와 비교한 값을 `visualComparison` 참고정보로만 제공합니다. 검정·흰색 등 화면색이 같다는 사실은 원단 동일성을 뜻하지 않습니다.
 
 정식 JSON Schema는 `contracts/inspector-result.schema.json`입니다. 단일 시안 보고서는 하위 호환을 위해 첫 design의 일부 필드를 root에도 복제합니다.
 
 ## 상태 결합 규칙
 
-`FAIL`이 하나라도 있으면 `FAIL`, 그렇지 않고 `REVIEW`가 하나라도 있으면 `REVIEW`, 나머지는 `PASS`입니다. 상태는 디자인 품질 판정이고 프로세스 exit와 독립적입니다.
+8개 하단 사양표 필수값 중 하나라도 비었거나 추출에 실패하면 해당 design과 전체가 `REVIEW`, 모두 있으면 `PASS`입니다. 겉감·소매 색상 비교 상태는 결합 대상이 아닙니다. 상태는 디자인 사양표 완전성 판정이고 프로세스 exit와 독립적입니다.
 
 ## 출력 원자성·실패 처리
 

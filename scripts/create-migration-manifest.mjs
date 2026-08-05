@@ -22,11 +22,12 @@ try {
     : path.join(targetRoot, 'migration/source-manifest.json');
 
   const transformations = new Map([
+    ['analyze-proof.mjs', 'bottom specification table is authoritative; color and catalog comparison retained as decision-neutral visual advisory'],
     ['build-live-test-html.mjs', 'removed machine-specific fixture default; explicit sanitized directory required'],
     ['build-live-test-report.mjs', 'removed machine-specific fixture default; explicit sanitized directory required'],
     ['check-proof.sh', 'replaced machine-specific palette default with explicit argument or environment'],
     ['illustrator/install-illustrator-script.ps1', 'installer now writes validated repository-root sidecar'],
-    ['illustrator/run-proof-check.ps1', 'legacy parent absolute root replaced by shared fail-closed source/runtime resolution, validated WSL UNC and drive conversion, and Git-external outputs'],
+    ['illustrator/run-proof-check.ps1', 'shared fail-closed source/runtime resolution plus bottom-table-first summary with decision-neutral color advisory'],
   ]);
   const entries = SOURCE_INVENTORY.map(([relativePath, expectedSourceSha256]) => {
     const sourcePath = path.join(sourceRoot, relativePath);

@@ -1,0 +1,85 @@
+{
+  "schema_version": "orbit-validation-profile/v1",
+  "profile_id": "campuslook-illustrator-inspector-table-authoritative-spec-validation-v06",
+  "locked_id_count": 7,
+  "locked_id_sha256": "9fb71c8d4ea5a42362556d7172fed64f49488fffdc1b832a9674ce0ea1e1e28b",
+  "rows": [
+    {
+      "id": "TA-P01",
+      "selector": "tests.test_table_authoritative_validation.TableAuthoritativeValidation.test_complete_table_cross_generation_is_pass_with_visual_review",
+      "scenario": "Complete table with current and legacy body colors both near",
+      "expected_exit": "0",
+      "expected_code": "overall PASS; visual cross_generation_ambiguous REVIEW",
+      "expected_writes": "temporary fixture only",
+      "evidence_locator": "tests/test_table_authoritative_validation.py::TableAuthoritativeValidation.test_complete_table_cross_generation_is_pass_with_visual_review",
+      "requirement_ids": ["REQ-TA-001", "REQ-TA-003", "REQ-TA-004"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "TA-P02",
+      "selector": "tests.test_table_authoritative_validation.TableAuthoritativeValidation.test_missing_product_and_pocket_remains_review",
+      "scenario": "Proof 15 style blank product and pocket cells",
+      "expected_exit": "0",
+      "expected_code": "ordered product,pocket missing; overall REVIEW",
+      "expected_writes": "temporary fixture only",
+      "evidence_locator": "tests/test_table_authoritative_validation.py::TableAuthoritativeValidation.test_missing_product_and_pocket_remains_review",
+      "requirement_ids": ["REQ-TA-002"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "TA-P03",
+      "selector": "tests.test_table_authoritative_validation.TableAuthoritativeValidation.test_complete_table_sleeve_mismatch_is_pass_with_visual_fail",
+      "scenario": "Complete sleeve table cell with another reference color match",
+      "expected_exit": "0",
+      "expected_code": "overall PASS; visual sleeve_other_reference_match FAIL",
+      "expected_writes": "temporary fixture only",
+      "evidence_locator": "tests/test_table_authoritative_validation.py::TableAuthoritativeValidation.test_complete_table_sleeve_mismatch_is_pass_with_visual_fail",
+      "requirement_ids": ["REQ-TA-001", "REQ-TA-003", "REQ-TA-004"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "TA-P04",
+      "selector": "tests.test_table_authoritative_validation.TableAuthoritativeValidation.test_missing_shell_or_sleeve_is_review",
+      "scenario": "Authoritative shell or sleeve table cell is missing",
+      "expected_exit": "0",
+      "expected_code": "table_field_missing; overall REVIEW",
+      "expected_writes": "temporary fixture only",
+      "evidence_locator": "tests/test_table_authoritative_validation.py::TableAuthoritativeValidation.test_missing_shell_or_sleeve_is_review",
+      "requirement_ids": ["REQ-TA-002", "REQ-TA-004"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "TA-R01",
+      "selector": "tests.test_table_authoritative_validation.TableAuthoritativeValidation.test_markdown_and_launcher_explain_table_authority",
+      "scenario": "Markdown and PowerShell summaries lead with bottom table and missing cells",
+      "expected_exit": "0",
+      "expected_code": "color comparison labeled decision-neutral advisory",
+      "expected_writes": "temporary fixture only",
+      "evidence_locator": "tests/test_table_authoritative_validation.py::TableAuthoritativeValidation.test_markdown_and_launcher_explain_table_authority",
+      "requirement_ids": ["REQ-TA-005", "REQ-NFR-TA-004"],
+      "timeout_seconds": 90
+    },
+    {
+      "id": "TA-R02",
+      "selector": "tests.test_table_authoritative_validation.TableAuthoritativeValidation.test_schema_cli_and_multi_design_contract",
+      "scenario": "Schema 4, root fields, multi-design, and analyzer CLI contracts",
+      "expected_exit": "0",
+      "expected_code": "schema 4 additive authority/advisory; two PASS designs",
+      "expected_writes": "temporary fixture only",
+      "evidence_locator": "tests/test_table_authoritative_validation.py::TableAuthoritativeValidation.test_schema_cli_and_multi_design_contract",
+      "requirement_ids": ["REQ-TA-004", "REQ-TA-007"],
+      "timeout_seconds": 60
+    },
+    {
+      "id": "TA-R03",
+      "selector": "tests.test_table_authoritative_validation.TableAuthoritativeValidation.test_catalog_evaluator_and_source_boundaries_remain_unchanged",
+      "scenario": "Catalog evaluator and excluded standalone HTML builders remain byte unchanged",
+      "expected_exit": "0",
+      "expected_code": "approved-base diff zero for excluded sources",
+      "expected_writes": "zero",
+      "evidence_locator": "tests/test_table_authoritative_validation.py::TableAuthoritativeValidation.test_catalog_evaluator_and_source_boundaries_remain_unchanged",
+      "requirement_ids": ["REQ-NFR-TA-003", "REQ-NFR-TA-006"],
+      "timeout_seconds": 60
+    }
+  ]
+}

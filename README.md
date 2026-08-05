@@ -29,16 +29,16 @@ Node 패키지 의존성은 없습니다. 이 저장소의 검증에는 네트�
 
 `PASS`, `REVIEW`, `FAIL`은 검사 결과의 의미이며 프로세스 성공 여부와 구분됩니다. 정상적으로 보고서를 만든 실행은 결과 상태가 `FAIL`이어도 exit 0입니다. 상세 계약은 [docs/integration.md](docs/integration.md), JSON 구조는 [contracts/inspector-result.schema.json](contracts/inspector-result.schema.json)을 참고하세요.
 
-## 현행·구형 몸통과 소매 catalog
+## 하단 사양표 기준과 색상 참고정보
 
 설치 모드는 `material-palettes.json`에 current-body, legacy-body, sleeve-material 세 원본 경로를 기록하고 role+source SHA-256별 immutable runtime cache를 만듭니다. 현행판은 기존 fixed grid를 유지하며, 불규칙한 구형 TR·소매판은 label 중심을 포함하는 filled vector swatch와 Illustrator-rendered 중심색으로 추출합니다. 원본 AI와 열린 시안은 저장하지 않습니다.
 
-- 세대 미명시 몸통: 현행/구형 같은 원단·번호 후보 중 한 catalog만 강하게 맞으면 그 provenance로 `PASS`
-- 현행·구형이 함께 가까움 또는 구형 같은 번호 reference 충돌: `REVIEW`
-- 명시 세대와 다른 세대만 맞음, 어느 승인 후보에도 맞지 않음, 다른 번호가 명확히 우세함: `FAIL`
-- 소매: 공급처/family/가공/번호/색명을 파싱해 exact 또는 일반 니플레자 흰색·검정 후보와 대조
+- 원단 종류·번호·세대는 하단 사양표 표기를 최종 기준으로 사용합니다.
+- 고객명·제품명·겉감·시보리·안감·단추·소매·주머니 중 하나라도 비었거나 읽지 못하면 `REVIEW`입니다.
+- 겉감과 소매 표기가 있으면 해당 원단 판정은 `PASS`이며, 색상·Delta E·catalog 근접 결과는 `visualComparison` 참고정보로만 보존합니다.
+- 검정·흰색처럼 서로 다른 원단이 같은 화면색으로 표현될 수 있으므로 색상 비교의 `PASS`/`REVIEW`/`FAIL`은 종합 판정에 영향을 주지 않습니다.
 
-이 검사는 디자인의 사양표와 렌더색을 확인합니다. 실제 봉제품의 원단 조성, 촉감, 무늬, 공급처 진품을 인증하지 않습니다.
+이 검사는 디자인의 하단 사양표 누락을 확인하고 렌더색 비교를 참고로 제공합니다. 실제 봉제품의 원단 조성, 촉감, 무늬, 공급처 진품을 인증하지 않습니다.
 
 기본 형식만 빠르게 확인하려면 다음 명령을 사용합니다.
 

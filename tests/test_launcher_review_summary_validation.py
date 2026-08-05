@@ -101,7 +101,7 @@ class LauncherReviewSummaryValidation(unittest.TestCase):
         self.assertNotIn("$report.materialCheck.matchedCatalog.role", launcher)
 
     def test_catalog_and_schema_contract_remain_unchanged(self) -> None:
-        """The approved fix does not alter analyzers, catalogs, or schema semantics."""
+        """Later report projection still leaves the catalog evaluator unchanged."""
         result = run(
             [
                 "/usr/bin/git",
@@ -109,9 +109,7 @@ class LauncherReviewSummaryValidation(unittest.TestCase):
                 "--exit-code",
                 APPROVED_BASE,
                 "--",
-                "analyze-proof.mjs",
                 "material-catalog.mjs",
-                "contracts/inspector-result.schema.json",
             ],
             check=False,
         )

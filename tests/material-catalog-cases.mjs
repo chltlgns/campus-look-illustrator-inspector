@@ -83,7 +83,11 @@ function pngChunk(type, data) {
   return Buffer.concat([length, typeBuffer, data, checksum]);
 }
 
-function writeSyntheticProofPng(filePath) {
+function writeSyntheticProofPng(
+  filePath,
+  bodyRgb = [200, 20, 20],
+  sleeveRgb = [120, 120, 120],
+) {
   const width = 500;
   const height = 500;
   const raw = Buffer.alloc((width * 3 + 1) * height);
@@ -92,8 +96,8 @@ function writeSyntheticProofPng(filePath) {
     raw[row] = 0;
     for (let x = 0; x < width; x += 1) {
       const rgb = x / width < 0.43
-        ? [200, 20, 20]
-        : x / width < 0.52 ? [120, 120, 120] : [255, 255, 255];
+        ? bodyRgb
+        : x / width < 0.52 ? sleeveRgb : [255, 255, 255];
       const offset = row + 1 + x * 3;
       raw[offset] = rgb[0];
       raw[offset + 1] = rgb[1];
@@ -112,6 +116,87 @@ function writeSyntheticProofPng(filePath) {
     pngChunk('IEND', Buffer.alloc(0)),
   ]);
   fs.writeFileSync(filePath, png);
+}
+
+function specificationTexts(artboardIndex, { missing = [], customer = '테스트 고객' } = {}) {
+  const excluded = new Set(missing);
+  const text = (field, contents, x, y) => (
+    excluded.has(field) ? null : { artboardIndex, normalized: { x, y }, contents }
+  );
+  return [
+    { artboardIndex, normalized: { x: 0.80, y: 0.10 }, contents: '시안 제작' },
+    { artboardIndex, normalized: { x: 0.80, y: 0.15 }, contents: '상담자' },
+    text('customer', customer, 0.10, 0.60),
+    text('product', '캠퍼스룩 야구점퍼', 0.40, 0.60),
+    text('shell', 'TR하이미어 / 빨강 (10번)', 0.10, 0.64),
+    text('rib', '2 by 2 시보리', 0.40, 0.64),
+    text('lining', '4온스 퀄팅', 0.10, 0.68),
+    text('button', '빨강 단추 7개', 0.40, 0.68),
+    text('sleeve', '동인 민무늬 회색 34번', 0.10, 0.72),
+    text('pocket', '쌍입술주머니', 0.40, 0.72),
+  ].filter(Boolean);
+}
+
+function runAnalyzerScenario({
+  name = 'synthetic-proof',
+  registry = fullRegistry(),
+  designs = [{}],
+} = {}) {
+  const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'campuslook-material-analyzer-'));
+  try {
+    const references = registry.catalogs.map((catalog, index) => {
+      const relative = `catalog-${index}.json`;
+      fs.writeFileSync(path.join(temporary, relative), JSON.stringify(catalog));
+      return {
+        role: catalog.role,
+        catalogId: catalog.catalogId,
+        sourceSha256: catalog.source.sha256,
+        path: relative,
+      };
+    });
+    const registryPath = path.join(temporary, 'registry.json');
+    fs.writeFileSync(
+      registryPath,
+      JSON.stringify({ schemaVersion: REGISTRY_SCHEMA, requireFull: true, catalogs: references }),
+    );
+    const artboards = [];
+    const texts = [];
+    designs.forEach((design, index) => {
+      const render = `artboard-${index}.png`;
+      writeSyntheticProofPng(
+        path.join(temporary, render),
+        design.bodyRgb,
+        design.sleeveRgb,
+      );
+      artboards.push({ index, name: `synthetic-${index + 1}`, render });
+      texts.push(...specificationTexts(index, {
+        missing: design.missing,
+        customer: design.customer ?? `테스트 고객 ${index + 1}`,
+      }));
+    });
+    const inspection = {
+      document: { name: `${name}.ai` },
+      artboards,
+      texts,
+    };
+    const inspectionPath = path.join(temporary, 'document.json');
+    const output = path.join(temporary, 'result');
+    fs.writeFileSync(inspectionPath, JSON.stringify(inspection));
+    const result = spawnSync(process.execPath, [
+      path.resolve('analyze-proof.mjs'),
+      '--inspection', inspectionPath,
+      '--catalog-registry', registryPath,
+      '--output', output,
+    ], { encoding: 'utf8' });
+    if (result.status !== 0) throw new Error(result.stderr || result.stdout);
+    return {
+      report: JSON.parse(fs.readFileSync(path.join(output, 'report.json'), 'utf8')),
+      markdown: fs.readFileSync(path.join(output, 'report.md'), 'utf8'),
+      cli: JSON.parse(result.stdout),
+    };
+  } finally {
+    fs.rmSync(temporary, { recursive: true, force: true });
+  }
 }
 
 function runCase(name) {
@@ -232,57 +317,49 @@ function runCase(name) {
     }
   }
   if (name === 'analyzer') {
-    const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'campuslook-material-analyzer-'));
-    try {
-      const registry = fullRegistry();
-      const references = registry.catalogs.map((catalog, index) => {
-        const relative = `catalog-${index}.json`;
-        fs.writeFileSync(path.join(temporary, relative), JSON.stringify(catalog));
-        return { role: catalog.role, catalogId: catalog.catalogId, sourceSha256: catalog.source.sha256, path: relative };
-      });
-      const registryPath = path.join(temporary, 'registry.json');
-      fs.writeFileSync(registryPath, JSON.stringify({ schemaVersion: REGISTRY_SCHEMA, requireFull: true, catalogs: references }));
-      writeSyntheticProofPng(path.join(temporary, 'artboard-0.png'));
-      const text = (contents, x, y) => ({ artboardIndex: 0, normalized: { x, y }, contents });
-      const inspection = {
-        document: { name: 'synthetic-proof.ai' },
-        artboards: [{ index: 0, name: 'synthetic', render: 'artboard-0.png' }],
-        texts: [
-          text('테스트 고객', 0.10, 0.60),
-          text('캠퍼스룩 야구점퍼', 0.40, 0.60),
-          text('TR하이미어 / 빨강 (10번)', 0.10, 0.64),
-          text('2 by 2 시보리', 0.40, 0.64),
-          text('4온스 퀄팅', 0.10, 0.68),
-          text('빨강 단추 7개', 0.40, 0.68),
-          text('동인 민무늬 회색 34번', 0.10, 0.72),
-          text('쌍입술주머니', 0.40, 0.72),
-        ],
-      };
-      const inspectionPath = path.join(temporary, 'document.json');
-      const output = path.join(temporary, 'result');
-      fs.writeFileSync(inspectionPath, JSON.stringify(inspection));
-      const result = spawnSync(process.execPath, [
-        path.resolve('analyze-proof.mjs'),
-        '--inspection', inspectionPath,
-        '--catalog-registry', registryPath,
-        '--output', output,
-      ], { encoding: 'utf8' });
-      if (result.status !== 0) throw new Error(result.stderr || result.stdout);
-      const report = JSON.parse(fs.readFileSync(path.join(output, 'report.json'), 'utf8'));
-      return {
-        schemaVersion: report.schemaVersion,
-        overallStatus: report.overallStatus,
-        coreFields: ['document', 'designCount', 'overallStatus', 'designs', 'performance', 'limitations']
-          .every((field) => Object.hasOwn(report, field)),
-        coverage: report.catalogProvenance.coverage,
-        bodyRole: report.materialCheck.matchedCatalog.role,
-        sleeveCode: report.sleeveCheck.decisionCode,
-        limitation: report.limitations.materialAuthentication,
-        cli: JSON.parse(result.stdout),
-      };
-    } finally {
-      fs.rmSync(temporary, { recursive: true, force: true });
-    }
+    const { report, cli } = runAnalyzerScenario();
+    return {
+      schemaVersion: report.schemaVersion,
+      overallStatus: report.overallStatus,
+      coreFields: ['document', 'designCount', 'overallStatus', 'designs', 'performance', 'limitations']
+        .every((field) => Object.hasOwn(report, field)),
+      coverage: report.catalogProvenance.coverage,
+      bodyRole: report.materialCheck.matchedCatalog.role,
+      sleeveCode: report.sleeveCheck.visualComparison.decisionCode,
+      limitation: report.limitations.materialAuthentication,
+      cli,
+    };
+  }
+  if (name === 'analyzer-cross-generation') {
+    return runAnalyzerScenario({
+      name: 'cross-generation',
+      registry: fullRegistry([100, 30, 30], [104, 30, 30]),
+      designs: [{ bodyRgb: [102, 30, 30] }],
+    });
+  }
+  if (name === 'analyzer-missing-product-pocket') {
+    return runAnalyzerScenario({
+      name: 'missing-product-pocket',
+      designs: [{ missing: ['product', 'pocket'] }],
+    });
+  }
+  if (name === 'analyzer-sleeve-mismatch') {
+    return runAnalyzerScenario({
+      name: 'sleeve-mismatch',
+      designs: [{ sleeveRgb: [200, 0, 0] }],
+    });
+  }
+  if (name === 'analyzer-missing-shell') {
+    return runAnalyzerScenario({ name: 'missing-shell', designs: [{ missing: ['shell'] }] });
+  }
+  if (name === 'analyzer-missing-sleeve') {
+    return runAnalyzerScenario({ name: 'missing-sleeve', designs: [{ missing: ['sleeve'] }] });
+  }
+  if (name === 'analyzer-multi') {
+    return runAnalyzerScenario({
+      name: 'multi-design',
+      designs: [{ customer: '첫째 고객' }, { customer: '둘째 고객' }],
+    });
   }
   throw new Error(`unknown case: ${name}`);
 }

@@ -23,6 +23,9 @@ npm run check && npm test && npm run migration:verify
 - sleeve supplier/family/finish/number/color exact·generic·미등록 판정
 - role+source SHA-256 cache, full-mode role 누락·hash drift fail-closed
 - 단일 시안 REVIEW의 null `matchedCatalog`가 `미확정 (decisionCode)`로 표시되고 기존 role이 보존되는 launcher projection
+- 하단 사양표 8개 필수값의 ordered 누락과 #15형 product/pocket REVIEW
+- complete table의 cross-generation REVIEW·sleeve color FAIL이 visual advisory에 보존되면서 overall PASS
+- Markdown/Windows launcher의 하단 표 우선 및 “색상 비교 판정 미반영 참고” 표시
 - 독립 Git/ORBIT 경계와 기존 parent/source pre-state 불변성
 
 PowerShell 문법 검사는 WSL에서 `/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe` 또는 `POWERSHELL_EXE`를 사용합니다. 실제 Illustrator COM, 설치기, 단축키, 네트워크는 실행하지 않습니다.
@@ -49,6 +52,8 @@ drive-path 실제 활성화 복구 candidate는 `quality/orbit-validation-window
 현행·구형 원단과 소매 catalog candidate는 `quality/orbit-validation-legacy-material-palette-v04.json`의 `MP-P01`~`MP-P03`, `SL-P01`~`SL-P02`, `MP-N01`~`MP-N02`, `SL-N01`, `MP-R01`~`MP-R02` 10개를 추가합니다. 전체 locked validation 수는 8 + 12 + 6 + 4 + 10 = 40개입니다. fixture는 임시 synthetic JSON만 만들며 실제 palette AI/PNG나 고객 파일을 사용하지 않습니다.
 
 REVIEW launcher hardening candidate는 `quality/orbit-validation-launcher-review-summary-v05.json`의 `LR-P01`~`LR-P03`, `LR-R01`~`LR-R02` 5개를 추가합니다. `orbit-test-execution-receipt/v1`이 전체 Python suite를 정확히 한 번 실행하고 다섯 validation row는 그 공유 execution digest를 참조합니다. 실제 Illustrator COM·AI·LocalAppData는 candidate Quality에서 변경하지 않습니다.
+
+하단 사양표 authority candidate는 `quality/orbit-validation-table-authoritative-spec-validation-v06.json`의 `TA-P01`~`TA-P04`, `TA-R01`~`TA-R03` 7개를 추가합니다. 전체 locked validation 수는 40 + 5 + 7 = 52개입니다. 신규 fixture는 production analyzer와 launcher 함수를 직접 실행하며 임시 synthetic JSON/PNG만 씁니다. 실제 proof 20개 재생과 설치 launcher 변경은 candidate Quality가 아니라 승인된 외부 검증 단계에서 수행합니다.
 
 ## 수행하지 않은 검증
 

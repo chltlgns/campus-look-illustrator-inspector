@@ -539,11 +539,45 @@ function dominantSleeveColor(image, renderBounds) {
 }
 
 function checkTableExtraction(fields) {
-  const required = ['customer', 'product', 'shell', 'lining', 'sleeve', 'rib', 'button', 'pocket'];
+  const required = ['customer', 'product', 'shell', 'rib', 'lining', 'button', 'sleeve', 'pocket'];
   const missing = required.filter((key) => !normalizeText(fields[key]));
   return missing.length
     ? { status: 'REVIEW', missing, reason: `표 항목 ${missing.join(', ')}을(를) 읽지 못했습니다.` }
     : { status: 'PASS', missing: [], reason: '표의 8개 필수 항목을 모두 읽었습니다.' };
+}
+
+function applyTableAuthority(rawCheck, fieldKey, fieldLabel, fieldValue) {
+  const visualComparison = {
+    ...rawCheck,
+    advisory: true,
+    affectsOverallStatus: false,
+  };
+  const hasTableValue = Boolean(normalizeText(fieldValue));
+  const authority = {
+    source: 'bottom_specification_table',
+    field: fieldKey,
+    fieldLabel,
+    hasValue: hasTableValue,
+    affectsOverallStatus: true,
+  };
+  if (!hasTableValue) {
+    return {
+      ...rawCheck,
+      status: 'REVIEW',
+      decisionCode: 'table_field_missing',
+      reason: `하단 사양표의 ${fieldLabel} 항목이 비어 있어 확인이 필요합니다.`,
+      authority,
+      visualComparison,
+    };
+  }
+  return {
+    ...rawCheck,
+    status: 'PASS',
+    decisionCode: 'table_spec_authoritative',
+    reason: `하단 사양표의 ${fieldLabel} 표기를 원단 판정 기준으로 사용합니다.`,
+    authority,
+    visualComparison,
+  };
 }
 
 function combineStatuses(statuses) {
@@ -591,10 +625,12 @@ function buildMarkdown(report) {
   if (report.designCount > 1) {
     lines.push('## 결과 요약');
     lines.push('');
-    lines.push('| 시안 구분 | 대지 | 겉감 표기 | 몸통색 | 원단·번호 | 소매 | 결과 |');
-    lines.push('| --- | ---: | --- | --- | --- | --- | --- |');
+    lines.push('| 시안 구분 | 대지 | 하단 사양표 | 누락 항목 | 색상 비교(참고) | 결과 |');
+    lines.push('| --- | ---: | --- | --- | --- | --- |');
     for (const design of report.designs) {
-      lines.push(`| ${markdownCell(design.label)} | ${design.proofArtboard.index + 1} | ${markdownCell(design.fields.shell)} | ${design.visual.body.hex} | ${design.materialCheck.status} | ${design.sleeveCheck.status} | **${design.overallStatus}** |`);
+      const missing = design.tableCheck.missing.length ? design.tableCheck.missing.join(', ') : '없음';
+      const visualStatus = `${design.materialCheck.visualComparison.status}/${design.sleeveCheck.visualComparison.status}`;
+      lines.push(`| ${markdownCell(design.label)} | ${design.proofArtboard.index + 1} | ${design.tableCheck.status} | ${markdownCell(missing)} | ${visualStatus} | **${design.overallStatus}** |`);
     }
     lines.push('');
   }
@@ -603,10 +639,10 @@ function buildMarkdown(report) {
     customer: '고객명',
     product: '제품명',
     shell: '겉감',
-    lining: '안감',
-    sleeve: '소매',
     rib: '시보리',
+    lining: '안감',
     button: '단추',
+    sleeve: '소매',
     pocket: '주머니',
   };
   for (const design of report.designs) {
@@ -625,9 +661,15 @@ function buildMarkdown(report) {
       lines.push(`| ${label} | ${markdownCell(design.fields[key] || '추출 실패')} |`);
     }
     lines.push('');
-    lines.push(`${subsection} 자동 대조`);
+    lines.push(`${subsection} 하단 사양표 판정`);
     lines.push('');
-    lines.push(`- 표 추출 판정: **${design.tableCheck.status}** — ${design.tableCheck.reason}`);
+    lines.push(`- 최종 기준: **하단 사양표**`);
+    lines.push(`- 표 필수값 판정: **${design.tableCheck.status}** — ${design.tableCheck.reason}`);
+    lines.push(`- 겉감 표기 판정: **${design.materialCheck.status}** (${design.materialCheck.decisionCode}) — ${design.materialCheck.reason}`);
+    lines.push(`- 소매 표기 판정: **${design.sleeveCheck.status}** (${design.sleeveCheck.decisionCode}) — ${design.sleeveCheck.reason}`);
+    lines.push('');
+    lines.push(`${subsection} 색상 비교 — 판정 미반영 참고`);
+    lines.push('');
     lines.push(`- 몸통 대표색: ${design.visual.body.hex} (${design.visual.body.agreeingSamples}/${design.visual.body.totalSamples}개 표본 일치)`);
     lines.push(`- 표의 겉감: ${design.shellSpecification.raw || '추출 실패'}`);
     if (design.materialCheck.expected) {
@@ -635,13 +677,13 @@ function buildMarkdown(report) {
       lines.push(`- 기대값과 색차: ΔE ${design.materialCheck.expected.deltaE}`);
     }
     if (design.materialCheck.matchedCatalog) {
-      lines.push(`- 몸통 일치 catalog: ${design.materialCheck.matchedCatalog.role} / ${design.materialCheck.matchedCatalog.catalogId} / ${design.materialCheck.matchedCatalog.sourceSha256}`);
+      lines.push(`- 몸통 근접 catalog(참고): ${design.materialCheck.matchedCatalog.role} / ${design.materialCheck.matchedCatalog.catalogId} / ${design.materialCheck.matchedCatalog.sourceSha256}`);
     }
-    lines.push(`- 원단·색상번호 판정: **${design.materialCheck.status}** (${design.materialCheck.decisionCode}) — ${design.materialCheck.reason}`);
+    lines.push(`- 몸통 색상 비교(참고): **${design.materialCheck.visualComparison.status}** (${design.materialCheck.visualComparison.decisionCode}) — ${design.materialCheck.visualComparison.reason}`);
     if (design.sleeveCheck.matchedCatalog) {
-      lines.push(`- 소매 일치 catalog: ${design.sleeveCheck.matchedCatalog.catalogId} / ${design.sleeveCheck.matchedCatalog.key}`);
+      lines.push(`- 소매 근접 catalog(참고): ${design.sleeveCheck.matchedCatalog.catalogId} / ${design.sleeveCheck.matchedCatalog.key}`);
     }
-    lines.push(`- 소매 판정: **${design.sleeveCheck.status}** (${design.sleeveCheck.decisionCode}) — ${design.sleeveCheck.reason}`);
+    lines.push(`- 소매 색상 비교(참고): **${design.sleeveCheck.visualComparison.status}** (${design.sleeveCheck.visualComparison.decisionCode}) — ${design.sleeveCheck.visualComparison.reason}`);
     lines.push('');
     lines.push(`${subsection} 색상 근접 후보`);
     lines.push('');
@@ -654,13 +696,14 @@ function buildMarkdown(report) {
   }
   lines.push('## 자동 판정 범위');
   lines.push('');
-  lines.push(`- catalog 범위: ${report.catalogProvenance.coverage}. 현행·구형 번호를 합치지 않고 provenance가 다른 후보로 대조합니다.`);
+  lines.push('- 원단 종류·번호·세대의 최종 기준은 하단 사양표입니다. 8개 필수 항목의 빈칸이나 추출 실패만 REVIEW에 반영합니다.');
+  lines.push(`- catalog 범위: ${report.catalogProvenance.coverage}. 현행·구형과 소매 catalog 비교는 색상 참고정보이며 종합 판정에 반영하지 않습니다.`);
   lines.push('- 현행판은 고정 grid의 오른쪽 평면색, 구형 TR·소매판은 label을 포함하는 vector swatch의 Illustrator 렌더 중심색을 사용합니다.');
   lines.push('- 소매는 공급처·family·가공·번호·색명과 시안의 다중 표본 대표색을 대조합니다.');
   lines.push('- 이 결과는 디자인 검수이며 실제 봉제품의 원단 조성·촉감·무늬·공급처 진품 인증이 아닙니다.');
   lines.push('- 안감은 외관 시안에 보이지 않으므로 표기만 추출하며 시각 판정하지 않습니다.');
   lines.push('- 시보리 줄 수, 단추 수·색, 주머니 형태는 다음 단계의 객체/형상 검사 대상입니다.');
-  lines.push('- 컬러판과 시안 렌더링의 색상 프로파일 차이 때문에 경계값은 자동 확정 대신 REVIEW로 남깁니다.');
+  lines.push('- 검정·흰색처럼 서로 다른 원단이 같은 화면색으로 표현될 수 있고 렌더링 색상 프로파일 차이도 있으므로 색상 비교는 판정 미반영 참고로 남깁니다.');
   lines.push('');
   return `${lines.join('\n')}\n`;
 }
@@ -790,8 +833,10 @@ const designs = proofScores.map((proofScore, designIndex) => {
   const sleeveSpecification = parseSleeveSpecification(fields.sleeve);
   const body = dominantBodyColor(proofImage, renderBounds);
   const sleeve = dominantSleeveColor(proofImage, renderBounds);
-  const materialCheck = evaluateBodyMaterial(body.rgb, shellSpecification, catalogRegistry);
-  const sleeveCheck = evaluateSleeveMaterial(sleeve.rgb, sleeveSpecification, catalogRegistry);
+  const rawMaterialCheck = evaluateBodyMaterial(body.rgb, shellSpecification, catalogRegistry);
+  const rawSleeveCheck = evaluateSleeveMaterial(sleeve.rgb, sleeveSpecification, catalogRegistry);
+  const materialCheck = applyTableAuthority(rawMaterialCheck, 'shell', '겉감', fields.shell);
+  const sleeveCheck = applyTableAuthority(rawSleeveCheck, 'sleeve', '소매', fields.sleeve);
   const tableCheck = checkTableExtraction(fields);
   return {
     id: `design-${designIndex + 1}`,

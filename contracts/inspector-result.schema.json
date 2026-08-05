@@ -70,7 +70,34 @@
         "decisionCode": { "type": "string" },
         "matchedCatalog": { "type": ["object", "null"] },
         "candidates": { "type": "array" },
-        "nearest": { "type": "array" }
+        "nearest": { "type": "array" },
+        "authority": { "$ref": "#/$defs/authority" },
+        "visualComparison": { "$ref": "#/$defs/visualComparison" }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "required": ["source", "field", "fieldLabel", "hasValue", "affectsOverallStatus"],
+      "properties": {
+        "source": { "const": "bottom_specification_table" },
+        "field": { "enum": ["shell", "sleeve"] },
+        "fieldLabel": { "type": "string", "minLength": 1 },
+        "hasValue": { "type": "boolean" },
+        "affectsOverallStatus": { "const": true }
+      }
+    },
+    "visualComparison": {
+      "type": "object",
+      "required": ["status", "advisory", "affectsOverallStatus"],
+      "properties": {
+        "status": { "$ref": "#/$defs/status" },
+        "reason": { "type": "string" },
+        "decisionCode": { "type": "string" },
+        "matchedCatalog": { "type": ["object", "null"] },
+        "candidates": { "type": "array" },
+        "nearest": { "type": "array" },
+        "advisory": { "const": true },
+        "affectsOverallStatus": { "const": false }
       }
     },
     "design": {

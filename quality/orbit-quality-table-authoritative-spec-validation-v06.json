@@ -1,0 +1,107 @@
+{
+  "schema_version": "orbit-quality-profile/v2",
+  "checks": [
+    {
+      "id": "ruff",
+      "globs": ["tests/test_table_authoritative_validation.py"],
+      "command": ["{ruff}", "check", "tests/test_table_authoritative_validation.py"],
+      "version_command": ["{ruff}", "--version"],
+      "timeout_seconds": 120,
+      "requirement": "always"
+    },
+    {
+      "id": "pylint",
+      "globs": ["tests/test_table_authoritative_validation.py"],
+      "command": ["{pylint}", "tests/test_table_authoritative_validation.py"],
+      "version_command": ["{pylint}", "--version"],
+      "timeout_seconds": 180,
+      "requirement": "always"
+    },
+    {
+      "id": "eslint",
+      "globs": ["eslint.config.js", "eslint.config.mjs"],
+      "command": ["{eslint}", "."],
+      "version_command": ["{eslint}", "--version"],
+      "timeout_seconds": 120,
+      "requirement": "when_applicable"
+    },
+    {
+      "id": "source-lint",
+      "globs": ["*.mjs", "**/*.mjs", "*.ps1", "**/*.ps1", "*.sh", "**/*.sh"],
+      "command": ["{npm}", "run", "lint"],
+      "version_command": ["{node}", "--version"],
+      "timeout_seconds": 120,
+      "requirement": "always"
+    },
+    {
+      "id": "syntax",
+      "globs": ["*.mjs", "**/*.mjs", "*.ps1", "**/*.ps1", "*.sh", "**/*.sh"],
+      "command": ["{npm}", "run", "check"],
+      "version_command": ["{node}", "--version"],
+      "timeout_seconds": 180,
+      "requirement": "always"
+    },
+    {
+      "id": "node-regression",
+      "globs": ["tests/*.test.mjs", "tests/**/*.test.mjs"],
+      "command": ["{npm}", "test"],
+      "version_command": ["{node}", "--version"],
+      "timeout_seconds": 300,
+      "requirement": "always"
+    },
+    {
+      "id": "structured-python",
+      "globs": [
+        "tests/*.py",
+        "quality/orbit-validation-table-authoritative-spec-validation-v06.json"
+      ],
+      "command": ["{python}", "-m", "unittest", "-v"],
+      "version_command": ["{python}", "--version"],
+      "timeout_seconds": 480,
+      "requirement": "always",
+      "evidence": "orbit-test-execution-receipt/v1",
+      "validation_profile": "quality/orbit-validation-table-authoritative-spec-validation-v06.json"
+    },
+    {
+      "id": "migration-verifier",
+      "globs": ["migration/source-manifest.json"],
+      "command": [
+        "{node}",
+        "scripts/verify-migration.mjs",
+        "--source-root",
+        "/home/doggabiya/campus-look-ops/일러스트 확인용 스크립트"
+      ],
+      "version_command": ["{node}", "--version"],
+      "timeout_seconds": 120,
+      "requirement": "always"
+    },
+    {
+      "id": "approved-base-ancestry",
+      "globs": ["*", "**/*"],
+      "command": [
+        "{git}",
+        "merge-base",
+        "--is-ancestor",
+        "4052cb9f0d51f5493bc8ca04fa54a31c56b86292",
+        "HEAD"
+      ],
+      "version_command": ["{git}", "--version"],
+      "timeout_seconds": 60,
+      "requirement": "always"
+    },
+    {
+      "id": "patch-hygiene",
+      "globs": ["*", "**/*"],
+      "command": [
+        "{git}",
+        "diff",
+        "--check",
+        "4052cb9f0d51f5493bc8ca04fa54a31c56b86292",
+        "HEAD"
+      ],
+      "version_command": ["{git}", "--version"],
+      "timeout_seconds": 60,
+      "requirement": "always"
+    }
+  ]
+}

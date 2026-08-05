@@ -90,6 +90,66 @@ function Get-MaterialCatalogDisplay {
     return '미확정'
 }
 
+function Get-TableMissingDisplay {
+    param([AllowNull()][object]$TableCheck)
+
+    if ($null -eq $TableCheck) {
+        return '확인 필요'
+    }
+    $missingProperty = $TableCheck.PSObject.Properties['missing']
+    if ($null -eq $missingProperty -or $null -eq $missingProperty.Value) {
+        return '확인 필요'
+    }
+    $missing = @($missingProperty.Value)
+    if ($missing.Count -eq 0) {
+        return '없음'
+    }
+    $labels = @{
+        customer = '고객명'
+        product = '제품명'
+        shell = '겉감'
+        lining = '안감'
+        sleeve = '소매'
+        rib = '시보리'
+        button = '단추'
+        pocket = '주머니'
+    }
+    $display = @($missing | ForEach-Object {
+        $key = [string]$_
+        if ($labels.ContainsKey($key)) { [string]$labels[$key] } else { $key }
+    })
+    return $display -join ', '
+}
+
+function Get-VisualComparisonDisplay {
+    param([AllowNull()][object]$Check)
+
+    if ($null -eq $Check) {
+        return '미확정'
+    }
+    $comparison = $Check
+    $comparisonProperty = $Check.PSObject.Properties['visualComparison']
+    if ($null -ne $comparisonProperty -and $null -ne $comparisonProperty.Value) {
+        $comparison = $comparisonProperty.Value
+    }
+    $statusProperty = $comparison.PSObject.Properties['status']
+    if (
+        $null -eq $statusProperty `
+        -or [string]::IsNullOrWhiteSpace([string]$statusProperty.Value)
+    ) {
+        return '미확정'
+    }
+    $display = [string]$statusProperty.Value
+    $decisionProperty = $comparison.PSObject.Properties['decisionCode']
+    if (
+        $null -ne $decisionProperty `
+        -and -not [string]::IsNullOrWhiteSpace([string]$decisionProperty.Value)
+    ) {
+        $display = "$display ($($decisionProperty.Value))"
+    }
+    return $display
+}
+
 function Convert-ToWslPath {
     param([Parameter(Mandatory = $true)][string]$WindowsPath)
 
@@ -462,7 +522,10 @@ try {
     $totalStopwatch.Stop()
     $elapsedSeconds = [Math]::Round($totalStopwatch.Elapsed.TotalSeconds, 1)
     if ($designs.Count -gt 1) {
-        $resultLines = @($designs | ForEach-Object { "$($_.label): $($_.overallStatus)" })
+        $resultLines = @($designs | ForEach-Object {
+            $missingText = Get-TableMissingDisplay -TableCheck $_.tableCheck
+            "$($_.label): $($_.overallStatus) / 사양표 누락: $missingText"
+        })
         $message = @"
 검사가 완료됐습니다.
 
@@ -477,19 +540,25 @@ $($resultLines -join "`r`n")
 "@
     }
     else {
+        $tableMissingText = Get-TableMissingDisplay -TableCheck $report.tableCheck
+        $bodyVisualText = Get-VisualComparisonDisplay -Check $report.materialCheck
+        $sleeveVisualText = Get-VisualComparisonDisplay -Check $report.sleeveCheck
         $bodyCatalogText = Get-MaterialCatalogDisplay -MaterialCheck $report.materialCheck
         $message = @"
 검사가 완료됐습니다.
 
 검사 파일: $($report.document)
 종합 결과: $($report.overallStatus)
-표 추출: $($report.tableCheck.status)
+원단 판정 기준: 하단 사양표
+사양표 필수값: $($report.tableCheck.status)
+사양표 누락: $tableMissingText
 겉감 표기: $($report.fields.shell)
-몸통 대표색: $($report.visual.body.hex)
-원단·번호: $($report.materialCheck.status)
-몸통 catalog: $bodyCatalogText
-소매: $($report.sleeveCheck.status)
-소매 판정코드: $($report.sleeveCheck.decisionCode)
+소매 표기: $($report.fields.sleeve)
+
+색상 비교(판정 미반영 참고)
+몸통: $bodyVisualText / 대표색 $($report.visual.body.hex)
+소매: $sleeveVisualText / 대표색 $($report.visual.sleeve.hex)
+몸통 catalog: $bodyCatalogText (색상 비교 참고)
 검사 시간: ${elapsedSeconds}초
 
 상세 보고서를 메모장으로 여시겠습니까?
